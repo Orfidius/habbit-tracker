@@ -1,0 +1,58 @@
+@keyframes on-load {
+    from {top: 100%;}
+    to {top: 5%;}
+  }
+
+.AddModal {
+    background-color: #413952;
+    height: 100%;
+    width: calc(100% - 10px);
+    position: absolute;
+    left: 5px;
+    top: 5%;
+    border-radius: 10px;
+    padding: 0.5rem 15px 0 15px;
+    animation-name: on-load;
+    animation-duration: 1s;
+    box-shadow: -10px 15px 2px #333;
+    h2 {
+        text-align: center;
+        width: 100%;
+        margin: 0;
+        margin-bottom: 1.2rem;
+        padding: 0;
+        color: #eee
+    }
+    .buttonWrapper {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        column-gap: 10px;
+        button {
+            border-radius: 0;
+            text-transform: uppercase;
+            padding: 10px 0px;
+            width: 100px;
+            display: block;
+        }
+
+    }
+}
+
+.textInput {
+    display: flex;
+    flex-direction: column;
+    color: #eee;
+    margin-bottom: 1rem;
+    text-transform: capitalize;
+    label {}
+}
+  
+  /* The element to apply the animation to */
+//   div {
+//     width: 100px;
+//     height: 100px;
+//     background-color: red;
+//     animation-name: example;
+//     animation-duration: 4s;
+//   }
