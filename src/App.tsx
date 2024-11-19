@@ -14,6 +14,7 @@ export const App = () => {
           <div className={styles.card}>
             <h2>My Habbit</h2>
             <div className={styles.copy}>
+              {/* TODO: Add "Last Updated" */}
               <p className={styles.numbersCopy}>
                 <strong>Followed through on:</strong>
               </p>

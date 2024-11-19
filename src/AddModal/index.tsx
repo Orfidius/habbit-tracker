@@ -1,11 +1,46 @@
-import { FC } from "react"
+import { FC, Reducer, useReducer } from "react"
 import styles from './AddModal.module.scss';
 import { invoke } from '@tauri-apps/api/core';
+import { Frequency, Habbit } from "../repositories/habbit-repository";
 
+
+enum Actions {
+  NAME,
+  FREQUENCY,
+  GOAL,
+}
+
+type ActionPayload = {
+  type: Actions,
+  payload: string | number,
+}
+
+const reducer = (state: Habbit, action: ActionPayload ) => {
+  switch (action.type) {
+    case Actions.NAME:
+      return { ...state, name: action.payload };
+    case Actions.GOAL:
+      return { ...state, goal: action.payload };
+    case Actions.FREQUENCY:
+      return {...state, frequency: action.payload }
+    default:
+      throw new Error(`Unknown action type: ${action.type}`);
+  }
+};
+
+const initialState: Habbit = {
+  id: 0,
+  name: "",
+  iteration: 0,
+  goal: 0,
+  remind: false,
+  frequency: Frequency.DAILY
+};
 
 export const AddModal = () => 
     {
-    const onSaveHandler = () =>{
+      const [state, dispatch] = useReducer(reducer, initialState);
+      const onSaveHandler = () =>{
        invoke('save_habbit');
       }
 
@@ -14,12 +49,14 @@ export const AddModal = () =>
       <form>
         <TextInput label={"name"} name={"name"} />
         <TextInput label={"goal"} name={"goal"} />
-        <label htmlFor="frequency">Habbut Frequency</label>
+        <div className={styles.frequency}>
+        <label htmlFor="frequency">Habbit Frequency</label>
         <select name="frequency" id="frequency">
          <option value="daily">daily</option>
           <option value="weekly">weekly</option>
           <option value="monthly">monthly</option>
-      </select>
+        </select>
+        </div>
         <div className={styles.buttonWrapper}>
           <button onClick={onSaveHandler}>
             Save

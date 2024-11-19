@@ -47,6 +47,12 @@
     text-transform: capitalize;
     label {}
 }
+
+.frequency {
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+}
   
   /* The element to apply the animation to */
 //   div {
