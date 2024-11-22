@@ -15,16 +15,25 @@ export type Habbit = {
     remind: boolean,
     frequency: Frequency,
 }
+// TODO: move Database into some kind of shared context, either class  
 export const saveHabbit = async (habbit: Habbit) => {
     // when using `"withGlobalTauri": true`, you may use
     // const V = window.__TAURI__.sql;
-    // const { name, iteration, goal, remind = false, frequency} = habbit;
-    const columns = Object.keys(habbit);
-    const values = Object.values(habbit);
+    const { name, iteration, goal, remind = false, frequency} = habbit;
 
     const db = await Database.load('sqlite:habbit.db');
-    await db.execute(`
-        INSERT INTO habbits  (${columns.join(',')}) 
-        VALUES (${values.join(',')})`
+    const result = await db.execute(`
+        INSERT INTO habbits (name, iteration, goal, remind, frequency ) 
+        VALUES ('${name}',${iteration}, ${goal}, ${remind}, '${frequency}')`
     );
+// const result = await db.select(`
+// SELECT name FROM sqlite_master;
+// `);
+console.log(result);
+}
+
+export const getHabbits = async () => {
+    const db = await Database.load('sqlite:habbit.db');
+    const results = await db.select<Habbit[]>('SELECT name, iteration, goal FROM habbits');
+    return results;
 }

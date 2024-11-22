@@ -2,36 +2,25 @@ import { useState } from "react";
 import styles from "./App.module.scss";
 import { CgAddR } from "react-icons/cg";
 import { AddModal } from "./AddModal";
+import { Cardlist } from "./CardList";
 
 export const App = () => {
   const [showModal, setShowModal] = useState<boolean>();
   const addButtonHandler = () => {
     setShowModal(!showModal)
   }
+  const onCloseModal = (closeClassSetter: () => void) => {
+    closeClassSetter();
+    setTimeout(() => {
+      setShowModal(!showModal)
+    }, 1010)
+  }
   return (
     <main className={styles.container}>
       <section className={styles.cardContainer}>
-          <div className={styles.card}>
-            <h2>My Habbit</h2>
-            <div className={styles.copy}>
-              {/* TODO: Add "Last Updated" */}
-              <p className={styles.numbersCopy}>
-                <strong>Followed through on:</strong>
-              </p>
-              <p className={styles.numbers}>42/90</p>
-            </div>
-          </div>
-          <div className={styles.card}>
-            <h2>My Habbit</h2>
-            <div className={styles.copy}>
-              <p className={styles.numbersCopy}>
-                <strong>Followed through on:</strong>
-              </p>
-              <p className={styles.numbers}>42/90</p>
-            </div>
-          </div>
+          <Cardlist />
       </section>
-      {showModal && <AddModal />} 
+      {showModal && <AddModal onClose={onCloseModal} />} 
       {!showModal && <button onClick={addButtonHandler} className={styles.FAB}>
         <CgAddR />
       </button>}

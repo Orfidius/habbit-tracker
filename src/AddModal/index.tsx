@@ -1,8 +1,8 @@
-import { FC, Reducer, useReducer } from "react"
+import { ChangeEventHandler, FC, MouseEventHandler, Reducer, useReducer, useState } from "react"
 import styles from './AddModal.module.scss';
 import { invoke } from '@tauri-apps/api/core';
-import { Frequency, Habbit } from "../repositories/habbit-repository";
-
+import { Frequency, Habbit, saveHabbit } from "../repositories/habbit-repository";
+import cx from 'classnames';
 
 enum Actions {
   NAME,
@@ -10,21 +10,31 @@ enum Actions {
   GOAL,
 }
 
-type ActionPayload = {
-  type: Actions,
-  payload: string | number,
+type FrequencyAction = {
+  type: Actions.FREQUENCY,
+  payload: Frequency,
 }
 
-const reducer = (state: Habbit, action: ActionPayload ) => {
+type NameAction = {
+  type: Actions.NAME,
+  payload: string,
+}
+
+type GoalAction = {
+  type: Actions.GOAL,
+  payload: string,
+}
+
+type ActionPayload = FrequencyAction | NameAction | GoalAction;
+
+const reducer: Reducer<Habbit, ActionPayload> = (state: Habbit, action: ActionPayload) => {
   switch (action.type) {
     case Actions.NAME:
       return { ...state, name: action.payload };
     case Actions.GOAL:
-      return { ...state, goal: action.payload };
+      return { ...state, goal: parseInt(action.payload, 10) };
     case Actions.FREQUENCY:
-      return {...state, frequency: action.payload }
-    default:
-      throw new Error(`Unknown action type: ${action.type}`);
+      return { ...state, frequency: action.payload }
   }
 };
 
@@ -32,47 +42,73 @@ const initialState: Habbit = {
   id: 0,
   name: "",
   iteration: 0,
-  goal: 0,
+  goal: 90,
   remind: false,
   frequency: Frequency.DAILY
 };
+type AddModalProps = {
+  onClose: (f: () => void) => void,
+}
+export const AddModal: FC<AddModalProps> = ({onClose}) => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const [isClosing, setIsClosing] = useState(false);
+  const updateName: ChangeEventHandler<HTMLInputElement> = ({ target: { value } }) => {
+    dispatch({ type: Actions.NAME, payload: value })
+  }
+  const updateGoal: ChangeEventHandler<HTMLInputElement> = ({ target: { value } }) => {
+    dispatch({ type: Actions.NAME, payload: value })
+  }
 
-export const AddModal = () => 
-    {
-      const [state, dispatch] = useReducer(reducer, initialState);
-      const onSaveHandler = () =>{
-       invoke('save_habbit');
-      }
-
-    return <section className={styles.AddModal}>
-      <h2>Start New Habbit</h2>
-      <form>
-        <TextInput label={"name"} name={"name"} />
-        <TextInput label={"goal"} name={"goal"} />
-        <div className={styles.frequency}>
+  const updateFrequency: ChangeEventHandler<HTMLSelectElement> = ({ target: { value } }) => {
+    dispatch({ type: Actions.NAME, payload: value })
+  }
+  const onSave: MouseEventHandler<HTMLButtonElement> =  async () => {
+    console.log(state);
+    try {
+     await saveHabbit(state);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      onClose(() => {setIsClosing(true)});
+    }
+  }
+  const onCancel = () => {
+    onClose(() => {setIsClosing(true)});
+  }
+  return <section className={cx(styles.AddModal, isClosing ? styles.closing : styles.opening)}>
+    <h2>Start New Habbit</h2>
+    <form onSubmit={(e) => {e.preventDefault()}}>
+      <TextInput value={state.name} onChange={updateName} label={"name"} name={"name"} />
+      <TextInput value={`${state.goal}`} onChange={updateGoal} label={"goal"} name={"goal"} />
+      <div className={styles.frequency}>
         <label htmlFor="frequency">Habbit Frequency</label>
-        <select name="frequency" id="frequency">
-         <option value="daily">daily</option>
+        <select onChange={updateFrequency} name="frequency" id="frequency">
+          <option value="daily">daily</option>
           <option value="weekly">weekly</option>
           <option value="monthly">monthly</option>
         </select>
-        </div>
-        <div className={styles.buttonWrapper}>
-          <button onClick={onSaveHandler}>
-            Save
-          </button>
-          <button>
-            Cancel
-          </button>
-        </div>
-      </form>
-    </section>;
-  }
-    
-    export const TextInput: FC<{label: string, name: string}> = ({label, name}) => 
-      <div className={styles.textInput}>
-        <label htmlFor={name}>{label}</label>
-        <input name={name} type="text" id={name} />
       </div>
-    
-    
+      <div className={styles.buttonWrapper}>
+        <button onClick={onSave}>
+          Save
+        </button>
+        <button onClick={onCancel}>
+          Cancel
+        </button>
+      </div>
+    </form>
+  </section>;
+}
+type InputProps = {
+  label: string,
+  name: string,
+  onChange: ChangeEventHandler<HTMLInputElement>,
+  value?: string,
+}
+
+export const TextInput: FC<InputProps> = ({ label, name, onChange, value }) =>
+  <div className={styles.textInput}>
+    <label htmlFor={name}>{label}</label>
+    <input value={value} onChange={onChange} name={name} type="text" id={name} />
+  </div>
+
