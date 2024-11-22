@@ -4,10 +4,12 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
+    "start": "tauri dev",
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "android": "tauri android dev"
   },
   "dependencies": {
     "@tauri-apps/plugin-sql": "~2.0.1",

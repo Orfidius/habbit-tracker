@@ -1,6 +1,8 @@
 import { FC, useEffect, useState } from "react";
 import { getHabbits, Habbit } from "../repositories/habbit-repository";
 import { Card } from "./Card";
+import styles from 'styles.module.scss';
+
 
 
 export const Cardlist: FC = () => {
@@ -11,7 +13,7 @@ useEffect(() => {
     });
 }, []);
 
-return <>
-{habbits.map(habbit => <Card habbit={habbit} />)}
-</>
+return <ul className={styles.cardList}>
+    {habbits.map(habbit => <Card habbit={habbit} />)}
+</ul>
 }
