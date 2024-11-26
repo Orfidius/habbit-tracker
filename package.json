@@ -1,5 +1,5 @@
 {
-  "name": "habbit-tracker",
+  "name": "habit-tracker",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -15,6 +15,7 @@
     "@fireworks-js/react": "^2.10.8",
     "@tauri-apps/plugin-sql": "~2.0.1",
     "classnames": "^2.5.1",
+    "dayjs": "^1.11.13",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "@tauri-apps/api": "^2",

@@ -36,11 +36,33 @@
         background-size: 110% 100%;
         animation: fill 1.7s;
       }
+    }
 
+    .title {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      position: relative;
+      h2 {
+          margin: 0 0 45px 0;
+        }
+      span {
+        opacity: 0.8;
+        background: #214834;
+        height: 40px;
+        width: 40px;
+        border-radius: 100px;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        box-shadow: inset 3px 3px 0px rgba(3, 3, 3, 3.0);
+        img {
+          width: 25px;
+          height: 25px;          
+        }
+      }
     }
-    h2 {
-      margin: 0 0 45px 0;
-    }
+
     .copy {
       display: flex;
       flex-direction: row;
@@ -57,5 +79,15 @@
       font-size: 24px;
       color: #600404;
       font-family: "BigBlueTermPlus Nerd Font"
+    }
+    &.doneForDay {
+      touch-action: 1;
+      background-color: #ebc155;
+      background-image: linear-gradient(to right, #f0c863, #c6a44e);
+      border: solid 2px #c6a44e;
+      color: #222;
+      span {
+        display: flex;
+      }
     }
   }

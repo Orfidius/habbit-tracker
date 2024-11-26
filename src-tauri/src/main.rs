@@ -3,5 +3,5 @@
 use tauri_plugin_sql::{Migration, MigrationKind};
 
 fn main() {
-    habbit_tracker_lib::run()
+    habit_tracker_lib::run()
 }

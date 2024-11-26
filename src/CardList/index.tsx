@@ -1,21 +1,16 @@
 import { FC, useEffect, useState } from "react";
-import { getHabbits, Habbit } from "../repositories/habbit-repository";
 import { Card } from "./Card";
 import styles from './styles.module.scss';
+import { gethabits, habit } from "../repositories/habit-repository";
 
 type Props = {
-    shouldReload: boolean;
+    habits: Array<habit>;
+    updateCards: () => Promise<void>;
 }
 
-export const Cardlist: FC<Props> = ({shouldReload}) => {
-const [habbits, setHabbits] = useState<Array<Habbit>>([]);
-useEffect(() => {
-    getHabbits().then(habbits => {
-        setHabbits(habbits);
-    });
-}, [shouldReload]);
+export const Cardlist: FC<Props> = ({habits, updateCards}) => {
 
 return <ul className={styles.cardList}>
-    {habbits.map(habbit => <Card habbit={habbit} />)}
+    {habits.map(habit => <Card updateCards={updateCards} habit={habit} />)}
 </ul>
 }

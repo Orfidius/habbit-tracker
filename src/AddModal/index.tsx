@@ -1,8 +1,7 @@
 import { ChangeEventHandler, FC, MouseEventHandler, Reducer, useReducer, useState } from "react"
 import styles from './AddModal.module.scss';
-import { invoke } from '@tauri-apps/api/core';
-import { Frequency, Habbit, saveHabbit } from "../repositories/habbit-repository";
 import cx from 'classnames';
+import { Frequency, habit, inserthabit } from "../repositories/habit-repository";
 
 enum Actions {
   NAME,
@@ -27,7 +26,7 @@ type GoalAction = {
 
 type ActionPayload = FrequencyAction | NameAction | GoalAction;
 
-const reducer: Reducer<Habbit, ActionPayload> = (state: Habbit, action: ActionPayload) => {
+const reducer: Reducer<habit, ActionPayload> = (state: habit, action: ActionPayload) => {
   switch (action.type) {
     case Actions.NAME:
       return { ...state, name: action.payload };
@@ -38,7 +37,7 @@ const reducer: Reducer<Habbit, ActionPayload> = (state: Habbit, action: ActionPa
   }
 };
 
-const initialState: Habbit = {
+const initialState: habit = {
   id: 0,
   name: "",
   iteration: 0,
@@ -65,7 +64,7 @@ export const AddModal: FC<AddModalProps> = ({onClose}) => {
   const onSave: MouseEventHandler<HTMLButtonElement> =  async () => {
     console.log(state);
     try {
-     await saveHabbit(state);
+     await inserthabit(state);
     } catch (e) {
       console.log(e);
     } finally {
@@ -76,12 +75,12 @@ export const AddModal: FC<AddModalProps> = ({onClose}) => {
     onClose(() => {setIsClosing(true)});
   }
   return <section className={cx(styles.AddModal, isClosing ? styles.closing : styles.opening)}>
-    <h2>Start New Habbit</h2>
+    <h2>Start New habit</h2>
     <form onSubmit={(e) => {e.preventDefault()}}>
       <TextInput value={state.name} onChange={updateName} label={"name"} name={"name"} />
       <TextInput value={`${state.goal}`} onChange={updateGoal} label={"goal"} name={"goal"} />
       <div className={styles.frequency}>
-        <label htmlFor="frequency">Habbit Frequency</label>
+        <label htmlFor="frequency">habit Frequency</label>
         <select onChange={updateFrequency} name="frequency" id="frequency">
           <option value="daily">daily</option>
           <option value="weekly">weekly</option>

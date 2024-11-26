@@ -22,12 +22,11 @@ export const Celebration: FC<Props> = ({ children }) => {
   const timerRef = useRef<TimerReturn | null>(null);
   useEffect(() => {
     if (!ref.current) return;
-    // if (ref.current.isRunning) {
-    //   ref.current.stop()
-    // } else {
+    if (show) {
       ref.current.start()
+    }
     // }
-  }, [ref.current]);
+  }, [ref.current, show]);
 
   useEffect(() => {
     if (timerRef.current) {

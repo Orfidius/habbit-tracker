@@ -1,3 +1,3 @@
-package com.habbit_tracker.app
+package com.habit_tracker.app
 
 class MainActivity : TauriActivity()
