@@ -16,8 +16,8 @@ type TimerReturn = ReturnType<typeof setTimeout>
 export const celebrationContext = createContext<contextType>({ setShowCelebrate: () => undefined });
 
 export const Celebration: FC<Props> = ({ children }) => {
-  const [show, setShow] = useState(true);
-  const [closing, setClosing] = useState(true);
+  const [show, setShow] = useState(false);
+  // const [closing, setClosing] = useState(true);
   const ref = useRef<FireworksHandlers>(null);
   const timerRef = useRef<TimerReturn | null>(null);
   useEffect(() => {

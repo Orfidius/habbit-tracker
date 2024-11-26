@@ -27,7 +27,9 @@ export const Card: FC<Props> = ({ habbit: { name, iteration, goal } }) => {
     }, [isFilling])
     return <li
         onMouseDown={mouseDownHandler}
+        onTouchStart={mouseDownHandler}
         onMouseUp={mouseUpHandler}
+        onTouchEnd={mouseUpHandler}
         onMouseOut={mouseUpHandler}
         className={cx(styles.card)}>
         <div className={cx(styles.inner,  isFilling && styles.filling)}>
