@@ -14,7 +14,7 @@ export type habit = {
     goal: number,
     remind: boolean,
     frequency: Frequency,
-    lastUpdated: number;
+    lastUpdated?: number;
 }
 
 // TODO: move Database into some kind of shared context, either class  

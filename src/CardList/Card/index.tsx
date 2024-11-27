@@ -10,17 +10,19 @@ type Props = {
 }
 type TimerReturn = ReturnType<typeof setTimeout>;
 
-export const Card: FC<Props> = ({ habit: { id, name, iteration, goal, lastUpdated, ...rest }, updateCards }) => {
+export const Card: FC<Props> = ({ habit: { id, name, iteration, goal, lastUpdated }, updateCards }) => {
     const { setShowCelebrate } = useContext(celebrationContext);
     const [isFilling, setIsFilling] = useState<boolean>(false);
     const [disabled, setDisabled] = useState(false);
     const timerRef = useRef<TimerReturn | null>(null);
     useEffect(() => {
-        const date = dayjs(lastUpdated);
-        const now = dayjs().subtract(1, 'day');
-        if (date.isAfter(now)) {
-            setDisabled(true);
-        };
+        if (lastUpdated) {
+            const date = dayjs(lastUpdated);
+            const now = dayjs().subtract(1, 'day');
+            if (date.isAfter(now)) {
+                setDisabled(true);
+            };
+        }
     }, [iteration]);
 
     const mouseDownHandler = () => {

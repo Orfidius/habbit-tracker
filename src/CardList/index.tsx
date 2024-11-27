@@ -1,7 +1,7 @@
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import { Card } from "./Card";
 import styles from './styles.module.scss';
-import { gethabits, habit } from "../repositories/habit-repository";
+import { habit } from "../repositories/habit-repository";
 
 type Props = {
     habits: Array<habit>;

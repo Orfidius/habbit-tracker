@@ -1,7 +1,6 @@
 import { createContext, FC, PropsWithChildren, useEffect, useRef, useState } from "react"
 import styles from './style.module.scss';
 import Fireworks, { FireworksHandlers } from "@fireworks-js/react";
-import cx from 'classnames';
 
 type Props = {
 
