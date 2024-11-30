@@ -1,10 +1,10 @@
 import { FC } from "react";
-import { Card } from "./Card";
+import { Card } from "./HabitCard";
 import styles from './styles.module.scss';
-import { habit } from "../repositories/habit-repository";
+import { Habit } from "../repositories/habit-repository";
 
 type Props = {
-    habits: Array<habit>;
+    habits: Array<Habit>;
     updateCards: () => Promise<void>;
 }
 

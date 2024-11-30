@@ -1,0 +1,118 @@
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fill {
+  from {
+    background-size: 0% 100%;
+  }
+
+  to {
+    background-size: 110% 100%;
+  }
+}
+
+.card {
+  background-color: #C1CAE1;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border: 1px;
+  animation-duration: 650ms;
+  animation-fill-mode: forwards;
+  animation-name: fade-in;
+  overflow: hidden;
+
+  .inner {
+    padding: 10px 16px;
+    background-image: linear-gradient(to right, #697eb48a, 30%, #51596d, 95%, #C1CAE1);
+    background-repeat: no-repeat;
+    background-size: 0% 100%;
+
+    &.filling {
+      background-size: 110% 100%;
+      animation: fill 1.7s;
+    }
+  }
+
+  .title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    position: relative;
+    align-items: start;
+    .approveBlock {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      padding: 0;
+      margin: 0;
+      column-gap: 10px;
+      .lastUpdated {
+        font-weight: bold;
+        display: inline-block;
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 20px;
+        padding: 5px 12px;
+        font-size: 12px;
+        color: #eee;
+      }
+    }
+    .approveIcon {
+      opacity: 0.8;
+      background: #214834;
+      height: 40px;
+      width: 40px;
+      border-radius: 100px;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      box-shadow: inset 3px 3px 0px rgba(3, 3, 3, 3.0);
+      img {
+        width: 25px;
+        height: 25px;
+      }
+    }
+
+    h2 {
+      margin: 0 0 45px 0;
+    }
+  }
+
+  .copy {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .numbersCopy {}
+
+  .numbers {
+    font-size: 24px;
+    color: #600404;
+    font-family: "BigBlueTermPlus Nerd Font"
+  }
+
+  &.doneForDay {
+    touch-action: 1;
+    background-color: #ebc155;
+    background-image: linear-gradient(to right, #f0c863, 30%, #c6a44e);
+    border: solid 2px #c6a44e;
+    color: #222;
+
+    .approveIcon {
+      display: flex;
+    }
+  }
+}

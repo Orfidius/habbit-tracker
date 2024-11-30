@@ -11,6 +11,9 @@
     "sql:default",
     "sql:allow-execute",
     "sql:allow-load",
-    "sql:allow-select"
+    "sql:allow-select",
+    "core:window:default", 
+    "core:window:allow-start-dragging"
+    
   ]
 }

@@ -1,11 +1,11 @@
 import styles from './Card.module.scss';
 import { FC, useContext, useEffect, useRef, useState } from "react";
-import { habit, incrementHbbit } from "../../repositories/habit-repository";
+import { Habit, incrementHbbit } from "../../repositories/habit-repository";
 import cx from 'classnames';
 import { celebrationContext } from '../../Celebration';
 import dayjs from 'dayjs';
 type Props = {
-    habit: habit;
+    habit: Habit;
     updateCards: () => Promise<void>;
 }
 type TimerReturn = ReturnType<typeof setTimeout>;
@@ -18,7 +18,7 @@ export const Card: FC<Props> = ({ habit: { id, name, iteration, goal, lastUpdate
     useEffect(() => {
         if (lastUpdated) {
             const date = dayjs(lastUpdated);
-            const now = dayjs().subtract(1, 'day');
+            const now = dayjs().subtract(8, 'hour');
             if (date.isAfter(now)) {
                 setDisabled(true);
             };
@@ -51,9 +51,12 @@ export const Card: FC<Props> = ({ habit: { id, name, iteration, goal, lastUpdate
         <div className={cx(styles.inner, isFilling && styles.filling)}>
             <div className={styles.title}>
                 <h2>{name}</h2>
-                <span>
-                <img src='/approve.svg' />
-                </span>
+                <div className={styles.approveBlock}>
+                    {lastUpdated && <IncrementDate lastUpdated={lastUpdated} />}
+                    <span className={styles.approveIcon}>
+                        <img src='/approve.svg' />
+                    </span>
+                </div>
             </div>
             <div className={styles.copy}>
                 {/* TODO: Add "Last Updated" */}
@@ -64,6 +67,11 @@ export const Card: FC<Props> = ({ habit: { id, name, iteration, goal, lastUpdate
             </div>
         </div>
     </li>;
+}
+
+const IncrementDate: FC<{ lastUpdated: number }> = ({ lastUpdated }) => {
+    const date = dayjs(lastUpdated).format('MMM DD [at] h:mm A');
+    return <span className={styles.lastUpdated}>{date}</span>
 }
 
 

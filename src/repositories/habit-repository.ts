@@ -7,7 +7,7 @@ export enum Frequency {
     WEEKLY
 }
 
-export type habit = {
+export type Habit = {
     id: number; 
     name: string,
     iteration: number,
@@ -18,7 +18,7 @@ export type habit = {
 }
 
 // TODO: move Database into some kind of shared context, either class  
-export const inserthabit = async (habit: habit) => {
+export const inserthabit = async (habit: Habit) => {
     // when using `"withGlobalTauri": true`, you may use
     // const V = window.__TAURI__.sql;
     const { name, iteration, goal, remind = false, frequency} = habit;
@@ -36,7 +36,7 @@ console.log(result);
 
 export const gethabits = async () => {
     const db = await Database.load('sqlite:habit.db');
-    const results = await db.select<habit[]>('SELECT id, name, iteration, goal, frequency, lastUpdated FROM habits');
+    const results = await db.select<Habit[]>('SELECT id, name, iteration, goal, frequency, lastUpdated FROM habits');
     return results;
 }
 

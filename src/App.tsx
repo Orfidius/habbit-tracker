@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import styles from "./App.module.scss";
 import { CgAddR } from "react-icons/cg";
 import { AddModal } from "./AddModal";
-import { Cardlist } from "./CardList";
+import { Cardlist } from "./HabitList";
 import { Celebration } from "./Celebration";
-import { gethabits, habit } from "./repositories/habit-repository";
+import { gethabits, Habit } from "./repositories/habit-repository";
 
 export const App = () => {
   const [showModal, setShowModal] = useState<boolean>();
-  const [habits, sethabits] = useState<Array<habit>>([]);
+  const [habits, sethabits] = useState<Array<Habit>>([]);
 
   const addButtonHandler = () => {
     setShowModal(!showModal)

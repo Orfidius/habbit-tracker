@@ -1,7 +1,7 @@
 import { ChangeEventHandler, FC, MouseEventHandler, Reducer, useReducer, useState } from "react"
 import styles from './AddModal.module.scss';
 import cx from 'classnames';
-import { Frequency, habit, inserthabit } from "../repositories/habit-repository";
+import { Frequency, Habit, inserthabit } from "../repositories/habit-repository";
 
 enum Actions {
   NAME,
@@ -26,7 +26,7 @@ type GoalAction = {
 
 type ActionPayload = FrequencyAction | NameAction | GoalAction;
 
-const reducer: Reducer<habit, ActionPayload> = (state: habit, action: ActionPayload) => {
+const reducer: Reducer<Habit, ActionPayload> = (state: Habit, action: ActionPayload) => {
   switch (action.type) {
     case Actions.NAME:
       return { ...state, name: action.payload };
@@ -37,7 +37,7 @@ const reducer: Reducer<habit, ActionPayload> = (state: habit, action: ActionPayl
   }
 };
 
-const initialState: habit = {
+const initialState: Habit = {
   id: 0,
   name: "",
   iteration: 0,

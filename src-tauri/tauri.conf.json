@@ -13,6 +13,7 @@
     "windows": [
       {
         "title": "habit-tracker",
+        "decorations": false,
         "width": 400,
         "height": 800
       }
