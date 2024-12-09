@@ -15,7 +15,9 @@
         "title": "habit-tracker",
         "decorations": false,
         "width": 400,
-        "height": 800
+        "height": 800,
+        "hiddenTitle": false,
+        "titleBarStyle": "Transparent"
       }
     ],
     "security": {

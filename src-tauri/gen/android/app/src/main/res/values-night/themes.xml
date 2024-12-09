@@ -2,5 +2,6 @@
     <!-- Base application theme. -->
     <style name="Theme.habit_tracker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
+        <item name="android:statusBarColor" tools:targetApi="l">#EEE</item>
     </style>
 </resources>
