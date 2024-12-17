@@ -13,7 +13,7 @@
     "windows": [
       {
         "title": "habit-tracker",
-        "decorations": false,
+        "decorations": true,
         "width": 400,
         "height": 800,
         "hiddenTitle": false,
@@ -37,9 +37,7 @@
   },
   "plugins": {
     "sql": {
-      "preload": [
-        "sqlite:habit.db"
-      ]
+      "preload": ["sqlite:habit.db"]
     }
   }
 }
