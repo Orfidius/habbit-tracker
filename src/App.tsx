@@ -27,7 +27,6 @@ export const App = () => {
     setShowModal(!showModal);
   };
   const editButtonHandler = () => {
-    setShowModal(!showModal);
     dispatch(setEditMode());
   };
   const onCloseModal = (closeClassSetter: () => void) => {

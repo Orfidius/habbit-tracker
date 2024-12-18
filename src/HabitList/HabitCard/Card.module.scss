@@ -29,10 +29,21 @@
     animation-fill-mode: forwards;
     animation-name: fade-in;
     overflow: hidden;
-
-    .outer {
+    .edit {
+        border-radius: 50px;
+        hight: 20px;
+        widht: 20px;
+        background-color: rgba(0, 0, 0, 0.3);
+        color: #fff;
+        font-size: 38px;
+        flex-grow: 0;
+        flex-shrink: 1;
+    }
+    .inner {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
+        width: fill-content;
+        flex-grow: 1;
         padding: 10px 16px;
         background-image: linear-gradient(
             to right,
@@ -50,9 +61,11 @@
         }
     }
 
-    .inner {
+    .outer {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        align-items: center;
+        justify-content: stretch;
     }
 
     .title {
