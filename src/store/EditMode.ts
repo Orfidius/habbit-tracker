@@ -19,10 +19,13 @@ export const editModeSlice = createSlice({
     setEditMode(state) {
       state.enabled = !state.enabled;
     },
+    setCurrentHabit(state, action: PayloadAction<Habit>) {
+      state.selectedHabbit = action.payload;
+    },
   },
 });
 
-export const { setEditMode } = editModeSlice.actions;
+export const { setEditMode, setCurrentHabit } = editModeSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 // export const selectCount = (state: RootState) => state.habitState.habits;

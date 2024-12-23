@@ -6,6 +6,9 @@ import { celebrationContext } from "../../Celebration";
 import dayjs from "dayjs";
 import { MdModeEditOutline } from "react-icons/md";
 import { useAppSelector } from "../../store/hooks";
+import { useDispatch } from "react-redux";
+import { setCurrentHabit } from "../../store/EditMode";
+import { setModalOpen } from "../../store/HabitState";
 type Props = {
   habit: Habit;
   updateCards: () => Promise<void>;
@@ -13,7 +16,7 @@ type Props = {
 type TimerReturn = ReturnType<typeof setTimeout>;
 
 export const Card: FC<Props> = ({
-  habit: { id, name, iteration, goal, lastUpdated },
+  habit: { id, name, iteration, goal, lastUpdated, ...habit },
   updateCards,
 }) => {
   const { setShowCelebrate } = useContext(celebrationContext);
@@ -21,6 +24,7 @@ export const Card: FC<Props> = ({
   const [disabled, setDisabled] = useState(false);
   const isInEditMode = useAppSelector((state) => state.editModeState.enabled);
   const timerRef = useRef<TimerReturn | null>(null);
+  const dispatch = useDispatch();
   useEffect(() => {
     if (lastUpdated) {
       const date = dayjs(lastUpdated);
@@ -34,7 +38,6 @@ export const Card: FC<Props> = ({
   const mouseDownHandler = () => {
     if (isInEditMode) return;
     !disabled && setIsFilling(true);
-    console.log({ disabled });
     if (!disabled) {
       timerRef.current = setTimeout(async () => {
         setShowCelebrate(true);
@@ -48,6 +51,14 @@ export const Card: FC<Props> = ({
     setIsFilling(false);
     timerRef.current && clearTimeout(timerRef.current);
   };
+
+  const onEditHandler = () => {
+    dispatch(
+      setCurrentHabit({ id, name, iteration, goal, lastUpdated, ...habit }),
+    );
+    dispatch(setModalOpen());
+  };
+
   return (
     <li
       onMouseDown={mouseDownHandler}
@@ -59,7 +70,11 @@ export const Card: FC<Props> = ({
     >
       <div className={styles.outer}>
         {isInEditMode && (
-          <button className={styles.edit}>
+          <button
+            className={styles.edit}
+            onTouchStart={onEditHandler}
+            onMouseDown={onEditHandler}
+          >
             <MdModeEditOutline />
           </button>
         )}
