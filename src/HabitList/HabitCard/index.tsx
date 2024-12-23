@@ -19,9 +19,7 @@ export const Card: FC<Props> = ({
   const { setShowCelebrate } = useContext(celebrationContext);
   const [isFilling, setIsFilling] = useState<boolean>(false);
   const [disabled, setDisabled] = useState(false);
-  const isInEditMode = useAppSelector(
-    (state) => state.habitState.editMode.enabled,
-  );
+  const isInEditMode = useAppSelector((state) => state.editModeState.enabled);
   const timerRef = useRef<TimerReturn | null>(null);
   useEffect(() => {
     if (lastUpdated) {
@@ -34,6 +32,7 @@ export const Card: FC<Props> = ({
   }, [iteration]);
 
   const mouseDownHandler = () => {
+    if (isInEditMode) return;
     !disabled && setIsFilling(true);
     console.log({ disabled });
     if (!disabled) {

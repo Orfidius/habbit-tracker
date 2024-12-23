@@ -30,14 +30,19 @@
     animation-name: fade-in;
     overflow: hidden;
     .edit {
-        border-radius: 50px;
-        hight: 20px;
-        widht: 20px;
+        border-radius: 10px;
+        height: 90px;
         background-color: rgba(0, 0, 0, 0.3);
         color: #fff;
-        font-size: 38px;
+        font-size: 18px;
         flex-grow: 0;
         flex-shrink: 1;
+        /* border: none; */
+        padding: 10px;
+        margin: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
     .inner {
         display: flex;

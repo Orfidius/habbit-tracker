@@ -9,22 +9,24 @@ import { Celebration } from "./Celebration";
 import { gethabits, Habit } from "./repositories/habit-repository";
 import cx from "classnames";
 import { useDispatch } from "react-redux";
-import { setEditMode } from "./store/HabitState";
+import { useAppSelector } from "./store/hooks";
+import { setModalOpen } from "./store/HabitState";
+import { setEditMode } from "./store/EditMode";
 /*
   Edit button:
-   1. Create edit button
-   2. Add edit state to redux
-   3. Update UI in response to Edit button
-   4. When card clicked in Edit mode, open "Add modal" with car data, edit modal now updates instead of creates
-   5.Add Delet icon to cards
+   1. [x] Create edit button
+   2. [x] Add edit state to redux
+   3. [ ] Update UI in response to Edit button
+   4. [ ] When card clicked in Edit mode, open "Add modal" with car data, edit modal now updates instead of creates
+   5. [ ] Add Delete icon to cards
 
 */
 export const App = () => {
-  const [showModal, setShowModal] = useState<boolean>();
   const [habits, sethabits] = useState<Array<Habit>>([]);
+  const showModal = useAppSelector((state) => state.habitState.modalOpen);
   const dispatch = useDispatch();
   const addButtonHandler = () => {
-    setShowModal(!showModal);
+    dispatch(setModalOpen());
   };
   const editButtonHandler = () => {
     dispatch(setEditMode());
@@ -32,7 +34,7 @@ export const App = () => {
   const onCloseModal = (closeClassSetter: () => void) => {
     closeClassSetter();
     setTimeout(() => {
-      setShowModal(!showModal);
+      dispatch(setModalOpen());
       updateCards();
     }, 900);
   };

@@ -5,18 +5,13 @@ import { Habit } from "../repositories/habit-repository";
 // Define a type for the slice state
 export interface HabitState {
   habits: Array<Habit>;
-  editMode: {
-    enabled: boolean;
-    selectedHabbit?: Habit;
-  };
+  modalOpen: boolean;
 }
 
 // Define the initial state using that type
 const initialState: HabitState = {
   habits: [],
-  editMode: {
-    enabled: false,
-  },
+  modalOpen: false,
 };
 
 export const habitSlice = createSlice({
@@ -27,13 +22,13 @@ export const habitSlice = createSlice({
     setHabits: (state, action: PayloadAction<Array<Habit>>) => {
       state.habits = action.payload;
     },
-    setEditMode(state) {
-      state.editMode.enabled = !state.editMode.enabled;
+    setModalOpen(state) {
+      state.modalOpen = !state.modalOpen;
     },
   },
 });
 
-export const { setHabits, setEditMode } = habitSlice.actions;
+export const { setHabits, setModalOpen } = habitSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectCount = (state: RootState) => state.habitState.habits;
