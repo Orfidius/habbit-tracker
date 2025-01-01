@@ -19,7 +19,7 @@ export const editModeSlice = createSlice({
     setEditMode(state) {
       state.enabled = !state.enabled;
     },
-    setCurrentHabit(state, action: PayloadAction<Habit>) {
+    setCurrentHabit(state, action: PayloadAction<Habit | undefined>) {
       state.selectedHabbit = action.payload;
     },
   },

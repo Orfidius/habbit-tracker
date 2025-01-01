@@ -3,19 +3,19 @@ import {
   FC,
   MouseEventHandler,
   Reducer,
-  useEffect,
   useReducer,
   useState,
 } from "react";
 import styles from "./AddModal.module.scss";
 import cx from "classnames";
 import {
-  Frequency,
   Habit,
   insertHabit,
   updateHabit,
 } from "../repositories/habit-repository";
 import { useAppSelector } from "../store/hooks";
+import { useDispatch } from "react-redux";
+import { setCurrentHabit } from "../store/EditMode";
 
 enum Actions {
   NAME,
@@ -25,7 +25,7 @@ enum Actions {
 
 type FrequencyAction = {
   type: Actions.FREQUENCY;
-  payload: Frequency;
+  payload: Freq;
 };
 
 type NameAction = {
@@ -50,7 +50,13 @@ const reducer: Reducer<Habit, ActionPayload> = (
     case Actions.GOAL:
       return { ...state, goal: parseInt(action.payload, 10) };
     case Actions.FREQUENCY:
-      return { ...state, frequency: action.payload };
+      let newFreq = new Set(state.frequency);
+      if (newFreq.has(action.payload)) {
+        newFreq.delete(action.payload);
+      } else {
+        newFreq.add(action.payload);
+      }
+      return { ...state, frequency: newFreq };
   }
 };
 
@@ -60,7 +66,7 @@ const initialState: Habit = {
   iteration: 0,
   goal: 90,
   remind: false,
-  frequency: Frequency.DAILY,
+  frequency: new Set(),
 };
 type AddModalProps = {
   onClose: (f: () => void) => void;
@@ -69,6 +75,7 @@ export const AddModal: FC<AddModalProps> = ({ onClose }) => {
   const selectedHabit = useAppSelector(
     (state) => state.editModeState.selectedHabbit,
   );
+  const appDispatch = useDispatch();
   const [habit, dispatch] = useReducer(reducer, selectedHabit ?? initialState);
   const [isClosing, setIsClosing] = useState(false);
   const updateName: ChangeEventHandler<HTMLInputElement> = ({
@@ -82,8 +89,8 @@ export const AddModal: FC<AddModalProps> = ({ onClose }) => {
     dispatch({ type: Actions.NAME, payload: value });
   };
 
-  const updateFrequency = (value: string) => {
-    dispatch({ type: Actions.NAME, payload: value });
+  const updateFrequency = (value: Freq) => {
+    dispatch({ type: Actions.FREQUENCY, payload: value });
   };
   const onSave: MouseEventHandler<HTMLButtonElement> = async () => {
     // TODO: Do something different if we have a selectedHabit
@@ -95,12 +102,14 @@ export const AddModal: FC<AddModalProps> = ({ onClose }) => {
     } finally {
       onClose(() => {
         setIsClosing(true);
+        appDispatch(setCurrentHabit());
       });
     }
   };
   const onCancel = () => {
     onClose(() => {
       setIsClosing(true);
+      appDispatch(setCurrentHabit());
     });
   };
   return (
@@ -128,7 +137,10 @@ export const AddModal: FC<AddModalProps> = ({ onClose }) => {
           label={"goal"}
           name={"goal"}
         />
-        <FrequencyInput value={habit.frequency} setValue={updateFrequency} />
+        <FrequencyInput
+          value={habit.frequency as Set<Freq>}
+          setValue={updateFrequency}
+        />
         <div className={styles.buttonWrapper}>
           <button onClick={onSave}>Save</button>
           <button onClick={onCancel}>Cancel</button>
@@ -157,43 +169,51 @@ export const TextInput: FC<InputProps> = ({ label, name, onChange, value }) => (
   </div>
 );
 
+enum Freq {
+  M = "M",
+  Tu = "Tu",
+  W = "W",
+  Th = "Th",
+  F = "F",
+  Sa = "Sa",
+  Su = "Su",
+}
+
 const FrequencyInput: FC<{
-  value: string;
-  setValue: (val: string) => void;
-}> = ({ value }) => {
-  const [local, setLocal] = useState(value.split(""));
-  // useEffect(() => {
-  //   if (value.length > 0) {
-  //     // copy our map to avoid a accidental re-rerender
-  //     const frequency = value.split("").reduce((a, el) => {
-  //       a.set(el, true);
-  //       return a;
-  //     }, new Map());
-  //   }
-  // }, [value]);
-  const getState = (key: string) => local.includes(key);
+  value: Set<Freq>;
+  setValue: (val: Freq) => void;
+}> = ({ value, setValue }) => {
+  const FreqBox = MakeFreqCheck(value, setValue);
   return (
     <div className={styles.frequency}>
       <p>habit Frequency</p>
-      <input
-        type="checkbox"
-        id="monday"
-        name="Monday"
-        checked={local.includes("M")}
-      />
-      <label htmlFor="vehicle1">M</label>
-      <input type="checkbox" id="tuesday" name="Tuesday" value="false" />
-      <label htmlFor="vehicle2"> Tu</label>
-      <input type="checkbox" id="Wednesday" name="Wednesday" value="false" />
-      <label htmlFor="vehicle3">W</label>
-      <input type="checkbox" id="Thursday" name="Thursday" value="false" />
-      <label htmlFor="vehicle3">Th</label>
-      <input type="checkbox" id="Friday" name="Friday" value="false" />
-      <label htmlFor="vehicle3">F</label>
-      <input type="checkbox" id="Saturday" name="Saturday" value="false" />
-      <label htmlFor="vehicle3">Sa</label>
-      <input type="checkbox" id="Sunday" name="Sunday" value="false" />
-      <label htmlFor="vehicle3">Su</label>
+      <FreqBox name="Monday" freqKey={Freq.M} />
+      <FreqBox name="Tuesday" freqKey={Freq.Tu} />
+      <FreqBox name="Wednesday" freqKey={Freq.W} />
+      <FreqBox name="Thursday" freqKey={Freq.Th} />
+      <FreqBox name="Friday" freqKey={Freq.F} />
+      <FreqBox name="Saturday" freqKey={Freq.Sa} />
+      <FreqBox name="Sunday" freqKey={Freq.Su} />
     </div>
   );
 };
+
+const MakeFreqCheck =
+  (
+    value: Set<Freq>,
+    setValue: (key: Freq) => void,
+  ): FC<{ name: string; freqKey: Freq }> =>
+  ({ name, freqKey }) => {
+    return (
+      <>
+        <label htmlFor={name}>{freqKey}</label>
+        <input
+          type="checkbox"
+          id={name}
+          name={name}
+          checked={value.has(freqKey)}
+          onChange={() => setValue(freqKey)}
+        />
+      </>
+    );
+  };

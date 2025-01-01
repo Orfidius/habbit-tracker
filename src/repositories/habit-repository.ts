@@ -6,7 +6,7 @@ export type Habit = {
   iteration: number;
   goal: number;
   remind: boolean;
-  frequency: string;
+  frequency: Set<string>;
   lastUpdated?: number;
 };
 
@@ -15,44 +15,51 @@ export const insertHabit = async (habit: Habit) => {
   // when using `"withGlobalTauri": true`, you may use
   // const V = window.__TAURI__.sql;
   const { name, iteration, goal, remind = false, frequency } = habit;
-
+  const valuesToAdd = [`"${name}"`, iteration, goal, remind];
+  if (frequency) {
+    const freqArray = Array.from(frequency);
+    valuesToAdd.push(`"${freqArray.join(",")}"`);
+  }
+  console.log("batman", valuesToAdd.join(","));
   const db = await Database.load("sqlite:habit.db");
   const result = await db.execute(`
         INSERT INTO habits (name, iteration, goal, remind, frequency )
-        VALUES ('${name}',${iteration}, ${goal}, ${remind}, '${frequency}')`);
-  // const result = await db.select(`
-  // SELECT name FROM sqlite_master;
-  // `);
+        VALUES (${valuesToAdd.join(",")})`);
   console.log(result);
 };
 
 export const updateHabit = async (habit: Habit) => {
-  // when using `"withGlobalTauri": true`, you may use
-  // const V = window.__TAURI__.sql;
-  const { id, name, iteration, goal, remind = false, frequency } = habit;
-
+  const { id, remind = false, frequency, ...habbit } = habit;
+  const habitPayload = Object.entries(habbit).map(([key, val]) => {
+    if (typeof val === "string") return `${key} = "${val}"`;
+    return `${key} = ${val}`;
+  });
+  if (frequency) {
+    const freqString = Array.from(frequency).join(",");
+    habitPayload.push(`frequency = "${freqString}"`);
+  }
+  habitPayload.push(`remind = ${remind}`);
   const db = await Database.load("sqlite:habit.db");
-  /*
-     UPDATE table_name
-     SET column1 = value1, column2 = value2, ...
-     WHERE condition;
-  */
   const result = await db.execute(`
         UPDATE habits
-        SET name = "${name}", iteration = ${iteration}, goal = ${goal}, remind = ${remind}, frequency = "${frequency}"
+        SET ${habitPayload.join(",")}
         WHERE id=${id}`);
-  // const result = await db.select(`
-  // SELECT name FROM sqlite_master;
-  // `);
   console.log(result);
 };
 
-export const gethabits = async () => {
+interface RawHabit extends Omit<Habit, "frequency"> {
+  frequency: string;
+}
+export const gethabits = async (): Promise<Habit[]> => {
   const db = await Database.load("sqlite:habit.db");
-  const results = await db.select<Habit[]>(
+  const results = await db.select<RawHabit[]>(
     "SELECT id, name, iteration, goal, frequency, lastUpdated FROM habits",
   );
-  return results;
+  const parsedHabits = results.map((habit) => ({
+    ...habit,
+    frequency: new Set(habit.frequency.split(",")),
+  }));
+  return parsedHabits;
 };
 
 export const incrementHbbit = async (id: number, iteration: number) => {
