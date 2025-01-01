@@ -1,53 +1,68 @@
-import Database from '@tauri-apps/plugin-sql';
-
-export enum Frequency {
-    DAILY, 
-    MONTHLY, 
-    HOURLY, 
-    WEEKLY
-}
+import Database from "@tauri-apps/plugin-sql";
 
 export type Habit = {
-    id: number; 
-    name: string,
-    iteration: number,
-    goal: number,
-    remind: boolean,
-    frequency: Frequency,
-    lastUpdated?: number;
-}
+  id: number;
+  name: string;
+  iteration: number;
+  goal: number;
+  remind: boolean;
+  frequency: string;
+  lastUpdated?: number;
+};
 
-// TODO: move Database into some kind of shared context, either class  
-export const inserthabit = async (habit: Habit) => {
-    // when using `"withGlobalTauri": true`, you may use
-    // const V = window.__TAURI__.sql;
-    const { name, iteration, goal, remind = false, frequency} = habit;
+// TODO: move Database into some kind of shared context, either class
+export const insertHabit = async (habit: Habit) => {
+  // when using `"withGlobalTauri": true`, you may use
+  // const V = window.__TAURI__.sql;
+  const { name, iteration, goal, remind = false, frequency } = habit;
 
-    const db = await Database.load('sqlite:habit.db');
-    const result = await db.execute(`
-        INSERT INTO habits (name, iteration, goal, remind, frequency ) 
-        VALUES ('${name}',${iteration}, ${goal}, ${remind}, '${frequency}')`
-    );
-// const result = await db.select(`
-// SELECT name FROM sqlite_master;
-// `);
-console.log(result);
-}
+  const db = await Database.load("sqlite:habit.db");
+  const result = await db.execute(`
+        INSERT INTO habits (name, iteration, goal, remind, frequency )
+        VALUES ('${name}',${iteration}, ${goal}, ${remind}, '${frequency}')`);
+  // const result = await db.select(`
+  // SELECT name FROM sqlite_master;
+  // `);
+  console.log(result);
+};
+
+export const updateHabit = async (habit: Habit) => {
+  // when using `"withGlobalTauri": true`, you may use
+  // const V = window.__TAURI__.sql;
+  const { id, name, iteration, goal, remind = false, frequency } = habit;
+
+  const db = await Database.load("sqlite:habit.db");
+  /*
+     UPDATE table_name
+     SET column1 = value1, column2 = value2, ...
+     WHERE condition;
+  */
+  const result = await db.execute(`
+        UPDATE habits
+        SET name = "${name}", iteration = ${iteration}, goal = ${goal}, remind = ${remind}, frequency = "${frequency}"
+        WHERE id=${id}`);
+  // const result = await db.select(`
+  // SELECT name FROM sqlite_master;
+  // `);
+  console.log(result);
+};
 
 export const gethabits = async () => {
-    const db = await Database.load('sqlite:habit.db');
-    const results = await db.select<Habit[]>('SELECT id, name, iteration, goal, frequency, lastUpdated FROM habits');
-    return results;
-}
+  const db = await Database.load("sqlite:habit.db");
+  const results = await db.select<Habit[]>(
+    "SELECT id, name, iteration, goal, frequency, lastUpdated FROM habits",
+  );
+  return results;
+};
 
 export const incrementHbbit = async (id: number, iteration: number) => {
-    const db = await Database.load('sqlite:habit.db');
-    const result = await db.execute(`
+  const db = await Database.load("sqlite:habit.db");
+  const result = await db.execute(`
             UPDATE habits
-            SET 
+            SET
                 iteration = ${iteration + 1},
                 lastUpdated = ${Date.now()}
             WHERE id == ${id}
         `);
-    console.log(result);
-} 
+  console.log(result);
+};

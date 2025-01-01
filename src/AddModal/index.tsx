@@ -3,6 +3,7 @@ import {
   FC,
   MouseEventHandler,
   Reducer,
+  useEffect,
   useReducer,
   useState,
 } from "react";
@@ -11,9 +12,10 @@ import cx from "classnames";
 import {
   Frequency,
   Habit,
-  inserthabit,
+  insertHabit,
+  updateHabit,
 } from "../repositories/habit-repository";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { useAppSelector } from "../store/hooks";
 
 enum Actions {
   NAME,
@@ -67,7 +69,7 @@ export const AddModal: FC<AddModalProps> = ({ onClose }) => {
   const selectedHabit = useAppSelector(
     (state) => state.editModeState.selectedHabbit,
   );
-  const [state, dispatch] = useReducer(reducer, selectedHabit ?? initialState);
+  const [habit, dispatch] = useReducer(reducer, selectedHabit ?? initialState);
   const [isClosing, setIsClosing] = useState(false);
   const updateName: ChangeEventHandler<HTMLInputElement> = ({
     target: { value },
@@ -80,16 +82,14 @@ export const AddModal: FC<AddModalProps> = ({ onClose }) => {
     dispatch({ type: Actions.NAME, payload: value });
   };
 
-  const updateFrequency: ChangeEventHandler<HTMLSelectElement> = ({
-    target: { value },
-  }) => {
+  const updateFrequency = (value: string) => {
     dispatch({ type: Actions.NAME, payload: value });
   };
   const onSave: MouseEventHandler<HTMLButtonElement> = async () => {
     // TODO: Do something different if we have a selectedHabit
-    console.log(state);
+    console.log(habit);
     try {
-      await inserthabit(state);
+      selectedHabit ? await updateHabit(habit) : await insertHabit(habit);
     } catch (e) {
       console.log(e);
     } finally {
@@ -117,25 +117,18 @@ export const AddModal: FC<AddModalProps> = ({ onClose }) => {
         }}
       >
         <TextInput
-          value={state.name}
+          value={habit.name}
           onChange={updateName}
           label={"name"}
           name={"name"}
         />
         <TextInput
-          value={`${state.goal}`}
+          value={`${habit.goal}`}
           onChange={updateGoal}
           label={"goal"}
           name={"goal"}
         />
-        <div className={styles.frequency}>
-          <label htmlFor="frequency">habit Frequency</label>
-          <select onChange={updateFrequency} name="frequency" id="frequency">
-            <option value="daily">daily</option>
-            <option value="weekly">weekly</option>
-            <option value="monthly">monthly</option>
-          </select>
-        </div>
+        <FrequencyInput value={habit.frequency} setValue={updateFrequency} />
         <div className={styles.buttonWrapper}>
           <button onClick={onSave}>Save</button>
           <button onClick={onCancel}>Cancel</button>
@@ -163,3 +156,44 @@ export const TextInput: FC<InputProps> = ({ label, name, onChange, value }) => (
     />
   </div>
 );
+
+const FrequencyInput: FC<{
+  value: string;
+  setValue: (val: string) => void;
+}> = ({ value }) => {
+  const [local, setLocal] = useState(value.split(""));
+  // useEffect(() => {
+  //   if (value.length > 0) {
+  //     // copy our map to avoid a accidental re-rerender
+  //     const frequency = value.split("").reduce((a, el) => {
+  //       a.set(el, true);
+  //       return a;
+  //     }, new Map());
+  //   }
+  // }, [value]);
+  const getState = (key: string) => local.includes(key);
+  return (
+    <div className={styles.frequency}>
+      <p>habit Frequency</p>
+      <input
+        type="checkbox"
+        id="monday"
+        name="Monday"
+        checked={local.includes("M")}
+      />
+      <label htmlFor="vehicle1">M</label>
+      <input type="checkbox" id="tuesday" name="Tuesday" value="false" />
+      <label htmlFor="vehicle2"> Tu</label>
+      <input type="checkbox" id="Wednesday" name="Wednesday" value="false" />
+      <label htmlFor="vehicle3">W</label>
+      <input type="checkbox" id="Thursday" name="Thursday" value="false" />
+      <label htmlFor="vehicle3">Th</label>
+      <input type="checkbox" id="Friday" name="Friday" value="false" />
+      <label htmlFor="vehicle3">F</label>
+      <input type="checkbox" id="Saturday" name="Saturday" value="false" />
+      <label htmlFor="vehicle3">Sa</label>
+      <input type="checkbox" id="Sunday" name="Sunday" value="false" />
+      <label htmlFor="vehicle3">Su</label>
+    </div>
+  );
+};
