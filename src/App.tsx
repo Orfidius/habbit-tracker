@@ -12,17 +12,10 @@ import { useDispatch } from "react-redux";
 import { useAppSelector } from "./store/hooks";
 import { setModalOpen } from "./store/HabitState";
 import { setEditMode } from "./store/EditMode";
-/*
-  Edit button:
-   1. [x] Create edit button
-   2. [x] Add edit state to redux
-   3. [ ] Update UI in response to Edit button
-   4. [ ] When card clicked in Edit mode, open "Add modal" with car data, edit modal now updates instead of creates
-   5. [ ] Add Delete icon to cards
+import { FilterTabs } from "./FilterTabs/FilterTabs";
 
-*/
 export const App = () => {
-  const [habits, sethabits] = useState<Array<Habit>>([]);
+  const [habits, setHabits] = useState<Array<Habit>>([]);
   const showModal = useAppSelector((state) => state.habitState.modalOpen);
   const dispatch = useDispatch();
   const addButtonHandler = () => {
@@ -40,7 +33,7 @@ export const App = () => {
   };
   const updateCards = async () => {
     const newHabits = await gethabits();
-    sethabits(newHabits);
+    setHabits(newHabits);
   };
 
   useEffect(() => {
@@ -49,6 +42,7 @@ export const App = () => {
 
   return (
     <main className={styles.container}>
+      <FilterTabs />
       <Celebration>
         <section className={styles.cardContainer}>
           <Cardlist habits={habits} updateCards={updateCards} />

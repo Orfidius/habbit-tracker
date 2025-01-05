@@ -16,6 +16,7 @@ import {
 import { useAppSelector } from "../store/hooks";
 import { useDispatch } from "react-redux";
 import { setCurrentHabit } from "../store/EditMode";
+import { Freq } from "../store/HabitState";
 
 enum Actions {
   NAME,
@@ -168,16 +169,6 @@ export const TextInput: FC<InputProps> = ({ label, name, onChange, value }) => (
     />
   </div>
 );
-
-enum Freq {
-  M = "M",
-  Tu = "Tu",
-  W = "W",
-  Th = "Th",
-  F = "F",
-  Sa = "Sa",
-  Su = "Su",
-}
 
 const FrequencyInput: FC<{
   value: Set<Freq>;
