@@ -1,28 +1,16 @@
-import dayjs from "dayjs";
 import { FC, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Freq, setFreqFilter } from "../store/HabitState";
 import styles from "./FilterTabs.module.scss";
+import { TODAY, DAYS_ENTRIES } from "../constants";
 
-const days: Record<string, string> = {
-  Su: "Sunday",
-  M: "Monday",
-  Tu: "Tuesday",
-  W: "Wednesday",
-  Th: "Thursday",
-  F: "Friday",
-  Sa: "Saturday",
-};
-
-const daysEntries = Object.entries(days);
 export const FilterTabs: FC = () => {
-  const currentDay = dayjs().day();
   const dispatch = useDispatch();
-  const mappedDays = daysEntries.map(([first, full], index) =>
-    index === currentDay ? full : first,
+  const mappedDays = DAYS_ENTRIES.map(([first, full], index) =>
+    index === TODAY ? full : first,
   );
   useEffect(() => {
-    const current = daysEntries.map(([key]) => key).at(currentDay);
+    const current = DAYS_ENTRIES.map(([key]) => key).at(TODAY);
     dispatch(setFreqFilter(current as Freq));
   }, []);
   return (
