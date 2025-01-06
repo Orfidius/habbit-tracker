@@ -4,6 +4,7 @@ import styles from "./styles.module.scss";
 import { Habit } from "../repositories/habit-repository";
 import { DAYS_ENTRIES, TODAY } from "../constants";
 import { Freq } from "../store/HabitState";
+import { useAppSelector } from "../store/hooks";
 
 type Props = {
   habits: Array<Habit>;
@@ -12,16 +13,13 @@ type Props = {
 
 export const Cardlist: FC<Props> = ({ habits, updateCards }) => {
   const [filteredHabits, setFilteredHabbits] = useState<Habit[]>([]);
+  const filterValue = useAppSelector((state) => state.habitState.freqFilter);
   useEffect(() => {
-    console.log("habits change", habits, filteredHabits);
-    const [filterValue = "Su"] = DAYS_ENTRIES.at(TODAY) ?? [];
-    const newHabits = habits.filter(({ frequency }) => {
-      console.log("joker", { frequency }, frequency.has(filterValue));
-      return frequency.has(filterValue);
-    });
-    console.log("Filtering habits", newHabits);
+    const newHabits = habits.filter(({ frequency }) =>
+      frequency.has(filterValue),
+    );
     setFilteredHabbits(newHabits);
-  }, [habits.length]);
+  }, [habits.length, filterValue]);
   return (
     <ul className={styles.cardList}>
       {filteredHabits.map((habit) => (

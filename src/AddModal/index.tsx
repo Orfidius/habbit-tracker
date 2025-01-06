@@ -22,11 +22,16 @@ enum Actions {
   NAME,
   FREQUENCY,
   GOAL,
+  MULTIPLE_FREQUENCY,
 }
 
 type FrequencyAction = {
   type: Actions.FREQUENCY;
   payload: Freq;
+};
+
+type MultipleFrequencyAction = {
+  type: Actions.MULTIPLE_FREQUENCY;
 };
 
 type NameAction = {
@@ -39,7 +44,11 @@ type GoalAction = {
   payload: string;
 };
 
-type ActionPayload = FrequencyAction | NameAction | GoalAction;
+type ActionPayload =
+  | FrequencyAction
+  | NameAction
+  | GoalAction
+  | MultipleFrequencyAction;
 
 const reducer: Reducer<Habit, ActionPayload> = (
   state: Habit,
@@ -51,13 +60,20 @@ const reducer: Reducer<Habit, ActionPayload> = (
     case Actions.GOAL:
       return { ...state, goal: parseInt(action.payload, 10) };
     case Actions.FREQUENCY:
-      let newFreq = new Set(state.frequency);
+      const newFreq = new Set(state.frequency);
       if (newFreq.has(action.payload)) {
         newFreq.delete(action.payload);
       } else {
         newFreq.add(action.payload);
       }
       return { ...state, frequency: newFreq };
+    case Actions.MULTIPLE_FREQUENCY: {
+      const newFreq =
+        state.frequency.size < 7
+          ? [Freq.Su, Freq.M, Freq.Tu, Freq.W, Freq.Th, Freq.F, Freq.Sa]
+          : [];
+      return { ...state, frequency: new Set(newFreq) };
+    }
   }
 };
 
@@ -93,9 +109,10 @@ export const AddModal: FC<AddModalProps> = ({ onClose }) => {
   const updateFrequency = (value: Freq) => {
     dispatch({ type: Actions.FREQUENCY, payload: value });
   };
+  const selectAllFrequencies = () => {
+    dispatch({ type: Actions.MULTIPLE_FREQUENCY });
+  };
   const onSave: MouseEventHandler<HTMLButtonElement> = async () => {
-    // TODO: Do something different if we have a selectedHabit
-    console.log(habit);
     try {
       selectedHabit ? await updateHabit(habit) : await insertHabit(habit);
     } catch (e) {
@@ -141,6 +158,7 @@ export const AddModal: FC<AddModalProps> = ({ onClose }) => {
         <FrequencyInput
           value={habit.frequency as Set<Freq>}
           setValue={updateFrequency}
+          setValues={selectAllFrequencies}
         />
         <div className={styles.buttonWrapper}>
           <button onClick={onSave}>Save</button>
@@ -173,7 +191,8 @@ export const TextInput: FC<InputProps> = ({ label, name, onChange, value }) => (
 const FrequencyInput: FC<{
   value: Set<Freq>;
   setValue: (val: Freq) => void;
-}> = ({ value, setValue }) => {
+  setValues: () => void;
+}> = ({ value, setValue, setValues }) => {
   const FreqBox = MakeFreqCheck(value, setValue);
   return (
     <div className={styles.frequency}>
@@ -185,6 +204,9 @@ const FrequencyInput: FC<{
       <FreqBox name="Friday" freqKey={Freq.F} />
       <FreqBox name="Saturday" freqKey={Freq.Sa} />
       <FreqBox name="Sunday" freqKey={Freq.Su} />
+      <button onTouchStart={setValues} onClick={() => setValues()}>
+        Everyday
+      </button>
     </div>
   );
 };
