@@ -2,8 +2,6 @@ import { FC, useEffect, useState } from "react";
 import { Card } from "./HabitCard";
 import styles from "./styles.module.scss";
 import { Habit } from "../repositories/habit-repository";
-import { DAYS_ENTRIES, TODAY } from "../constants";
-import { Freq } from "../store/HabitState";
 import { useAppSelector } from "../store/hooks";
 
 type Props = {
