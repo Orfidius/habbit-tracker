@@ -5,6 +5,7 @@
     "npm:@reduxjs/toolkit@^2.4.0": "2.4.0_react@18.3.1_redux@5.0.1",
     "npm:@tauri-apps/api@2": "2.1.1",
     "npm:@tauri-apps/cli@2": "2.1.0",
+    "npm:@tauri-apps/plugin-haptics@^2.2.2": "2.2.2",
     "npm:@tauri-apps/plugin-shell@2": "2.0.1",
     "npm:@tauri-apps/plugin-sql@~2.0.1": "2.0.1",
     "npm:@types/react-dom@^18.2.7": "18.3.1",
@@ -375,6 +376,12 @@
         "@tauri-apps/cli-win32-arm64-msvc",
         "@tauri-apps/cli-win32-ia32-msvc",
         "@tauri-apps/cli-win32-x64-msvc"
+      ]
+    },
+    "@tauri-apps/plugin-haptics@2.2.2": {
+      "integrity": "sha512-09UY6F0xjfSTid9/LkHete3vo26TpeuIEcYD2pkFHHlFrEPg0EcGtkxF19nKTNCtwfoLeIaGRYxh9Hs882boeA==",
+      "dependencies": [
+        "@tauri-apps/api"
       ]
     },
     "@tauri-apps/plugin-shell@2.0.1": {
@@ -821,6 +828,7 @@
         "npm:@reduxjs/toolkit@^2.4.0",
         "npm:@tauri-apps/api@2",
         "npm:@tauri-apps/cli@2",
+        "npm:@tauri-apps/plugin-haptics@^2.2.2",
         "npm:@tauri-apps/plugin-shell@2",
         "npm:@tauri-apps/plugin-sql@~2.0.1",
         "npm:@types/react-dom@^18.2.7",

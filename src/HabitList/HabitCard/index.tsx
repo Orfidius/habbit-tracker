@@ -9,6 +9,18 @@ import { useAppSelector } from "../../store/hooks";
 import { useDispatch } from "react-redux";
 import { setCurrentHabit } from "../../store/EditMode";
 import { setModalOpen } from "../../store/HabitState";
+import {
+  // vibrate,
+  impactFeedback,
+  // notificationFeedback,
+  // selectionFeedback,
+} from "@tauri-apps/plugin-haptics";
+
+// await vibrate(1)
+// await impactFeedback('medium')
+// await notificationFeedback('warning')
+// await selectionFeedback()
+
 type Props = {
   habit: Habit;
   updateCards: () => Promise<void>;
@@ -42,6 +54,12 @@ export const Card: FC<Props> = ({
       timerRef.current = setTimeout(async () => {
         setShowCelebrate(true);
         // setDisabled(true);
+        // // await impactFeedback('medium')
+        // // await vibrate(1)
+        // await impactFeedback('medium')
+        // await notificationFeedback('warning')
+        // await selectionFeedback()
+        await impactFeedback("heavy");
         await incrementHbbit(id, iteration);
         await updateCards();
       }, 1200);
