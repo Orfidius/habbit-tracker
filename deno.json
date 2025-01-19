@@ -1,0 +1,3 @@
+{
+  "workspace": ["./app-package", "tauri-plugin-haptics-native"]
+}
