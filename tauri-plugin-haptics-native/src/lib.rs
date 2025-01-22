@@ -43,7 +43,7 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
             let haptics_native = desktop::init(app, api)?;
             #[cfg(target_os = "android")]
             let handle =
-                api.register_android_plugin("com.plugin.habbit-tracker", "ExamplePlugin")?;
+                api.register_android_plugin("com.plugin.habbit-tracker", "HapticsPlugin")?;
             app.manage(haptics_native);
             Ok(())
         })
