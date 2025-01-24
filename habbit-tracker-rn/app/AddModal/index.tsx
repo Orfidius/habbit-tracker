@@ -17,6 +17,14 @@ import { useAppSelector } from "../store/hooks";
 import { useDispatch } from "react-redux";
 import { setCurrentHabit } from "../store/EditMode";
 import { Freq } from "../store/HabitState";
+import React from "react";
+import {
+  NativeSyntheticEvent,
+  TextInput,
+  TextInputChangeEventData,
+  View,
+  Text,
+} from "react-native";
 
 enum Actions {
   NAME,
@@ -49,6 +57,10 @@ type ActionPayload =
   | NameAction
   | GoalAction
   | MultipleFrequencyAction;
+
+type ReactNativeChangeHandler = (
+  e: NativeSyntheticEvent<TextInputChangeEventData>,
+) => void;
 
 const reducer: Reducer<Habit, ActionPayload> = (
   state: Habit,
@@ -95,14 +107,12 @@ export const AddModal: FC<AddModalProps> = ({ onClose }) => {
   const appDispatch = useDispatch();
   const [habit, dispatch] = useReducer(reducer, selectedHabit ?? initialState);
   const [isClosing, setIsClosing] = useState(false);
-  const updateName: ChangeEventHandler<HTMLInputElement> = ({
-    target: { value },
+  const updateName: ReactNativeChangeHandler = ({
+    target: { text: value },
   }) => {
     dispatch({ type: Actions.NAME, payload: value });
   };
-  const updateGoal: ChangeEventHandler<HTMLInputElement> = ({
-    target: { value },
-  }) => {
+  const updateGoal: ReactNativeChangeHandler = ({ target: { value } }) => {
     dispatch({ type: Actions.NAME, payload: value });
   };
 
@@ -131,7 +141,7 @@ export const AddModal: FC<AddModalProps> = ({ onClose }) => {
     });
   };
   return (
-    <section
+    <View
       className={cx(
         styles.AddModal,
         isClosing ? styles.closing : styles.opening,
@@ -143,13 +153,13 @@ export const AddModal: FC<AddModalProps> = ({ onClose }) => {
           e.preventDefault();
         }}
       >
-        <TextInput
+        <InputText
           value={habit.name}
           onChange={updateName}
           label={"name"}
           name={"name"}
         />
-        <TextInput
+        <InputText
           value={`${habit.goal}`}
           onChange={updateGoal}
           label={"goal"}
@@ -160,32 +170,26 @@ export const AddModal: FC<AddModalProps> = ({ onClose }) => {
           setValue={updateFrequency}
           setValues={selectAllFrequencies}
         />
-        <div className={styles.buttonWrapper}>
+        <View className={styles.buttonWrapper}>
           <button onClick={onSave}>Save</button>
           <button onClick={onCancel}>Cancel</button>
-        </div>
+        </View>
       </form>
-    </section>
+    </View>
   );
 };
 type InputProps = {
   label: string;
   name: string;
-  onChange: ChangeEventHandler<HTMLInputElement>;
+  onChange: ReactNativeChangeHandler;
   value?: string;
 };
 
-export const TextInput: FC<InputProps> = ({ label, name, onChange, value }) => (
-  <div className={styles.textInput}>
+export const InputText: FC<InputProps> = ({ label, name, onChange, value }) => (
+  <View className={styles.textInput}>
     <label htmlFor={name}>{label}</label>
-    <input
-      value={value}
-      onChange={onChange}
-      name={name}
-      type="text"
-      id={name}
-    />
-  </div>
+    <TextInput value={value} onChange={onChange} placeholder={name} />
+  </View>
 );
 
 const FrequencyInput: FC<{
@@ -195,8 +199,8 @@ const FrequencyInput: FC<{
 }> = ({ value, setValue, setValues }) => {
   const FreqBox = MakeFreqCheck(value, setValue);
   return (
-    <div className={styles.frequency}>
-      <p>habit Frequency</p>
+    <View className={styles.frequency}>
+      <Text>habit Frequency</Text>
       <FreqBox name="Monday" freqKey={Freq.M} />
       <FreqBox name="Tuesday" freqKey={Freq.Tu} />
       <FreqBox name="Wednesday" freqKey={Freq.W} />
@@ -207,7 +211,7 @@ const FrequencyInput: FC<{
       <button onTouchStart={setValues} onClick={() => setValues()}>
         Everyday
       </button>
-    </div>
+    </View>
   );
 };
 

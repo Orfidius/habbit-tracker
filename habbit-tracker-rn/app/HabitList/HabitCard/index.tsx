@@ -15,6 +15,7 @@ import {
   // notificationFeedback,
   // selectionFeedback,
 } from "@tauri-apps/plugin-haptics";
+import { Text, View } from "react-native";
 
 // await vibrate(1)
 // await impactFeedback('medium')
@@ -86,7 +87,7 @@ export const Card: FC<Props> = ({
       onMouseOut={mouseUpHandler}
       className={cx(styles.card, disabled && styles.doneForDay)}
     >
-      <div className={styles.outer}>
+      <View className={styles.outer}>
         {isInEditMode && (
           <button
             className={styles.edit}
@@ -96,27 +97,27 @@ export const Card: FC<Props> = ({
             <MdModeEditOutline />
           </button>
         )}
-        <div className={cx(styles.inner, isFilling && styles.filling)}>
-          <div className={styles.title}>
+        <View className={cx(styles.inner, isFilling && styles.filling)}>
+          <View className={styles.title}>
             <h2>{name}</h2>
-            <div className={styles.approveBlock}>
+            <View className={styles.approveBlock}>
               {lastUpdated && <IncrementDate lastUpdated={lastUpdated} />}
               <span className={styles.approveIcon}>
                 <img src="/approve.svg" />
               </span>
-            </div>
-          </div>
-          <div className={styles.copy}>
+            </View>
+          </View>
+          <View className={styles.copy}>
             {/* TODO: Add "Last Updated" */}
-            <p className={styles.numbersCopy}>
+            <Text className={styles.numbersCopy}>
               <strong>Followed through on:</strong>
-            </p>
-            <p className={styles.numbers}>
+            </Text>
+            <Text className={styles.numbers}>
               {iteration}/{goal}
-            </p>
-          </div>
-        </div>
-      </div>
+            </Text>
+          </View>
+        </View>
+      </View>
     </li>
   );
 };
