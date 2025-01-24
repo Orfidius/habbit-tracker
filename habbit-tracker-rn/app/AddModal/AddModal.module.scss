@@ -1,0 +1,109 @@
+@keyframes on-load {
+    from {
+        top: 100%;
+    }
+    to {
+        top: 5%;
+    }
+}
+@keyframes on-close {
+    to {
+        top: 100%;
+    }
+    from {
+        top: 5%;
+    }
+}
+.AddModal {
+    background-color: #413952;
+    height: 100%;
+    width: calc(100% - 10px);
+    position: fixed;
+    left: 5px;
+    border-radius: 10px;
+    padding: 0.5rem 15px 0 15px;
+    animation-duration: 1s;
+    box-shadow: -10px 15px 2px #333;
+    &.opening {
+        top: 5%;
+        animation-name: on-load;
+    }
+    &.closing {
+        top: 5%;
+        animation-name: on-close;
+    }
+    h2 {
+        text-align: center;
+        width: 100%;
+        margin: 0;
+        margin-bottom: 1.2rem;
+        padding: 0;
+        color: #eee;
+    }
+    .buttonWrapper {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        column-gap: 10px;
+        button {
+            border-radius: 0;
+            text-transform: uppercase;
+            padding: 10px 0px;
+            width: 100px;
+            display: block;
+        }
+    }
+}
+
+.textInput {
+    display: flex;
+    flex-direction: column;
+    color: #eee;
+    margin-bottom: 1rem;
+    text-transform: capitalize;
+    label {
+    }
+}
+
+.frequency {
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 100px;
+    justify-content: center;
+    row-gap: 0.5rem;
+    p {
+        text-align: center;
+        width: 100%;
+    }
+    input[type="checkbox"] {
+        font: inherit;
+        color: currentColor;
+        width: 25px;
+        height: 25px;
+        border: 0.15em solid currentColor;
+        border-radius: 0.15em;
+        transform: translateY(-0.075em);
+    }
+    button {
+        width: 100%;
+        border: none;
+        background-color: #222;
+        color: #ccc;
+        padding: 0.5rem;
+        text-transform: uppercase;
+        font-size: 16px;
+        font-weight: 600;
+    }
+}
+
+/* The element to apply the animation to */
+//   div {
+//     width: 100px;
+//     height: 100px;
+//     background-color: red;
+//     animation-name: example;
+//     animation-duration: 4s;
+//   }
