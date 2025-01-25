@@ -13,7 +13,8 @@ import { useAppSelector } from "./store/hooks";
 import { setModalOpen } from "./store/HabitState";
 import { setEditMode } from "./store/EditMode";
 import { FilterTabs } from "./FilterTabs/FilterTabs";
-import { Button, View } from "react-native";
+import { Button, TouchableOpacity, View } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 export const App = () => {
   const [habits, setHabits] = useState<Array<Habit>>([]);
@@ -43,29 +44,29 @@ export const App = () => {
 
   return (
     <View style={styles.container}>
-      <FilterTabs />
-      <Celebration>
-        <View style={styles.cardContainer}>
-          <Cardlist habits={habits} updateCards={updateCards} />
-        </View>
-        {showModal && <AddModal onClose={onCloseModal} />}
-        {!showModal && (
-          <Button
-            onPress={addButtonHandler}
-            style={{ ...styles.FAB, ...styles.add }}
-          >
-            <CgAddR />
-          </Button>
-        )}
-        {!showModal && (
-          <button
-            onClick={editButtonHandler}
-            className={cx(styles.FAB, styles.edit)}
-          >
-            <MdModeEditOutline />
-          </button>
-        )}
-      </Celebration>
+      {/* <FilterTabs /> */}
+      {/* <Celebration> */}
+      <View style={styles.cardContainer}>
+        {/* <Cardlist habits={habits} updateCards={updateCards} /> */}
+      </View>
+      {/* {showModal && <AddModal onClose={onCloseModal} />} */}
+      {!showModal && (
+        <TouchableOpacity
+          onPress={addButtonHandler}
+          style={[styles.FAB, styles.add]}
+        >
+          <Icon name="plussquareo" size={30} color="#900" />
+        </TouchableOpacity>
+      )}
+      {!showModal && (
+        <TouchableOpacity
+          onPress={editButtonHandler}
+          className={cx(styles.FAB, styles.edit)}
+        >
+          <Icon name="edit" />
+        </TouchableOpacity>
+      )}
+      {/* </Celebration> */}
     </View>
   );
 };
