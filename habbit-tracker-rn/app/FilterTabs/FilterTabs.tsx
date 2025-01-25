@@ -5,6 +5,7 @@ import styles from "./FilterTabs.module.scss";
 import { TODAY, DAYS_ENTRIES } from "../constants";
 import { useAppSelector } from "../store/hooks";
 import cx from "classnames";
+import { FlatList, TouchableOpacity, View } from "react-native";
 export const FilterTabs: FC = () => {
   const dispatch = useDispatch();
   // const mappedDays = DAYS_ENTRIES.map(([first, full], index) =>
@@ -19,18 +20,34 @@ export const FilterTabs: FC = () => {
     console.log(val);
     dispatch(setFreqFilter(val));
   };
+  /*
+  <ul className={styles.container}>
+    {DAYS_ENTRIES.map(([first, full], index) => (
+      <DayItem
+        verbiage={index === TODAY ? full : first}
+        onFilterHandler={onFilterHandler}
+        freqKey={first as Freq}
+      />
+    ))}
+  </ul>
+
+  */
   return (
-    <>
-      <ul className={styles.container}>
-        {DAYS_ENTRIES.map(([first, full], index) => (
-          <DayItem
-            verbiage={index === TODAY ? full : first}
-            onFilterHandler={onFilterHandler}
-            freqKey={first as Freq}
-          />
-        ))}
-      </ul>
-    </>
+    <View className={styles.container}>
+      <FlatList
+        data={DAYS_ENTRIES}
+        renderItem={({ item: [first, full], index }) => {
+          const isSelected = index === TODAY;
+          return (
+            <DayItem
+              verbiage={isSelected ? full : first}
+              onFilterHandler={onFilterHandler}
+              freqKey={first as Freq} // Map the key to the actual Freq type
+            />
+          );
+        }}
+      />
+    </View>
   );
 };
 
@@ -50,11 +67,8 @@ const DayItem: FC<{
     return false;
   })();
   return (
-    <li
-      onClick={() => onFilterHandler(freqKey)}
-      onTouchStart={() => onFilterHandler(freqKey)}
-    >
+    <TouchableOpacity onPress={() => onFilterHandler(freqKey)}>
       <span className={cx(isSelected && styles.selected)}>{verbiage}</span>
-    </li>
+    </TouchableOpacity>
   );
 };
