@@ -44,12 +44,12 @@ export const App = () => {
 
   return (
     <View style={styles.container}>
-      {/* <FilterTabs /> */}
-      {/* <Celebration> */}
+      <FilterTabs />
+      {/* <Celebration> // TODO replace */}
       <View style={styles.cardContainer}>
-        {/* <Cardlist habits={habits} updateCards={updateCards} /> */}
+        <Cardlist habits={habits} updateCards={updateCards} />
       </View>
-      {/* {showModal && <AddModal onClose={onCloseModal} />} */}
+      {showModal && <AddModal onClose={onCloseModal} />}
       {!showModal && (
         <TouchableOpacity
           onPress={addButtonHandler}
@@ -61,7 +61,7 @@ export const App = () => {
       {!showModal && (
         <TouchableOpacity
           onPress={editButtonHandler}
-          className={cx(styles.FAB, styles.edit)}
+          style={{ ...styles.FAB, ...styles.edit }}
         >
           <Icon name="edit" />
         </TouchableOpacity>

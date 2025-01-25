@@ -1,16 +1,14 @@
 import { FC, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Freq, setFreqFilter } from "../store/HabitState";
-import styles from "./FilterTabs.module.scss";
+import { styles } from "./FilterTabs.module";
 import { TODAY, DAYS_ENTRIES } from "../constants";
 import { useAppSelector } from "../store/hooks";
 import cx from "classnames";
-import { FlatList, TouchableOpacity, View } from "react-native";
+import { FlatList, TouchableOpacity, View, Text } from "react-native";
 export const FilterTabs: FC = () => {
   const dispatch = useDispatch();
-  // const mappedDays = DAYS_ENTRIES.map(([first, full], index) =>
-  //   index === TODAY ? full : first,
-  // ) as Array<Freq>;
+
   useEffect(() => {
     const current = DAYS_ENTRIES.map(([key]) => key).at(TODAY);
     dispatch(setFreqFilter(current as Freq));
@@ -20,20 +18,8 @@ export const FilterTabs: FC = () => {
     console.log(val);
     dispatch(setFreqFilter(val));
   };
-  /*
-  <ul className={styles.container}>
-    {DAYS_ENTRIES.map(([first, full], index) => (
-      <DayItem
-        verbiage={index === TODAY ? full : first}
-        onFilterHandler={onFilterHandler}
-        freqKey={first as Freq}
-      />
-    ))}
-  </ul>
-
-  */
   return (
-    <View className={styles.container}>
+    <View style={styles.container}>
       <FlatList
         data={DAYS_ENTRIES}
         renderItem={({ item: [first, full], index }) => {
@@ -68,7 +54,7 @@ const DayItem: FC<{
   })();
   return (
     <TouchableOpacity onPress={() => onFilterHandler(freqKey)}>
-      <span className={cx(isSelected && styles.selected)}>{verbiage}</span>
+      <Text style={{ ...(isSelected ? styles.selected : {}) }}>{verbiage}</Text>
     </TouchableOpacity>
   );
 };

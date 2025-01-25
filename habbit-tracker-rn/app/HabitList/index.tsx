@@ -1,8 +1,9 @@
 import { FC, useEffect, useState } from "react";
 import { Card } from "./HabitCard";
-import styles from "./styles.module.scss";
+import { styles } from "./styles.module";
 import { Habit } from "../repositories/habit-repository";
 import { useAppSelector } from "../store/hooks";
+import { FlatList } from "react-native";
 
 type Props = {
   habits: Array<Habit>;
@@ -18,11 +19,19 @@ export const Cardlist: FC<Props> = ({ habits, updateCards }) => {
     );
     setFilteredHabbits(newHabits);
   }, [habits.length, filterValue]);
+  /*
+  <ul className={styles.cardList}>
+    {filteredHabits.map((habit) => (
+      <Card updateCards={updateCards} habit={habit} />
+    ))}
+  </ul>
+  */
   return (
-    <ul className={styles.cardList}>
-      {filteredHabits.map((habit) => (
-        <Card updateCards={updateCards} habit={habit} />
-      ))}
-    </ul>
+    <FlatList
+      style={styles.cardList}
+      data={filteredHabits}
+      renderItem={({ item }) => <Card updateCards={updateCards} habit={item} />}
+      keyExtractor={(habit) => habit.id.toString()}
+    />
   );
 };
