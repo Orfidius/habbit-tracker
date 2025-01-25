@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import styles from "./App.module.scss";
+import { styles } from "./App.module";
 import { CgAddR } from "react-icons/cg";
 import { MdModeEditOutline } from "react-icons/md";
 
@@ -13,6 +13,7 @@ import { useAppSelector } from "./store/hooks";
 import { setModalOpen } from "./store/HabitState";
 import { setEditMode } from "./store/EditMode";
 import { FilterTabs } from "./FilterTabs/FilterTabs";
+import { Button, View } from "react-native";
 
 export const App = () => {
   const [habits, setHabits] = useState<Array<Habit>>([]);
@@ -41,20 +42,20 @@ export const App = () => {
   }, []);
 
   return (
-    <main className={styles.container}>
+    <View style={styles.container}>
       <FilterTabs />
       <Celebration>
-        <section className={styles.cardContainer}>
+        <View style={styles.cardContainer}>
           <Cardlist habits={habits} updateCards={updateCards} />
-        </section>
+        </View>
         {showModal && <AddModal onClose={onCloseModal} />}
         {!showModal && (
-          <button
-            onClick={addButtonHandler}
-            className={cx(styles.FAB, styles.add)}
+          <Button
+            onPress={addButtonHandler}
+            style={{ ...styles.FAB, ...styles.add }}
           >
             <CgAddR />
-          </button>
+          </Button>
         )}
         {!showModal && (
           <button
@@ -65,7 +66,7 @@ export const App = () => {
           </button>
         )}
       </Celebration>
-    </main>
+    </View>
   );
 };
 
