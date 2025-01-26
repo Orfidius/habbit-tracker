@@ -1,6 +1,4 @@
-import styles from "./Card.module.scss";
-import { FC, useContext, useEffect, useRef, useState } from "react";
-import { Habit, incrementHbbit } from "../../repositories/habit-repository";
+// import { Habit, incrementHbbit as incrementHabbit } from "../../repositories/habit-repository";
 import cx from "classnames";
 import { celebrationContext } from "../../Celebration";
 import dayjs from "dayjs";
@@ -9,18 +7,11 @@ import { useAppSelector } from "../../store/hooks";
 import { useDispatch } from "react-redux";
 import { setCurrentHabit } from "../../store/EditMode";
 import { setModalOpen } from "../../store/HabitState";
-import {
-  // vibrate,
-  impactFeedback,
-  // notificationFeedback,
-  // selectionFeedback,
-} from "@tauri-apps/plugin-haptics";
-import { Text, View } from "react-native";
-
-// await vibrate(1)
-// await impactFeedback('medium')
-// await notificationFeedback('warning')
-// await selectionFeedback()
+import { Text, TouchableOpacity, View } from "react-native";
+import { Habit } from "@/app/repositories/habit-repository";
+import { FC, useContext, useEffect, useRef, useState } from "react";
+// import { styles } from "../styles.module";
+import { styles } from './Card.module-ai';
 
 type Props = {
   habit: Habit;
@@ -55,13 +46,8 @@ export const Card: FC<Props> = ({
       timerRef.current = setTimeout(async () => {
         setShowCelebrate(true);
         // setDisabled(true);
-        // // await impactFeedback('medium')
-        // // await vibrate(1)
-        // await impactFeedback('medium')
-        // await notificationFeedback('warning')
-        // await selectionFeedback()
-        await impactFeedback("heavy");
-        await incrementHbbit(id, iteration);
+        // TODO: Reset
+        // await incrementHabbit(id, iteration);
         await updateCards();
       }, 1200);
     }
@@ -73,46 +59,53 @@ export const Card: FC<Props> = ({
 
   const onEditHandler = () => {
     dispatch(
-      setCurrentHabit({ id, name, iteration, goal, lastUpdated, ...habit }),
+      setCurrentHabit({
+        id,
+        name,
+        iteration,
+        goal,
+        lastUpdated,
+        ...habit,
+      } as Habit),
     );
     dispatch(setModalOpen());
   };
 
   return (
-    <li
-      onMouseDown={mouseDownHandler}
-      onTouchStart={mouseDownHandler}
-      onMouseUp={mouseUpHandler}
-      onTouchEnd={mouseUpHandler}
-      onMouseOut={mouseUpHandler}
-      className={cx(styles.card, disabled && styles.doneForDay)}
+    <TouchableOpacity
+      onPressIn={mouseDownHandler}
+      // onPress={mouseDownHandler}
+      // onMouseUp={mouseUpHandler}
+      // onTouchEnd={mouseUpHandler}
+      onPressOut={mouseUpHandler}
+      style={[styles.card, ...(disabled ? [styles.doneForDay] : [])]}
     >
-      <View className={styles.outer}>
+      <View style={styles.outer}>
         {isInEditMode && (
           <button
-            className={styles.edit}
+            style={styles.edit}
             onTouchStart={onEditHandler}
             onMouseDown={onEditHandler}
           >
             <MdModeEditOutline />
           </button>
         )}
-        <View className={cx(styles.inner, isFilling && styles.filling)}>
-          <View className={styles.title}>
+        <View style={cx(styles.inner, isFilling && styles.filling)}>
+          <View style={styles.title}>
             <h2>{name}</h2>
-            <View className={styles.approveBlock}>
+            <View style={styles.approveBlock}>
               {lastUpdated && <IncrementDate lastUpdated={lastUpdated} />}
-              <span className={styles.approveIcon}>
+              <span style={styles.approveIcon}>
                 <img src="/approve.svg" />
               </span>
             </View>
           </View>
-          <View className={styles.copy}>
+          <View style={styles.copy}>
             {/* TODO: Add "Last Updated" */}
-            <Text className={styles.numbersCopy}>
+            <Text style={styles.numbersCopy}>
               <strong>Followed through on:</strong>
             </Text>
-            <Text className={styles.numbers}>
+            <Text style={styles.numbers}>
               {iteration}/{goal}
             </Text>
           </View>
@@ -124,5 +117,5 @@ export const Card: FC<Props> = ({
 
 const IncrementDate: FC<{ lastUpdated: number }> = ({ lastUpdated }) => {
   const date = dayjs(lastUpdated).format("MMM DD [at] h:mm A");
-  return <span className={styles.lastUpdated}>{date}</span>;
+  return <span style={styles.lastUpdated}>{date}</span>;
 };

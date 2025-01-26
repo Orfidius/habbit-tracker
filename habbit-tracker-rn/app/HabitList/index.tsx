@@ -19,13 +19,6 @@ export const Cardlist: FC<Props> = ({ habits, updateCards }) => {
     );
     setFilteredHabbits(newHabits);
   }, [habits.length, filterValue]);
-  /*
-  <ul className={styles.cardList}>
-    {filteredHabits.map((habit) => (
-      <Card updateCards={updateCards} habit={habit} />
-    ))}
-  </ul>
-  */
   return (
     <FlatList
       style={styles.cardList}
