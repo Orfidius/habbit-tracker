@@ -7,11 +7,17 @@ import { useAppSelector } from "../../store/hooks";
 import { useDispatch } from "react-redux";
 import { setCurrentHabit } from "../../store/EditMode";
 import { setModalOpen } from "../../store/HabitState";
-import { Text, TouchableOpacity, View } from "react-native";
+import {
+  Animated,
+  Text,
+  TouchableOpacity,
+  useAnimatedValue,
+  View,
+} from "react-native";
 import { Habit } from "@/app/repositories/habit-repository";
 import { FC, useContext, useEffect, useRef, useState } from "react";
 // import { styles } from "../styles.module";
-import { styles } from './Card.module-ai';
+import { styles } from "./Card.module-ai";
 
 type Props = {
   habit: Habit;
@@ -29,6 +35,16 @@ export const Card: FC<Props> = ({
   const isInEditMode = useAppSelector((state) => state.editModeState.enabled);
   const timerRef = useRef<TimerReturn | null>(null);
   const dispatch = useDispatch();
+  const widthAnim = useAnimatedValue(0); // Initial value for opacity: 0
+
+  // useEffect(() => {
+  //   Animated.timing(fadeAnim, {
+  //     toValue: 1,
+  //     duration: 10000,
+  //     useNativeDriver: true,
+  //   }).start();
+  // }, [fadeAnim]);
+
   useEffect(() => {
     if (lastUpdated) {
       const date = dayjs(lastUpdated);
@@ -42,6 +58,11 @@ export const Card: FC<Props> = ({
   const mouseDownHandler = () => {
     if (isInEditMode) return;
     !disabled && setIsFilling(true);
+    Animated.timing(widthAnim, {
+      toValue: 1,
+      duration: 10000,
+      useNativeDriver: true,
+    }).start();
     if (!disabled) {
       timerRef.current = setTimeout(async () => {
         setShowCelebrate(true);
@@ -111,7 +132,7 @@ export const Card: FC<Props> = ({
           </View>
         </View>
       </View>
-    </li>
+    </TouchableOpacity>
   );
 };
 
@@ -119,3 +140,26 @@ const IncrementDate: FC<{ lastUpdated: number }> = ({ lastUpdated }) => {
   const date = dayjs(lastUpdated).format("MMM DD [at] h:mm A");
   return <span style={styles.lastUpdated}>{date}</span>;
 };
+
+/*
+const FadeInView: React.FC<FadeInViewProps> = props => {
+  const fadeAnim = useAnimatedValue(0); // Initial value for opacity: 0
+
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 10000,
+      useNativeDriver: true,
+    }).start();
+  }, [fadeAnim]);
+
+  return (
+    <Animated.View // Special animatable View
+      style={{
+        ...props.style,
+        opacity: fadeAnim, // Bind opacity to animated value
+      }}>
+      {props.children}
+    </Animated.View>
+
+*/
