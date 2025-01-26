@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
     opacity: 0,
   },
   fill: {
-    backgroundSize: "0% 100%",
+    // backgroundSize: "0% 100%",
   },
   edit: {
     borderRadius: 10,
@@ -29,18 +29,16 @@ export const styles = StyleSheet.create({
     flexGrow: 1,
     padding: 10,
     paddingVertical: 16,
-    backgroundImage:
-      "linear-gradient(to right, #697eb48a, 30%, #51596d, 95%, #c1cae1)",
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "0% 100%",
+    // backgroundImage:"linear-gradient(to right, #697eb48a, 30%, #51596d, 95%, #c1cae1)",
+    // backgroundRepeat: "no-repeat",
+    // backgroundSize: "0% 100%",
   },
   innerFill: {
-    backgroundImage:
-      "linear-gradient(to right, #697eb48a, 30%, #51596d, 95%, #c1cae1)",
-    backgroundSize: "110% 100%",
+    // backgroundImage: "linear-gradient(to right, #697eb48a, 30%, #51596d, 95%, #c1cae1)",
+    // backgroundSize: "110% 100%",
     // animation: 'fill 1.7s',
-    animationDuration: "1.7s",
-    animationFillMode: "fill",
+    // animationDuration: "1.7s",
+    // animationFillMode: "fill",
   },
   outer: {
     display: "flex",
@@ -106,7 +104,7 @@ export const styles = StyleSheet.create({
   doneForDay: {
     // touchAction: 1,
     backgroundColor: "#ebc155",
-    backgroundImage: "linear-gradient(to right, #f0c863, 30%, #c6a44e)",
+    // backgroundImage: "linear-gradient(to right, #f0c863, 30%, #c6a44e)",
     borderWidth: 2,
     borderColor: "#c6a44e",
     color: "#222",
@@ -118,9 +116,13 @@ export const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "stretch",
     borderWidth: 1,
-    animationDuration: "650ms",
-    animationFillMode: "forwards",
-    animationName: "fade-in",
+    // animationDuration: "650ms",
+    // animationFillMode: "forwards",
+    // animationName: "fade-in",
     overflow: "hidden",
+  },
+  heading: {
+    marginBottom: 45,
+    fontWeight: 400,
   },
 });

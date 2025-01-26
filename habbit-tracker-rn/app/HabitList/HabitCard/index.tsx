@@ -1,5 +1,4 @@
 // import { Habit, incrementHbbit as incrementHabbit } from "../../repositories/habit-repository";
-import cx from "classnames";
 import { celebrationContext } from "../../Celebration";
 import dayjs from "dayjs";
 import { MdModeEditOutline } from "react-icons/md";
@@ -13,11 +12,14 @@ import {
   TouchableOpacity,
   useAnimatedValue,
   View,
+  StyleSheet,
 } from "react-native";
 import { Habit } from "@/app/repositories/habit-repository";
-import { FC, useContext, useEffect, useRef, useState } from "react";
+import React, { FC, useContext, useEffect, useRef, useState } from "react";
 // import { styles } from "../styles.module";
 import { styles } from "./Card.module-ai";
+import { LinearGradient } from "react-native-linear-gradient";
+import { Icon } from "react-native-vector-icons/Icon";
 
 type Props = {
   habit: Habit;
@@ -59,8 +61,8 @@ export const Card: FC<Props> = ({
     if (isInEditMode) return;
     !disabled && setIsFilling(true);
     Animated.timing(widthAnim, {
-      toValue: 1,
-      duration: 10000,
+      toValue: 100,
+      duration: 1000,
       useNativeDriver: true,
     }).start();
     if (!disabled) {
@@ -95,37 +97,35 @@ export const Card: FC<Props> = ({
   return (
     <TouchableOpacity
       onPressIn={mouseDownHandler}
-      // onPress={mouseDownHandler}
-      // onMouseUp={mouseUpHandler}
-      // onTouchEnd={mouseUpHandler}
       onPressOut={mouseUpHandler}
       style={[styles.card, ...(disabled ? [styles.doneForDay] : [])]}
     >
+      {/* backgroundImage: "linear-gradient(to right, #697eb48a, 30%, #51596d, 95%, #c1cae1)", */}
+      <LinearGradient
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}
+        colors={["#697eb48a", "#51596d", "#c1cae1"]}
+        style={{ width: `${widthAnim}%` } as StyleSheet.NamedStyles<unknown>}
+      />
       <View style={styles.outer}>
         {isInEditMode && (
-          <button
-            style={styles.edit}
-            onTouchStart={onEditHandler}
-            onMouseDown={onEditHandler}
-          >
-            <MdModeEditOutline />
-          </button>
+          <TouchableOpacity style={styles.edit} onPress={onEditHandler}>
+            <Icon name="edit" />
+          </TouchableOpacity>
         )}
-        <View style={cx(styles.inner, isFilling && styles.filling)}>
+        <View style={styles.inner}>
           <View style={styles.title}>
-            <h2>{name}</h2>
+            <Text style={styles.heading}>{name}</Text>
             <View style={styles.approveBlock}>
               {lastUpdated && <IncrementDate lastUpdated={lastUpdated} />}
-              <span style={styles.approveIcon}>
+              {/* <span style={styles.approveIcon}>
                 <img src="/approve.svg" />
-              </span>
+              </span> */}
             </View>
           </View>
           <View style={styles.copy}>
             {/* TODO: Add "Last Updated" */}
-            <Text style={styles.numbersCopy}>
-              <strong>Followed through on:</strong>
-            </Text>
+            <Text style={styles.numbersCopy}>Followed through on:</Text>
             <Text style={styles.numbers}>
               {iteration}/{goal}
             </Text>
@@ -138,7 +138,7 @@ export const Card: FC<Props> = ({
 
 const IncrementDate: FC<{ lastUpdated: number }> = ({ lastUpdated }) => {
   const date = dayjs(lastUpdated).format("MMM DD [at] h:mm A");
-  return <span style={styles.lastUpdated}>{date}</span>;
+  return <Text style={styles.lastUpdated}>{date}</Text>;
 };
 
 /*
