@@ -6,8 +6,9 @@ import {
   useRef,
   useState,
 } from "react";
-import styles from "./style.module.scss";
-import Fireworks, { FireworksHandlers } from "@fireworks-js/react";
+import { View } from "react-native";
+// import styles from "./style.module.scss";
+// import Fireworks, { FireworksHandlers } from "@fireworks-js/react";
 
 type Props = {} & PropsWithChildren;
 
@@ -24,15 +25,15 @@ export const celebrationContext = createContext<contextType>({
 export const Celebration: FC<Props> = ({ children }) => {
   const [show, setShow] = useState(false);
   // const [closing, setClosing] = useState(true);
-  const ref = useRef<FireworksHandlers>(null);
+  // const ref = useRef<FireworksHandlers>(null);
   const timerRef = useRef<TimerReturn | null>(null);
-  useEffect(() => {
-    if (!ref.current) return;
-    if (show) {
-      ref.current.start();
-    }
-    // }
-  }, [ref.current, show]);
+  // useEffect(() => {
+  //   if (!ref.current) return;
+  //   if (show) {
+  //     ref.current.start();
+  //   }
+  //   // }
+  // }, [ref.current, show]);
 
   useEffect(() => {
     if (timerRef.current) {
@@ -46,10 +47,10 @@ export const Celebration: FC<Props> = ({ children }) => {
   return (
     <>
       {show && (
-        <View className={styles.celebrationWrapper}>
+        <View>
           <h2>Well Done</h2>
-          <View className={styles.fadein}>
-            <Fireworks
+          <View>
+            {/* <Fireworks
               ref={ref}
               options={{ opacity: 0.5 }}
               style={{
@@ -60,7 +61,7 @@ export const Celebration: FC<Props> = ({ children }) => {
                 position: "fixed",
                 background: "#000",
               }}
-            />
+            /> */}
           </View>
         </View>
       )}

@@ -19,7 +19,7 @@ import React, { FC, useContext, useEffect, useRef, useState } from "react";
 // import { styles } from "../styles.module";
 import { styles } from "./Card.module-ai";
 import { LinearGradient } from "react-native-linear-gradient";
-import { Icon } from "react-native-vector-icons/Icon";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 type Props = {
   habit: Habit;

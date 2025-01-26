@@ -8,8 +8,9 @@ export const styles = StyleSheet.create({
   container: {
     display: "flex",
     flexDirection: "column",
-    padding: 5,
-    columnGap: 5,
+    width: "100%",
+    // padding: 5,
+    // columnGap: 5,
   },
   cardContainer: {
     display: "flex",

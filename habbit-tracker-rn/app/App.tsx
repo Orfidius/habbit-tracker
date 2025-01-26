@@ -34,8 +34,8 @@ export const App = () => {
     }, 900);
   };
   const updateCards = async () => {
-    const newHabits = await gethabits();
-    setHabits(newHabits);
+    // const newHabits = await gethabits();
+    // setHabits(newHabits);
   };
 
   useEffect(() => {
@@ -46,18 +46,18 @@ export const App = () => {
     <View style={styles.container}>
       <FilterTabs />
       {/* <Celebration> // TODO replace */}
-      <View style={styles.cardContainer}>
+      {/* <View style={styles.cardContainer}>
         <Cardlist habits={habits} updateCards={updateCards} />
-      </View>
-      {showModal && <AddModal onClose={onCloseModal} />}
-      {!showModal && (
+      </View> */}
+      {/* {showModal && <AddModal onClose={onCloseModal} />} */}
+      {/* {!showModal && (
         <TouchableOpacity
           onPress={addButtonHandler}
           style={[styles.FAB, styles.add]}
         >
           <Icon name="plussquareo" size={30} color="#900" />
         </TouchableOpacity>
-      )}
+      )} */}
       {!showModal && (
         <TouchableOpacity
           onPress={editButtonHandler}

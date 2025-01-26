@@ -20,7 +20,8 @@ export const FilterTabs: FC = () => {
   };
   return (
     <View style={styles.container}>
-      <FlatList
+      {/* <FlatList
+        style={styles.list}
         data={DAYS_ENTRIES}
         renderItem={({ item: [first, full], index }) => {
           const isSelected = index === TODAY;
@@ -29,10 +30,19 @@ export const FilterTabs: FC = () => {
               verbiage={isSelected ? full : first}
               onFilterHandler={onFilterHandler}
               freqKey={first as Freq} // Map the key to the actual Freq type
-            />
+            `/>
           );
         }}
-      />
+      /> */}
+      {DAYS_ENTRIES.map(([first, full], index) => (
+        <>
+          <DayItem
+            verbiage={index === TODAY ? full : first}
+            onFilterHandler={onFilterHandler}
+            freqKey={first as Freq}
+          />
+        </>
+      ))}
     </View>
   );
 };
@@ -53,8 +63,13 @@ const DayItem: FC<{
     return false;
   })();
   return (
-    <TouchableOpacity onPress={() => onFilterHandler(freqKey)}>
-      <Text style={{ ...(isSelected ? styles.selected : {}) }}>{verbiage}</Text>
+    <TouchableOpacity
+      style={styles.listItem}
+      onPress={() => onFilterHandler(freqKey)}
+    >
+      <Text style={[styles.listText, ...(isSelected ? [styles.selected] : [])]}>
+        {verbiage}
+      </Text>
     </TouchableOpacity>
   );
 };
