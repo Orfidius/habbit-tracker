@@ -6,8 +6,8 @@ import {
   useReducer,
   useState,
 } from "react";
-import styles from "./AddModal.module.scss";
-import cx from "classnames";
+// import styles from "./AddModal.module.scss";
+// import cx from "classnames";
 import {
   Habit,
   insertHabit,
@@ -25,6 +25,9 @@ import {
   View,
   Text,
 } from "react-native";
+import { Modal } from "react-native";
+import { Button } from "react-native";
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 
 enum Actions {
   NAME,
@@ -104,9 +107,11 @@ export const AddModal: FC<AddModalProps> = ({ onClose }) => {
   const selectedHabit = useAppSelector(
     (state) => state.editModeState.selectedHabbit,
   );
+  const showModal = useAppSelector((state) => state.habitState.modalOpen);
   const appDispatch = useDispatch();
   const [habit, dispatch] = useReducer(reducer, selectedHabit ?? initialState);
   const [isClosing, setIsClosing] = useState(false);
+
   const updateName: ReactNativeChangeHandler = ({
     target: { text: value },
   }) => {
@@ -122,7 +127,7 @@ export const AddModal: FC<AddModalProps> = ({ onClose }) => {
   const selectAllFrequencies = () => {
     dispatch({ type: Actions.MULTIPLE_FREQUENCY });
   };
-  const onSave: MouseEventHandler<HTMLButtonElement> = async () => {
+  const onSave = async () => {
     try {
       selectedHabit ? await updateHabit(habit) : await insertHabit(habit);
     } catch (e) {
@@ -141,18 +146,17 @@ export const AddModal: FC<AddModalProps> = ({ onClose }) => {
     });
   };
   return (
-    <View
-      className={cx(
-        styles.AddModal,
-        isClosing ? styles.closing : styles.opening,
-      )}
+    <Modal
+      animationType="slide"
+      // transparent={true}
+      visible={showModal}
+      // className={cx(
+      //   styles.AddModal,
+      //   isClosing ? styles.closing : styles.opening,
+      // )}
     >
-      <h2>Start New habit</h2>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-        }}
-      >
+      <Text>Start New habit</Text>
+      <View>
         <InputText
           value={habit.name}
           onChange={updateName}
@@ -170,12 +174,12 @@ export const AddModal: FC<AddModalProps> = ({ onClose }) => {
           setValue={updateFrequency}
           setValues={selectAllFrequencies}
         />
-        <View className={styles.buttonWrapper}>
-          <button onClick={onSave}>Save</button>
-          <button onClick={onCancel}>Cancel</button>
+        <View style={styles.buttonWrapper}>
+          <Button onPress={onSave} title={"Save"} />
+          <Button onPress={onCancel} title={"Cancel"} />
         </View>
-      </form>
-    </View>
+      </View>
+    </Modal>
   );
 };
 type InputProps = {
@@ -186,8 +190,8 @@ type InputProps = {
 };
 
 export const InputText: FC<InputProps> = ({ label, name, onChange, value }) => (
-  <View className={styles.textInput}>
-    <label htmlFor={name}>{label}</label>
+  <View style={styles.textInput}>
+    <Text>{label}</Text>
     <TextInput value={value} onChange={onChange} placeholder={name} />
   </View>
 );
@@ -199,7 +203,7 @@ const FrequencyInput: FC<{
 }> = ({ value, setValue, setValues }) => {
   const FreqBox = MakeFreqCheck(value, setValue);
   return (
-    <View className={styles.frequency}>
+    <View style={styles.frequency}>
       <Text>habit Frequency</Text>
       <FreqBox name="Monday" freqKey={Freq.M} />
       <FreqBox name="Tuesday" freqKey={Freq.Tu} />
@@ -208,9 +212,7 @@ const FrequencyInput: FC<{
       <FreqBox name="Friday" freqKey={Freq.F} />
       <FreqBox name="Saturday" freqKey={Freq.Sa} />
       <FreqBox name="Sunday" freqKey={Freq.Su} />
-      <button onTouchStart={setValues} onClick={() => setValues()}>
-        Everyday
-      </button>
+      <Button onPress={setValues} title={"Everyday"} />
     </View>
   );
 };
@@ -223,14 +225,19 @@ const MakeFreqCheck =
   ({ name, freqKey }) => {
     return (
       <>
-        <label htmlFor={name}>{freqKey}</label>
+        <Text>{freqKey}</Text>
+        <BouncyCheckbox
+          isChecked={value.has(freqKey)}
+          onPress={() => setValue(freqKey)}
+        />
+        {/*
         <input
           type="checkbox"
           id={name}
           name={name}
           checked={value.has(freqKey)}
           onChange={() => setValue(freqKey)}
-        />
+        /> */}
       </>
     );
   };
