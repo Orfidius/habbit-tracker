@@ -14,7 +14,7 @@ import { setModalOpen } from "./store/HabitState";
 import { setEditMode } from "./store/EditMode";
 import { FilterTabs } from "./FilterTabs/FilterTabs";
 import { Button, TouchableOpacity, View } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
+import Icon from "react-native-vector-icons/Feather";
 
 export const App = () => {
   const [habits, setHabits] = useState<Array<Habit>>([]);
@@ -49,23 +49,25 @@ export const App = () => {
       {/* <View style={styles.cardContainer}>
         <Cardlist habits={habits} updateCards={updateCards} />
       </View> */}
-      {/* {showModal && <AddModal onClose={onCloseModal} />} */}
-      {/* {!showModal && (
-        <TouchableOpacity
-          onPress={addButtonHandler}
-          style={[styles.FAB, styles.add]}
-        >
-          <Icon name="plussquareo" size={30} color="#900" />
-        </TouchableOpacity>
-      )} */}
-      {!showModal && (
-        <TouchableOpacity
-          onPress={editButtonHandler}
-          style={{ ...styles.FAB, ...styles.edit }}
-        >
-          <Icon name="edit" />
-        </TouchableOpacity>
-      )}
+      {/* {showModal &&  */}
+      <AddModal onClose={onCloseModal} />
+      {/* } */}
+      {/* {!showModal && ( */}
+      <TouchableOpacity
+        onPress={addButtonHandler}
+        style={[styles.FAB, styles.add]}
+      >
+        <Icon name="plus-circle" size={40} />
+      </TouchableOpacity>
+      {/* )} */}
+      {/* {!showModal && ( */}
+      <TouchableOpacity
+        onPress={editButtonHandler}
+        style={[styles.FAB, styles.edit]}
+      >
+        <Icon name="edit-2" size={30} />
+      </TouchableOpacity>
+      {/* )} */}
       {/* </Celebration> */}
     </View>
   );

@@ -27,6 +27,7 @@ export const styles = StyleSheet.create({
   },
   listText: {
     color: "white",
+    fontSize: 20,
     // fontColor: "#fff",
     // textColor: "#fff",
   },

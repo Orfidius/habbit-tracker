@@ -6,7 +6,7 @@ import {
   useReducer,
   useState,
 } from "react";
-// import styles from "./AddModal.module.scss";
+import { styles } from "./AddModal.module-ai";
 // import cx from "classnames";
 import {
   Habit,
@@ -148,6 +148,7 @@ export const AddModal: FC<AddModalProps> = ({ onClose }) => {
   return (
     <Modal
       animationType="slide"
+      style={styles.AddModal}
       // transparent={true}
       visible={showModal}
       // className={cx(

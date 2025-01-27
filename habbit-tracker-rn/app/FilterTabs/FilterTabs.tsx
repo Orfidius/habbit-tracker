@@ -40,6 +40,7 @@ export const FilterTabs: FC = () => {
             verbiage={index === TODAY ? full : first}
             onFilterHandler={onFilterHandler}
             freqKey={first as Freq}
+            key={index}
           />
         </>
       ))}
