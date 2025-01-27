@@ -32,12 +32,12 @@ export const styles = StyleSheet.create({
     height: "100%",
     // top: "50%",
     marginTop: 70,
+    marginHorizontal: 5,
     // width: 'calc(100% - 10px)',
     // position: "absolute",
-    left: 5,
-    // borderRadius: 10,
+    borderRadius: 10,
     // padding: 0.5rem 15px 0 15px,
-    boxShadow: "-10px 15px 2px #333",
+    // boxShadow: "-10px 15px 2px #333",
     // animationDuration: 1,
   },
   Button: {
@@ -49,6 +49,7 @@ export const styles = StyleSheet.create({
   },
   buttonWrapper: {
     display: "flex",
+    flexDirection: "row",
     width: "100%",
     justifyContent: "center",
     columnGap: 10,
