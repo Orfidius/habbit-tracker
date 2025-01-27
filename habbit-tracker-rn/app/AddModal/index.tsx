@@ -148,36 +148,37 @@ export const AddModal: FC<AddModalProps> = ({ onClose }) => {
   return (
     <Modal
       animationType="slide"
-      style={styles.AddModal}
-      // transparent={true}
+      transparent={true}
       visible={showModal}
       // className={cx(
       //   styles.AddModal,
       //   isClosing ? styles.closing : styles.opening,
       // )}
     >
-      <Text>Start New habit</Text>
-      <View>
-        <InputText
-          value={habit.name}
-          onChange={updateName}
-          label={"name"}
-          name={"name"}
-        />
-        <InputText
-          value={`${habit.goal}`}
-          onChange={updateGoal}
-          label={"goal"}
-          name={"goal"}
-        />
-        <FrequencyInput
-          value={habit.frequency as Set<Freq>}
-          setValue={updateFrequency}
-          setValues={selectAllFrequencies}
-        />
-        <View style={styles.buttonWrapper}>
-          <Button onPress={onSave} title={"Save"} />
-          <Button onPress={onCancel} title={"Cancel"} />
+      <View style={styles.AddModal}>
+        <Text>Start New habit</Text>
+        <View>
+          <InputText
+            value={habit.name}
+            onChange={updateName}
+            label={"name"}
+            name={"name"}
+          />
+          <InputText
+            value={`${habit.goal}`}
+            onChange={updateGoal}
+            label={"goal"}
+            name={"goal"}
+          />
+          <FrequencyInput
+            value={habit.frequency as Set<Freq>}
+            setValue={updateFrequency}
+            setValues={selectAllFrequencies}
+          />
+          <View style={styles.buttonWrapper}>
+            <Button onPress={onSave} title={"Save"} />
+            <Button onPress={onCancel} title={"Cancel"} />
+          </View>
         </View>
       </View>
     </Modal>
