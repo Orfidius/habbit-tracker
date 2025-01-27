@@ -1,46 +1,17 @@
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
-  //   opening: {
-  //     top: 5,
-  //     // animationName: 'on-load',
-  //     // animationDuration: 1,
-  //   },
-  //   closing: {
-  //     top: 5,
-  // animationName: 'on-close',
-  // animationDuration: 1,
-  // },
-  // onLoad: {
-  //   from: {
-  //     transform: [{ translateY: -100 }],
-  //   },
-  //   to: {
-  //     transform: [{ translateY: -5 }],
-  //   },
-  // },
-  // onClose: {
-  //   from: {
-  //     transform: [{ translateY: -5 }],
-  //   },
-  //   to: {
-  //     transform: [{ translateY: -100 }],
-  //   },
-  // },
-  AddModal: {
+  addModal: {
     backgroundColor: "#413952",
     height: "100%",
-    // top: "50%",
     marginTop: 70,
     marginHorizontal: 5,
-    // width: 'calc(100% - 10px)',
-    // position: "absolute",
-    borderRadius: 10,
-    // padding: 0.5rem 15px 0 15px,
-    // boxShadow: "-10px 15px 2px #333",
-    // animationDuration: 1,
+    borderRadius: 20,
+    color: "#fff",
+    paddingVertical: 16,
+    paddingHorizontal: 16,
   },
-  Button: {
+  button: {
     borderRadius: 0,
     textTransform: "uppercase",
     padding: 10,
@@ -51,28 +22,41 @@ export const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     width: "100%",
-    justifyContent: "center",
-    columnGap: 10,
+    justifyContent: "space-around",
+    columnGap: 0,
   },
-  TextInput: {
+  textInput: {
     display: "flex",
     flexDirection: "column",
     color: "#eee",
     marginBottom: 1,
     textTransform: "capitalize",
-    // Label: {},
   },
   frequency: {
     display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
-    marginHorizontal: 100,
+    marginHorizontal: 0,
+    marginVertical: 0,
+    padding: 0,
+    width: "100%",
+    height: 60,
     justifyContent: "center",
-    // RowGap: 0.5,
   },
-  textWrapper: {
+  everydayButton: {
+    marginTop: 0,
+    paddingTop: 0,
+  },
+  heading: {
     textAlign: "center",
     width: "100%",
+    color: "#fff",
+    paddingVertical: 5,
+    fontSize: 20,
+  },
+  textWrapper: {
+    color: "#fff",
+    fontSize: 18,
   },
   checkbox: {
     // font: "inherit",

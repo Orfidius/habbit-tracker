@@ -155,8 +155,9 @@ export const AddModal: FC<AddModalProps> = ({ onClose }) => {
       //   isClosing ? styles.closing : styles.opening,
       // )}
     >
-      <View style={styles.AddModal}>
-        <Text>Start New habit</Text>
+      <View style={styles.addModal}>
+        {/* TODO: change task if on update operation  */}
+        <Text style={styles.heading}>Start New habit</Text>
         <View>
           <InputText
             value={habit.name}
@@ -193,8 +194,13 @@ type InputProps = {
 
 export const InputText: FC<InputProps> = ({ label, name, onChange, value }) => (
   <View style={styles.textInput}>
-    <Text>{label}</Text>
-    <TextInput value={value} onChange={onChange} placeholder={name} />
+    <Text style={styles.textWrapper}>{label}</Text>
+    <TextInput
+      value={value}
+      onChange={onChange}
+      placeholder={name}
+      style={{ backgroundColor: "#fff" }}
+    />
   </View>
 );
 
@@ -205,15 +211,29 @@ const FrequencyInput: FC<{
 }> = ({ value, setValue, setValues }) => {
   const FreqBox = MakeFreqCheck(value, setValue);
   return (
-    <View style={styles.frequency}>
-      <Text>habit Frequency</Text>
-      <FreqBox name="Monday" freqKey={Freq.M} />
-      <FreqBox name="Tuesday" freqKey={Freq.Tu} />
-      <FreqBox name="Wednesday" freqKey={Freq.W} />
-      <FreqBox name="Thursday" freqKey={Freq.Th} />
-      <FreqBox name="Friday" freqKey={Freq.F} />
-      <FreqBox name="Saturday" freqKey={Freq.Sa} />
-      <FreqBox name="Sunday" freqKey={Freq.Su} />
+    <View
+      style={{
+        // display: "flex",
+        // flexDirection: "column",
+        // alignItems: "flex-start",
+        // alignContent: "flex-start",
+        // justifyContent: "flex-start",
+        // rowGap: 0,
+        marginBottom: 20,
+      }}
+    >
+      <Text style={{ ...styles.textWrapper, textAlign: "center" }}>
+        Habit Frequency
+      </Text>
+      <View style={styles.frequency}>
+        <FreqBox name="Monday" freqKey={Freq.M} />
+        <FreqBox name="Tuesday" freqKey={Freq.Tu} />
+        <FreqBox name="Wednesday" freqKey={Freq.W} />
+        <FreqBox name="Thursday" freqKey={Freq.Th} />
+        <FreqBox name="Friday" freqKey={Freq.F} />
+        <FreqBox name="Saturday" freqKey={Freq.Sa} />
+        <FreqBox name="Sunday" freqKey={Freq.Su} />
+      </View>
       <Button onPress={setValues} title={"Everyday"} />
     </View>
   );
@@ -226,20 +246,21 @@ const MakeFreqCheck =
   ): FC<{ name: string; freqKey: Freq }> =>
   ({ name, freqKey }) => {
     return (
-      <>
-        <Text>{freqKey}</Text>
+      <View style={{ display: "flex", flexDirection: "row" }}>
+        <Text
+          style={{
+            ...styles.textWrapper,
+            fontSize: 18,
+            textTransform: "uppercase",
+            paddingRight: 5,
+          }}
+        >
+          {freqKey}
+        </Text>
         <BouncyCheckbox
           isChecked={value.has(freqKey)}
           onPress={() => setValue(freqKey)}
         />
-        {/*
-        <input
-          type="checkbox"
-          id={name}
-          name={name}
-          checked={value.has(freqKey)}
-          onChange={() => setValue(freqKey)}
-        /> */}
-      </>
+      </View>
     );
   };
