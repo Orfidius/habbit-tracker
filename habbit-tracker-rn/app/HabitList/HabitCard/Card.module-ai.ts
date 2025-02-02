@@ -81,7 +81,7 @@ export const styles = StyleSheet.create({
     display: "none",
     justifyContent: "center",
     alignItems: "center",
-    boxShadow: "inset 3px 3px 0px rgba(3, 3, 3, 3)",
+    // boxShadow: "inset 3px 3px 0px rgba(3, 3, 3, 3)",
   },
   approveIconVisible: {
     display: "flex",
@@ -111,11 +111,12 @@ export const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: "#c1cae1",
-    borderRadius: 10,
+    borderRadius: 5,
     display: "flex",
     flexDirection: "column",
     alignItems: "stretch",
-    borderWidth: 1,
+    // borderWidth: 4,
+    borderColor: "#c5cfe8",
     // animationDuration: "650ms",
     // animationFillMode: "forwards",
     // animationName: "fade-in",

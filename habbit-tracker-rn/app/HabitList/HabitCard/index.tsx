@@ -18,14 +18,18 @@ import { Habit } from "@/app/repositories/habit-repository";
 import React, { FC, useContext, useEffect, useRef, useState } from "react";
 // import { styles } from "../styles.module";
 import { styles } from "./Card.module-ai";
-import { LinearGradient } from "react-native-linear-gradient";
+import { LinearGradient } from "expo-linear-gradient";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { Pressable } from "react-native";
 
 type Props = {
   habit: Habit;
   updateCards: () => Promise<void>;
 };
 type TimerReturn = ReturnType<typeof setTimeout>;
+
+const widthInputRange = Array.from<number>({ length: 100 }).map((i) => i);
+const widthOutputRange = widthInputRange.map((i) => `${i}%`);
 
 export const Card: FC<Props> = ({
   habit: { id, name, iteration, goal, lastUpdated, ...habit },
@@ -63,11 +67,11 @@ export const Card: FC<Props> = ({
     Animated.timing(widthAnim, {
       toValue: 100,
       duration: 1000,
-      useNativeDriver: true,
+      useNativeDriver: false,
     }).start();
     if (!disabled) {
       timerRef.current = setTimeout(async () => {
-        setShowCelebrate(true);
+        // setShowCelebrate(true);
         // setDisabled(true);
         // TODO: Reset
         // await incrementHabbit(id, iteration);
@@ -77,6 +81,7 @@ export const Card: FC<Props> = ({
   };
   const mouseUpHandler = () => {
     setIsFilling(false);
+    widthAnim.setValue(0);
     timerRef.current && clearTimeout(timerRef.current);
   };
 
@@ -95,44 +100,70 @@ export const Card: FC<Props> = ({
   };
 
   return (
-    <TouchableOpacity
-      onPressIn={mouseDownHandler}
-      onPressOut={mouseUpHandler}
-      style={[styles.card, ...(disabled ? [styles.doneForDay] : [])]}
-    >
-      {/* backgroundImage: "linear-gradient(to right, #697eb48a, 30%, #51596d, 95%, #c1cae1)", */}
-      <LinearGradient
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-        colors={["#697eb48a", "#51596d", "#c1cae1"]}
-        style={{ width: `${widthAnim}%` } as StyleSheet.NamedStyles<unknown>}
-      />
-      <View style={styles.outer}>
-        {isInEditMode && (
-          <TouchableOpacity style={styles.edit} onPress={onEditHandler}>
-            <Icon name="edit" />
-          </TouchableOpacity>
-        )}
-        <View style={styles.inner}>
-          <View style={styles.title}>
-            <Text style={styles.heading}>{name}</Text>
-            <View style={styles.approveBlock}>
-              {lastUpdated && <IncrementDate lastUpdated={lastUpdated} />}
-              {/* <span style={styles.approveIcon}>
+    <View>
+      <Pressable
+        onPressIn={mouseDownHandler}
+        onPressOut={mouseUpHandler}
+        style={[styles.card, ...(disabled ? [styles.doneForDay] : [])]}
+      >
+        {/* backgroundImage: "linear-gradient(to right, #697eb48a, 30%, #51596d, 95%, #c1cae1)", */}
+        <Animated.View
+          style={{
+            position: "absolute",
+            top: 0,
+            opacity: 0.75,
+            height: "100%",
+            borderRadius: 5,
+            // shadowOffset: { width: -2, height: 4 },
+            // shadowColor: "#FF",
+            // shadowOpacity: 0.2,
+            // shadowRadius: 3,
+            width: widthAnim.interpolate({
+              inputRange: [0, 50, 100],
+              outputRange: ["0%", "50%", "100%"],
+            }),
+          }}
+        >
+          <LinearGradient
+            colors={["#252c3d", "#51596d", "#51596d", "#727d96"]}
+            style={{
+              width: "100%",
+              height: "100%",
+              borderRadius: 5,
+              // borderRightWidth: 1,
+              borderRightColor: "#333",
+            }}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+          />
+        </Animated.View>
+        <View style={styles.outer}>
+          {isInEditMode && (
+            <TouchableOpacity style={styles.edit} onPress={onEditHandler}>
+              <Icon name="edit" />
+            </TouchableOpacity>
+          )}
+          <View style={styles.inner}>
+            <View style={styles.title}>
+              <Text style={styles.heading}>{name}</Text>
+              <View style={styles.approveBlock}>
+                {lastUpdated && <IncrementDate lastUpdated={lastUpdated} />}
+                {/* <span style={styles.approveIcon}>
                 <img src="/approve.svg" />
               </span> */}
+              </View>
+            </View>
+            <View style={styles.copy}>
+              {/* TODO: Add "Last Updated" */}
+              <Text style={styles.numbersCopy}>Followed through on:</Text>
+              <Text style={styles.numbers}>
+                {iteration}/{goal}
+              </Text>
             </View>
           </View>
-          <View style={styles.copy}>
-            {/* TODO: Add "Last Updated" */}
-            <Text style={styles.numbersCopy}>Followed through on:</Text>
-            <Text style={styles.numbers}>
-              {iteration}/{goal}
-            </Text>
-          </View>
         </View>
-      </View>
-    </TouchableOpacity>
+      </Pressable>
+    </View>
   );
 };
 

@@ -12,6 +12,8 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     color: "#eee",
     width: "100%",
+    borderTopWidth: 1,
+    borderTopColor: "#FFF",
   },
   list: {
     display: "flex",

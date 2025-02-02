@@ -6,20 +6,28 @@ import { MdModeEditOutline } from "react-icons/md";
 import { AddModal } from "./AddModal";
 import { Cardlist } from "./HabitList";
 import { Celebration } from "./Celebration";
-import { gethabits, Habit } from "./repositories/habit-repository";
+import { gethabits, Habit, initDB } from "./repositories/habit-repository";
 import cx from "classnames";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "./store/hooks";
 import { setModalOpen } from "./store/HabitState";
 import { setEditMode } from "./store/EditMode";
 import { FilterTabs } from "./FilterTabs/FilterTabs";
-import { Button, TouchableOpacity, View } from "react-native";
+import { Button, StatusBar, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 
 export const App = () => {
   const [habits, setHabits] = useState<Array<Habit>>([]);
   const showModal = useAppSelector((state) => state.habitState.modalOpen);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    (async () => {
+      // await initDB();
+      await updateCards();
+    })();
+  }, []);
+
   const addButtonHandler = () => {
     dispatch(setModalOpen());
   };
@@ -34,21 +42,24 @@ export const App = () => {
     }, 900);
   };
   const updateCards = async () => {
-    // const newHabits = await gethabits();
-    // setHabits(newHabits);
+    const newHabits = await gethabits();
+    console.log("Getting Cards", JSON.stringify(newHabits));
+    setHabits(newHabits);
   };
-
-  useEffect(() => {
-    updateCards();
-  }, []);
 
   return (
     <View style={styles.container}>
+      <StatusBar
+        backgroundColor="#222"
+        // barStyle={statusBarStyle}
+        // showHideTransition={statusBarTransition}
+        // hidden={true}
+      />
       <FilterTabs />
       {/* <Celebration> // TODO replace */}
-      {/* <View style={styles.cardContainer}>
+      <View style={styles.cardContainer}>
         <Cardlist habits={habits} updateCards={updateCards} />
-      </View> */}
+      </View>
       {/* {showModal &&  */}
       <AddModal onClose={onCloseModal} />
       {/* } */}
@@ -72,5 +83,3 @@ export const App = () => {
     </View>
   );
 };
-
-export const Card = () => {};

@@ -11,25 +11,31 @@ export type Habit = {
   lastUpdated?: number;
 };
 
-const initDB = async () => {
+export const initDB = async () => {
+  console.log("Joker running init");
   const db = await SQLite.openDatabaseAsync("habitsDB");
-  await db.execAsync(`
+  console.log("Got DB");
+  try {
+    const result = await db.execAsync(`
     PRAGMA journal_mode = WAL;
-    CREATE TABLE IF NOT EXISTS CREATE TABLE habits (
+    CREATE TABLE IF NOT EXISTS habits (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         name TEXT,
                         iteration INTEGER,
                         goal INTEGER,
                         remind BOOLEAN,
                         frequency TEXT,
-                        lastUpdated DATETIME;
+                        lastUpdated DATETIME
+                      );
 `);
+    console.log("Joker completed migrationr", JSON.stringify(result));
+  } catch (e) {
+    console.log("Error", e);
+  }
 };
 
 // // // TODO: move Database into some kind of shared context, either class
 export const insertHabit = async (habit: Habit) => {
-  // when using `"withGlobalTauri": true`, you may use
-  // const V = window.__TAURI__.sql;
   const { name, iteration, goal, remind = false, frequency } = habit;
   const valuesToAdd = [`"${name}"`, iteration, goal, remind];
   if (frequency) {
@@ -41,7 +47,7 @@ export const insertHabit = async (habit: Habit) => {
   const result = await db.execAsync(`
         INSERT INTO habits (name, iteration, goal, remind, frequency )
         VALUES (${valuesToAdd.join(",")})`);
-  console.log(result);
+  console.log("Batman Result", result);
   console.log("Called insert");
 };
 
@@ -69,11 +75,11 @@ interface RawHabit extends Omit<Habit, "frequency"> {
   frequency: string;
 }
 export const gethabits = async (): Promise<Habit[]> => {
-  // export const gethabits = async () => {
   const db = await SQLite.openDatabaseAsync("habitsDB");
   const results = await db.getAllAsync<RawHabit>(
     "SELECT id, name, iteration, goal, frequency, lastUpdated FROM habits",
   );
+  console.log("Batman", JSON.stringify(results));
   const parsedHabits = results.map((habit) => ({
     ...habit,
     frequency: new Set(habit.frequency.split(",")),

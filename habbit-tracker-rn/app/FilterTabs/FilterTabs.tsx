@@ -20,27 +20,13 @@ export const FilterTabs: FC = () => {
   };
   return (
     <View style={styles.container}>
-      {/* <FlatList
-        style={styles.list}
-        data={DAYS_ENTRIES}
-        renderItem={({ item: [first, full], index }) => {
-          const isSelected = index === TODAY;
-          return (
-            <DayItem
-              verbiage={isSelected ? full : first}
-              onFilterHandler={onFilterHandler}
-              freqKey={first as Freq} // Map the key to the actual Freq type
-            `/>
-          );
-        }}
-      /> */}
       {DAYS_ENTRIES.map(([first, full], index) => (
         <>
           <DayItem
             verbiage={index === TODAY ? full : first}
             onFilterHandler={onFilterHandler}
             freqKey={first as Freq}
-            key={index}
+            key={`${first}-${full}`}
           />
         </>
       ))}
