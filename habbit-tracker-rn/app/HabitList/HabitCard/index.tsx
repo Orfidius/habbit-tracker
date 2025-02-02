@@ -35,6 +35,7 @@ export const Card: FC<Props> = ({
   habit: { id, name, iteration, goal, lastUpdated, ...habit },
   updateCards,
 }) => {
+  console.log("Batman", { id, name, iteration, goal, lastUpdated, ...habit });
   const { setShowCelebrate } = useContext(celebrationContext);
   const [isFilling, setIsFilling] = useState<boolean>(false);
   const [disabled, setDisabled] = useState(false);
@@ -106,7 +107,6 @@ export const Card: FC<Props> = ({
         onPressOut={mouseUpHandler}
         style={[styles.card, ...(disabled ? [styles.doneForDay] : [])]}
       >
-        {/* backgroundImage: "linear-gradient(to right, #697eb48a, 30%, #51596d, 95%, #c1cae1)", */}
         <Animated.View
           style={{
             position: "absolute",
@@ -114,10 +114,6 @@ export const Card: FC<Props> = ({
             opacity: 0.75,
             height: "100%",
             borderRadius: 5,
-            // shadowOffset: { width: -2, height: 4 },
-            // shadowColor: "#FF",
-            // shadowOpacity: 0.2,
-            // shadowRadius: 3,
             width: widthAnim.interpolate({
               inputRange: [0, 50, 100],
               outputRange: ["0%", "50%", "100%"],
@@ -148,9 +144,6 @@ export const Card: FC<Props> = ({
               <Text style={styles.heading}>{name}</Text>
               <View style={styles.approveBlock}>
                 {lastUpdated && <IncrementDate lastUpdated={lastUpdated} />}
-                {/* <span style={styles.approveIcon}>
-                <img src="/approve.svg" />
-              </span> */}
               </View>
             </View>
             <View style={styles.copy}>
@@ -171,26 +164,3 @@ const IncrementDate: FC<{ lastUpdated: number }> = ({ lastUpdated }) => {
   const date = dayjs(lastUpdated).format("MMM DD [at] h:mm A");
   return <Text style={styles.lastUpdated}>{date}</Text>;
 };
-
-/*
-const FadeInView: React.FC<FadeInViewProps> = props => {
-  const fadeAnim = useAnimatedValue(0); // Initial value for opacity: 0
-
-  useEffect(() => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 10000,
-      useNativeDriver: true,
-    }).start();
-  }, [fadeAnim]);
-
-  return (
-    <Animated.View // Special animatable View
-      style={{
-        ...props.style,
-        opacity: fadeAnim, // Bind opacity to animated value
-      }}>
-      {props.children}
-    </Animated.View>
-
-*/

@@ -11,6 +11,8 @@ export type Habit = {
   lastUpdated?: number;
 };
 
+const TABLE_NAME = "habits";
+
 export const initDB = async () => {
   console.log("Joker running init");
   const db = await SQLite.openDatabaseAsync("habitsDB");
@@ -18,7 +20,7 @@ export const initDB = async () => {
   try {
     const result = await db.execAsync(`
     PRAGMA journal_mode = WAL;
-    CREATE TABLE IF NOT EXISTS habits (
+    CREATE TABLE IF NOT EXISTS ${TABLE_NAME} (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         name TEXT,
                         iteration INTEGER,
@@ -77,7 +79,7 @@ interface RawHabit extends Omit<Habit, "frequency"> {
 export const gethabits = async (): Promise<Habit[]> => {
   const db = await SQLite.openDatabaseAsync("habitsDB");
   const results = await db.getAllAsync<RawHabit>(
-    "SELECT id, name, iteration, goal, frequency, lastUpdated FROM habits",
+    `SELECT id, name, iteration, goal, frequency, lastUpdated FROM ${TABLE_NAME}`,
   );
   console.log("Batman", JSON.stringify(results));
   const parsedHabits = results.map((habit) => ({
@@ -85,7 +87,6 @@ export const gethabits = async (): Promise<Habit[]> => {
     frequency: new Set(habit.frequency.split(",")),
   }));
   return parsedHabits;
-  console.log("Called Updates");
 };
 
 export const incrementHbbit = async (id: number, iteration: number) => {
