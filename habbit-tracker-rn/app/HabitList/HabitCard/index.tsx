@@ -1,4 +1,4 @@
-// import { Habit, incrementHbbit as incrementHabbit } from "../../repositories/habit-repository";
+import { incrementHabit } from "../../repositories/habit-repository";
 import { celebrationContext } from "../../Celebration";
 import dayjs from "dayjs";
 import { MdModeEditOutline } from "react-icons/md";
@@ -72,10 +72,10 @@ export const Card: FC<Props> = ({
     }).start();
     if (!disabled) {
       timerRef.current = setTimeout(async () => {
-        // setShowCelebrate(true);
-        // setDisabled(true);
+        setShowCelebrate(true);
+        setDisabled(true);
         // TODO: Reset
-        // await incrementHabbit(id, iteration);
+        await incrementHabit(id, iteration);
         await updateCards();
       }, 1200);
     }
@@ -126,7 +126,6 @@ export const Card: FC<Props> = ({
               width: "100%",
               height: "100%",
               borderRadius: 5,
-              // borderRightWidth: 1,
               borderRightColor: "#333",
             }}
             start={{ x: 0, y: 0 }}

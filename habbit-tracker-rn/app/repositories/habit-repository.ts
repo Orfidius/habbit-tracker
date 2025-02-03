@@ -1,4 +1,3 @@
-// // import Database from "@tauri-apps/plugin-sql";
 import * as SQLite from "expo-sqlite";
 
 export type Habit = {
@@ -89,7 +88,8 @@ export const gethabits = async (): Promise<Habit[]> => {
   return parsedHabits;
 };
 
-export const incrementHbbit = async (id: number, iteration: number) => {
+export const incrementHabit = async (id: number, iteration: number) => {
+  console.log("Batman Incrementing habit", id, iteration);
   const db = await SQLite.openDatabaseAsync("habitsDB");
   const result = await db.runAsync(`
             UPDATE habits

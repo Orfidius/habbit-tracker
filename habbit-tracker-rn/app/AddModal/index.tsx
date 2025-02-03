@@ -112,13 +112,11 @@ export const AddModal: FC<AddModalProps> = ({ onClose }) => {
   const [habit, dispatch] = useReducer(reducer, selectedHabit ?? initialState);
   const [isClosing, setIsClosing] = useState(false);
 
-  const updateName: ReactNativeChangeHandler = ({
-    target: { text: value },
-  }) => {
-    dispatch({ type: Actions.NAME, payload: value });
+  const updateName: ReactNativeChangeHandler = (event) => {
+    dispatch({ type: Actions.NAME, payload: event.nativeEvent.text });
   };
-  const updateGoal: ReactNativeChangeHandler = ({ target: { value } }) => {
-    dispatch({ type: Actions.NAME, payload: value });
+  const updateGoal: ReactNativeChangeHandler = (event) => {
+    dispatch({ type: Actions.NAME, payload: event.nativeEvent.text });
   };
 
   const updateFrequency = (value: Freq) => {
