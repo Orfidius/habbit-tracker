@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { styles } from "./App.module";
 import { CgAddR } from "react-icons/cg";
 import { MdModeEditOutline } from "react-icons/md";
 
 import { AddModal } from "./AddModal";
 import { Cardlist } from "./HabitList";
-import { Celebration } from "./Celebration";
 import { gethabits, Habit, initDB } from "./repositories/habit-repository";
 import cx from "classnames";
 import { useDispatch } from "react-redux";
@@ -15,6 +14,7 @@ import { setEditMode } from "./store/EditMode";
 import { FilterTabs } from "./FilterTabs/FilterTabs";
 import { Button, StatusBar, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
+import Fireworks from "react-native-fireworks";
 
 export const App = () => {
   const [habits, setHabits] = useState<Array<Habit>>([]);
@@ -22,10 +22,8 @@ export const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    (async () => {
-      // await initDB();
-      await updateCards();
-    })();
+    // await initDB();
+    updateCards();
   }, []);
 
   const addButtonHandler = () => {
@@ -42,6 +40,7 @@ export const App = () => {
     }, 900);
   };
   const updateCards = async () => {
+    console.log("Joker, updating cards");
     const newHabits = await gethabits();
     console.log("Getting Cards", JSON.stringify(newHabits));
     setHabits(newHabits);
@@ -56,7 +55,7 @@ export const App = () => {
         // hidden={true}
       />
       <FilterTabs />
-      {/* <Celebration> // TODO replace */}
+      <Fireworks />
       <View style={styles.cardContainer}>
         <Cardlist habits={habits} updateCards={updateCards} />
       </View>

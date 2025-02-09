@@ -43,13 +43,10 @@ export const insertHabit = async (habit: Habit) => {
     const freqArray = Array.from(frequency);
     valuesToAdd.push(`"${freqArray.join(",")}"`);
   }
-  console.log("batman", valuesToAdd.join(","));
   const db = await SQLite.openDatabaseAsync("habitsDB");
   const result = await db.execAsync(`
         INSERT INTO habits (name, iteration, goal, remind, frequency )
         VALUES (${valuesToAdd.join(",")})`);
-  console.log("Batman Result", result);
-  console.log("Called insert");
 };
 
 export const updateHabit = async (habit: Habit) => {
@@ -80,7 +77,6 @@ export const gethabits = async (): Promise<Habit[]> => {
   const results = await db.getAllAsync<RawHabit>(
     `SELECT id, name, iteration, goal, frequency, lastUpdated FROM ${TABLE_NAME}`,
   );
-  console.log("Batman", JSON.stringify(results));
   const parsedHabits = results.map((habit) => ({
     ...habit,
     frequency: new Set(habit.frequency.split(",")),

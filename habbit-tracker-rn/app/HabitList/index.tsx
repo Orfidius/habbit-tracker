@@ -11,18 +11,11 @@ type Props = {
 };
 
 export const Cardlist: FC<Props> = ({ habits, updateCards }) => {
-  const [filteredHabits, setFilteredHabbits] = useState<Habit[]>([]);
   const filterValue = useAppSelector((state) => state.habitState.freqFilter);
-  useEffect(() => {
-    const newHabits = habits.filter(({ frequency }) =>
-      frequency.has(filterValue),
-    );
-    setFilteredHabbits(newHabits);
-  }, [habits.length, filterValue]);
   return (
     <FlatList
       style={styles.cardList}
-      data={filteredHabits}
+      data={habits.filter(({ frequency }) => frequency.has(filterValue))}
       renderItem={({ item }) => <Card updateCards={updateCards} habit={item} />}
       keyExtractor={(habit) => habit.id.toString()}
     />

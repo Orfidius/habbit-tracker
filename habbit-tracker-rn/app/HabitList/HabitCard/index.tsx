@@ -35,7 +35,7 @@ export const Card: FC<Props> = ({
   habit: { id, name, iteration, goal, lastUpdated, ...habit },
   updateCards,
 }) => {
-  console.log("Batman", { id, name, iteration, goal, lastUpdated, ...habit });
+  console.log("Red Hood", { id, name, iteration, goal, lastUpdated, ...habit });
   const { setShowCelebrate } = useContext(celebrationContext);
   const [isFilling, setIsFilling] = useState<boolean>(false);
   const [disabled, setDisabled] = useState(false);
@@ -43,14 +43,6 @@ export const Card: FC<Props> = ({
   const timerRef = useRef<TimerReturn | null>(null);
   const dispatch = useDispatch();
   const widthAnim = useAnimatedValue(0); // Initial value for opacity: 0
-
-  // useEffect(() => {
-  //   Animated.timing(fadeAnim, {
-  //     toValue: 1,
-  //     duration: 10000,
-  //     useNativeDriver: true,
-  //   }).start();
-  // }, [fadeAnim]);
 
   useEffect(() => {
     if (lastUpdated) {
@@ -70,12 +62,13 @@ export const Card: FC<Props> = ({
       duration: 1000,
       useNativeDriver: false,
     }).start();
+    console.log("Clayface Card Disabled", disabled);
     if (!disabled) {
       timerRef.current = setTimeout(async () => {
         setShowCelebrate(true);
         setDisabled(true);
-        // TODO: Reset
         await incrementHabit(id, iteration);
+        console.log("Red Robin updating Cards");
         await updateCards();
       }, 1200);
     }
