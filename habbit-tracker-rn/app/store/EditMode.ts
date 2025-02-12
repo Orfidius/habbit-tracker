@@ -16,8 +16,8 @@ export const editModeSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    setEditMode(state) {
-      state.enabled = !state.enabled;
+    setEditMode(state, action: PayloadAction<boolean>) {
+      state.enabled = action.payload;
     },
     setCurrentHabit(state, action: PayloadAction<Habit | undefined>) {
       state.selectedHabbit = action.payload;

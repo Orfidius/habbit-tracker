@@ -35,7 +35,6 @@ export const Card: FC<Props> = ({
   habit: { id, name, iteration, goal, lastUpdated, ...habit },
   updateCards,
 }) => {
-  console.log("Red Hood", { id, name, iteration, goal, lastUpdated, ...habit });
   const { setShowCelebrate } = useContext(celebrationContext);
   const [isFilling, setIsFilling] = useState<boolean>(false);
   const [disabled, setDisabled] = useState(false);
@@ -62,13 +61,11 @@ export const Card: FC<Props> = ({
       duration: 1000,
       useNativeDriver: false,
     }).start();
-    console.log("Clayface Card Disabled", disabled);
     if (!disabled) {
       timerRef.current = setTimeout(async () => {
         setShowCelebrate(true);
         setDisabled(true);
         await incrementHabit(id, iteration);
-        console.log("Red Robin updating Cards");
         await updateCards();
       }, 1200);
     }

@@ -3,6 +3,7 @@ import {
   FC,
   MouseEventHandler,
   Reducer,
+  useEffect,
   useReducer,
   useState,
 } from "react";
@@ -34,6 +35,7 @@ enum Actions {
   FREQUENCY,
   GOAL,
   MULTIPLE_FREQUENCY,
+  SET,
 }
 
 type FrequencyAction = {
@@ -55,11 +57,17 @@ type GoalAction = {
   payload: string;
 };
 
+type SetAction = {
+  type: Actions.SET;
+  payload: Habit;
+};
+
 type ActionPayload =
   | FrequencyAction
   | NameAction
   | GoalAction
-  | MultipleFrequencyAction;
+  | MultipleFrequencyAction
+  | SetAction;
 
 type ReactNativeChangeHandler = (
   e: NativeSyntheticEvent<TextInputChangeEventData>,
@@ -89,6 +97,9 @@ const reducer: Reducer<Habit, ActionPayload> = (
           : [];
       return { ...state, frequency: new Set(newFreq) };
     }
+    case Actions.SET: {
+      return { ...state, ...action.payload };
+    }
   }
 };
 
@@ -111,7 +122,9 @@ export const AddModal: FC<AddModalProps> = ({ onClose }) => {
   const appDispatch = useDispatch();
   const [habit, dispatch] = useReducer(reducer, selectedHabit ?? initialState);
   const [isClosing, setIsClosing] = useState(false);
-
+  useEffect(() => {
+    selectedHabit && dispatch({ type: Actions.SET, payload: selectedHabit });
+  }, [selectedHabit]);
   const updateName: ReactNativeChangeHandler = (event) => {
     dispatch({ type: Actions.NAME, payload: event.nativeEvent.text });
   };

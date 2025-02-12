@@ -33,8 +33,8 @@ export const habitSlice = createSlice({
     setHabits: (state, action: PayloadAction<Array<Habit>>) => {
       state.habits = action.payload;
     },
-    setModalOpen(state) {
-      state.modalOpen = !state.modalOpen;
+    setModalOpen(state, action: PayloadAction<boolean>) {
+      state.modalOpen = action.payload;
     },
     setFreqFilter(state, action: PayloadAction<Freq>) {
       state.freqFilter = action.payload;

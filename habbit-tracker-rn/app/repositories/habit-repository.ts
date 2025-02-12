@@ -13,9 +13,7 @@ export type Habit = {
 const TABLE_NAME = "habits";
 
 export const initDB = async () => {
-  console.log("Joker running init");
   const db = await SQLite.openDatabaseAsync("habitsDB");
-  console.log("Got DB");
   try {
     const result = await db.execAsync(`
     PRAGMA journal_mode = WAL;
@@ -29,7 +27,6 @@ export const initDB = async () => {
                         lastUpdated DATETIME
                       );
 `);
-    console.log("Joker completed migrationr", JSON.stringify(result));
   } catch (e) {
     console.log("Error", e);
   }
@@ -65,8 +62,6 @@ export const updateHabit = async (habit: Habit) => {
         UPDATE habits
         SET ${habitPayload.join(",")}
         WHERE id=${id}`);
-  console.log(result);
-  console.log("Called update");
 };
 
 interface RawHabit extends Omit<Habit, "frequency"> {
@@ -85,7 +80,6 @@ export const gethabits = async (): Promise<Habit[]> => {
 };
 
 export const incrementHabit = async (id: number, iteration: number) => {
-  console.log("Batman Incrementing habit", id, iteration);
   const db = await SQLite.openDatabaseAsync("habitsDB");
   const result = await db.runAsync(`
             UPDATE habits
@@ -94,6 +88,4 @@ export const incrementHabit = async (id: number, iteration: number) => {
                 lastUpdated = ${Date.now()}
             WHERE id == ${id}
         `);
-  console.log(result);
-  console.log("increment habbit");
 };

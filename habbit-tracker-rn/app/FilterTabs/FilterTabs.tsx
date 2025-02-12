@@ -15,7 +15,6 @@ export const FilterTabs: FC = () => {
   }, []);
 
   const onFilterHandler = (val: Freq) => {
-    console.log(val);
     dispatch(setFreqFilter(val));
   };
   return (

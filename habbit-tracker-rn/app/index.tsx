@@ -8,7 +8,6 @@ import { initDB } from "./repositories/habit-repository";
 export default function Index() {
   useEffect(() => {
     (async () => {
-      console.log("Calling init");
       await initDB();
     })();
   }, []);
