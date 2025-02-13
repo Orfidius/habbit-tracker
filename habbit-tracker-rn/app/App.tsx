@@ -14,6 +14,7 @@ import { setEditMode } from "./store/EditMode";
 import { FilterTabs } from "./FilterTabs/FilterTabs";
 import { Button, StatusBar, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
+import LottieView from "lottie-react-native";
 
 export const App = () => {
   const [habits, setHabits] = useState<Array<Habit>>([]);
@@ -22,7 +23,6 @@ export const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // await initDB();
     updateCards();
   }, []);
 
@@ -41,9 +41,14 @@ export const App = () => {
     const newHabits = await gethabits();
     setHabits(newHabits);
   };
-
   return (
     <View style={styles.container}>
+      <LottieView
+        style={styles.celebrationContainer}
+        source={require("../assets/images/fireworks.json")}
+        autoPlay
+        loop
+      />
       <StatusBar backgroundColor="#222" />
       <FilterTabs />
       <View style={styles.cardContainer}>

@@ -12,6 +12,17 @@ export const styles = StyleSheet.create({
     // padding: 5,
     // columnGap: 5,
     height: "100%",
+    position: "relative",
+  },
+  celebrationContainer: {
+    position: "absolute",
+    flex: 1,
+    top: 0,
+    left: 0,
+    zIndex: 99,
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
   },
   cardContainer: {
     display: "flex",
