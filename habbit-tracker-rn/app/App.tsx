@@ -15,6 +15,7 @@ import { FilterTabs } from "./FilterTabs/FilterTabs";
 import { Button, StatusBar, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import LottieView from "lottie-react-native";
+import { Celebration } from "./Celebration";
 
 export const App = () => {
   const [habits, setHabits] = useState<Array<Habit>>([]);
@@ -43,30 +44,26 @@ export const App = () => {
   };
   return (
     <View style={styles.container}>
-      <LottieView
-        style={styles.celebrationContainer}
-        source={require("../assets/images/fireworks.json")}
-        autoPlay
-        loop
-      />
-      <StatusBar backgroundColor="#222" />
-      <FilterTabs />
-      <View style={styles.cardContainer}>
-        <Cardlist habits={habits} updateCards={updateCards} />
-      </View>
-      <AddModal onClose={onCloseModal} />
-      <TouchableOpacity
-        onPress={addButtonHandler}
-        style={[styles.FAB, styles.add]}
-      >
-        <Icon name="plus-circle" size={40} />
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={editButtonHandler}
-        style={[styles.FAB, styles.edit]}
-      >
-        <Icon name="edit-2" size={30} />
-      </TouchableOpacity>
+      <Celebration>
+        <StatusBar backgroundColor="#222" />
+        <FilterTabs />
+        <View style={styles.cardContainer}>
+          <Cardlist habits={habits} updateCards={updateCards} />
+        </View>
+        <AddModal onClose={onCloseModal} />
+        <TouchableOpacity
+          onPress={addButtonHandler}
+          style={[styles.FAB, styles.add]}
+        >
+          <Icon name="plus-circle" size={40} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={editButtonHandler}
+          style={[styles.FAB, styles.edit]}
+        >
+          <Icon name="edit-2" size={30} />
+        </TouchableOpacity>
+      </Celebration>
     </View>
   );
 };

@@ -18,6 +18,7 @@ export const Cardlist: FC<Props> = ({ habits, updateCards }) => {
       data={habits.filter(({ frequency }) => frequency.has(filterValue))}
       renderItem={({ item }) => <Card updateCards={updateCards} habit={item} />}
       keyExtractor={(habit) => habit.id.toString()}
+      contentContainerStyle={{ paddingBottom: 175 }}
     />
   );
 };

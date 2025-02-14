@@ -87,7 +87,7 @@ export const Card: FC<Props> = ({
         ...habit,
       } as Habit),
     );
-    dispatch(setModalOpen());
+    dispatch(setModalOpen(true));
   };
 
   return (

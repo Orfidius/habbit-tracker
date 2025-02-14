@@ -6,10 +6,9 @@ import {
   useRef,
   useState,
 } from "react";
-import { View } from "react-native";
-// import styles from "./style.module.scss";
-// import Fireworks, { FireworksHandlers } from "@fireworks-js/react";
-
+import { Text, View } from "react-native";
+import { styles } from "./style.module";
+import LottieView from "lottie-react-native";
 type Props = {} & PropsWithChildren;
 
 type contextType = {
@@ -24,17 +23,7 @@ export const celebrationContext = createContext<contextType>({
 
 export const Celebration: FC<Props> = ({ children }) => {
   const [show, setShow] = useState(false);
-  // const [closing, setClosing] = useState(true);
-  // const ref = useRef<FireworksHandlers>(null);
   const timerRef = useRef<TimerReturn | null>(null);
-  // useEffect(() => {
-  //   if (!ref.current) return;
-  //   if (show) {
-  //     ref.current.start();
-  //   }
-  //   // }
-  // }, [ref.current, show]);
-
   useEffect(() => {
     if (timerRef.current) {
       clearTimeout(timerRef.current);
@@ -43,29 +32,26 @@ export const Celebration: FC<Props> = ({ children }) => {
       setShow(false);
     }, 3000);
   }, [show]);
-
+  console.log("batman", show);
   return (
     <>
       {show && (
-        <View>
-          <h2>Well Done</h2>
-          <View>
-            {/* <Fireworks
-              ref={ref}
-              options={{ opacity: 0.5 }}
+        <View style={styles.celebrationContainer}>
+          <Text style={styles.header2}>Well Done</Text>
+          {
+            <LottieView
               style={{
-                top: 0,
-                left: 0,
-                width: "100%",
+                flex: 1,
                 height: "100%",
-                position: "fixed",
-                background: "#000",
+                width: "100%",
               }}
-            /> */}
-          </View>
+              source={require("../../assets/images/fireworks.json")}
+              autoPlay
+              loop
+            />
+          }
         </View>
       )}
-
       <celebrationContext.Provider value={{ setShowCelebrate: setShow }}>
         {children}
       </celebrationContext.Provider>
