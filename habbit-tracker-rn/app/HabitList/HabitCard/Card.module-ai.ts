@@ -117,4 +117,11 @@ export const styles = StyleSheet.create({
     fontWeight: "900",
     marginBottom: 45,
   },
+  editButtons: {
+    display: "flex",
+    flexDirection: "row",
+    marginTop: -2,
+    columnGap: 6,
+    justifyContent: "flex-end",
+  },
 });

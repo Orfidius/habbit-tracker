@@ -81,11 +81,19 @@ export const gethabits = async (): Promise<Habit[]> => {
 
 export const incrementHabit = async (id: number, iteration: number) => {
   const db = await SQLite.openDatabaseAsync("habitsDB");
-  const result = await db.runAsync(`
+  await db.runAsync(`
             UPDATE habits
             SET
                 iteration = ${iteration + 1},
                 lastUpdated = ${Date.now()}
             WHERE id == ${id}
         `);
+};
+
+export const deleteHabit = async (id: number) => {
+  const db = await SQLite.openDatabaseAsync("habitsDB");
+  await db.runAsync(`
+    DELETE FROM habits
+    WHERE id = ${id}
+   `);
 };

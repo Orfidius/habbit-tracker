@@ -1,4 +1,7 @@
-import { incrementHabit } from "../../repositories/habit-repository";
+import {
+  deleteHabit,
+  incrementHabit,
+} from "../../repositories/habit-repository";
 import { celebrationContext } from "../../Celebration";
 import dayjs from "dayjs";
 import { MdModeEditOutline } from "react-icons/md";
@@ -21,7 +24,9 @@ import { styles } from "./Card.module-ai";
 import { LinearGradient } from "expo-linear-gradient";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Pressable } from "react-native";
-
+import { Button } from "react-native";
+import * as Haptics from "expo-haptics";
+import { Vibration } from "react-native";
 type Props = {
   habit: Habit;
   updateCards: () => Promise<void>;
@@ -42,7 +47,7 @@ export const Card: FC<Props> = ({
   const timerRef = useRef<TimerReturn | null>(null);
   const dispatch = useDispatch();
   const widthAnim = useAnimatedValue(0); // Initial value for opacity: 0
-
+  const [tickHaptic, setShouldTick] = useTickHaptic();
   useEffect(() => {
     if (lastUpdated) {
       const date = dayjs(lastUpdated);
@@ -52,19 +57,26 @@ export const Card: FC<Props> = ({
       }
     }
   }, [iteration]);
-
+  useEffect(() => {
+    if (isFilling) {
+    }
+  }, [isFilling]);
   const mouseDownHandler = () => {
     if (isInEditMode) return;
     !disabled && setIsFilling(true);
-    Animated.timing(widthAnim, {
-      toValue: 100,
-      duration: 1000,
-      useNativeDriver: false,
-    }).start();
     if (!disabled) {
+      setShouldTick(true);
+      Animated.timing(widthAnim, {
+        toValue: 100,
+        duration: 1000,
+        useNativeDriver: false,
+      }).start();
+      tickHaptic(10);
       timerRef.current = setTimeout(async () => {
         setShowCelebrate(true);
         setDisabled(true);
+        await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Rigid);
+        Vibration.vibrate(800);
         await incrementHabit(id, iteration);
         await updateCards();
       }, 1200);
@@ -72,6 +84,7 @@ export const Card: FC<Props> = ({
   };
   const mouseUpHandler = () => {
     setIsFilling(false);
+    setShouldTick(false);
     widthAnim.setValue(0);
     timerRef.current && clearTimeout(timerRef.current);
   };
@@ -89,7 +102,10 @@ export const Card: FC<Props> = ({
     );
     dispatch(setModalOpen(true));
   };
-
+  const onDelete = async () => {
+    await deleteHabit(id);
+    await updateCards();
+  };
   return (
     <View>
       <Pressable
@@ -123,11 +139,6 @@ export const Card: FC<Props> = ({
           />
         </Animated.View>
         <View style={styles.outer}>
-          {isInEditMode && (
-            <TouchableOpacity style={styles.edit} onPress={onEditHandler}>
-              <Icon name="edit" />
-            </TouchableOpacity>
-          )}
           <View style={styles.inner}>
             <View style={styles.title}>
               <Text style={styles.heading}>{name}</Text>
@@ -135,13 +146,21 @@ export const Card: FC<Props> = ({
                 {lastUpdated && <IncrementDate lastUpdated={lastUpdated} />}
               </View>
             </View>
-            <View style={styles.copy}>
-              {/* TODO: Add "Last Updated" */}
-              <Text style={styles.numbersCopy}>Followed through on:</Text>
-              <Text style={styles.numbers}>
-                {iteration}/{goal}
-              </Text>
-            </View>
+            {isInEditMode && (
+              <View style={styles.editButtons}>
+                <Button title={"Edit"} onPress={onEditHandler} />
+                <Button title={"Delete"} onPress={onDelete} color={"#ff002b"} />
+              </View>
+            )}
+            {!isInEditMode && (
+              <View style={styles.copy}>
+                {/* TODO: Add "Last Updated" */}
+                <Text style={styles.numbersCopy}>Followed through on:</Text>
+                <Text style={styles.numbers}>
+                  {iteration}/{goal}
+                </Text>
+              </View>
+            )}
           </View>
         </View>
       </Pressable>
@@ -152,4 +171,21 @@ export const Card: FC<Props> = ({
 const IncrementDate: FC<{ lastUpdated: number }> = ({ lastUpdated }) => {
   const date = dayjs(lastUpdated).format("MMM DD [at] h:mm A");
   return <Text style={styles.lastUpdated}>{date}</Text>;
+};
+
+const useTickHaptic = (): [(max: number) => void, (arg: boolean) => void] => {
+  const shouldTickHaptic = useRef<boolean>(true);
+  const shouldTick = useRef(true);
+  const tickHaptic = (max: number, current = 0) => {
+    if (current < max && shouldTick.current) {
+      setTimeout(async () => {
+        await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Rigid);
+        tickHaptic(max, current + 1);
+      }, 100);
+    }
+  };
+  const setShouldTick = (val: boolean) => {
+    shouldTick.current = val;
+  };
+  return [tickHaptic, setShouldTick];
 };
