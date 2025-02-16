@@ -122,6 +122,12 @@ export const AddModal: FC<AddModalProps> = ({ onClose }) => {
   const appDispatch = useDispatch();
   const [habit, dispatch] = useReducer(reducer, selectedHabit ?? initialState);
   const [isClosing, setIsClosing] = useState(false);
+  const canSave = Object.entries(habit)
+    .filter(([key]) => key !== "id" && key !== "iteration")
+    .every(([key, value]) => {
+      if (typeof value === "number") return value > 0;
+      return typeof value === "boolean" || Array.from(value).length;
+    });
   useEffect(() => {
     selectedHabit && dispatch({ type: Actions.SET, payload: selectedHabit });
   }, [selectedHabit]);
@@ -152,22 +158,14 @@ export const AddModal: FC<AddModalProps> = ({ onClose }) => {
   };
   const onCancel = () => {
     onClose(() => {
+      dispatch({ type: Actions.SET, payload: initialState });
       setIsClosing(true);
       appDispatch(setCurrentHabit());
     });
   };
   return (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={showModal}
-      // className={cx(
-      //   styles.AddModal,
-      //   isClosing ? styles.closing : styles.opening,
-      // )}
-    >
+    <Modal animationType="slide" transparent={true} visible={showModal}>
       <View style={styles.addModal}>
-        {/* TODO: change task if on update operation  */}
         <Text style={styles.heading}>Start New habit</Text>
         <View>
           <InputText
@@ -188,7 +186,7 @@ export const AddModal: FC<AddModalProps> = ({ onClose }) => {
             setValues={selectAllFrequencies}
           />
           <View style={styles.buttonWrapper}>
-            <Button onPress={onSave} title={"Save"} />
+            <Button onPress={onSave} disabled={!canSave} title={"Save"} />
             <Button onPress={onCancel} title={"Cancel"} />
           </View>
         </View>
@@ -224,12 +222,6 @@ const FrequencyInput: FC<{
   return (
     <View
       style={{
-        // display: "flex",
-        // flexDirection: "column",
-        // alignItems: "flex-start",
-        // alignContent: "flex-start",
-        // justifyContent: "flex-start",
-        // rowGap: 0,
         marginBottom: 20,
       }}
     >

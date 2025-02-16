@@ -181,7 +181,7 @@ const useTickHaptic = (): [(max: number) => void, (arg: boolean) => void] => {
       setTimeout(async () => {
         await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Rigid);
         tickHaptic(max, current + 1);
-      }, 100);
+      }, 50);
     }
   };
   const setShouldTick = (val: boolean) => {
