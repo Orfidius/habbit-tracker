@@ -155,7 +155,6 @@ dependencies {
     def isWebpAnimatedEnabled = (findProperty('expo.webp.animated') ?: "") == "true";
 
     apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
-    apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
 
     if (isGifEnabled) {
         // For animated gif support
