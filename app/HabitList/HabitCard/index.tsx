@@ -20,7 +20,7 @@ import {
 import { Habit } from "@/app/repositories/habit-repository";
 import React, { FC, useContext, useEffect, useRef, useState } from "react";
 // import { styles } from "../styles.module";
-import { styles } from "./Card.module-ai";
+import { styles } from "./Card.module";
 import { LinearGradient } from "expo-linear-gradient";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Pressable } from "react-native";
@@ -154,8 +154,6 @@ export const Card: FC<Props> = ({
             )}
             {!isInEditMode && (
               <View style={styles.copy}>
-                {/* TODO: Add "Last Updated" */}
-                <Text style={styles.numbersCopy}>Followed through on:</Text>
                 <Text style={styles.numbers}>
                   {iteration}/{goal}
                 </Text>
