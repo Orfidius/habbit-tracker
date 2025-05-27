@@ -13,3 +13,10 @@ export const DAYS: Record<string, string> = {
 export const DAYS_ENTRIES = Object.entries(DAYS);
 
 export const TODAY = dayjs().day();
+
+export const fontFamilys = {
+  PLAYFAIR_DISPLAY: {
+    normal: "PlayfairDisplayRegular",
+    bold: "PlayfairDisplayBold",
+  },
+};

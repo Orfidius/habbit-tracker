@@ -42,6 +42,7 @@ export const styles = StyleSheet.create({
     alignItems: "flex-end",
     position: "relative",
     fontSize: 24,
+    fontFamily: "PlayFairDisplayRegular",
     // alignItems: 'start',
   },
   approveBlock: {
