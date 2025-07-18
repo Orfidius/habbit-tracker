@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
     opacity: 0,
   },
   fill: {
-    // backgroundSize: "0% 100%",
+    backgroundSize: "0% 100%",
   },
   edit: {
     borderRadius: 10,
@@ -42,7 +42,6 @@ export const styles = StyleSheet.create({
     alignItems: "flex-end",
     position: "relative",
     fontSize: 24,
-    fontFamily: "PlayFairDisplayRegular",
     // alignItems: 'start',
   },
   approveBlock: {
@@ -116,12 +115,13 @@ export const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 26,
-    fontWeight: "900",
     marginBottom: 5,
     width: "100%",
     textAlign: "left",
     borderBottomWidth: 1.5,
     borderBottomColor: "#222",
+    fontFamily: "PlayfairDisplay_800ExtraBold",
+    textTransform: "capitalize",
   },
   editButtons: {
     display: "flex",

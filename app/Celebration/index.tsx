@@ -32,7 +32,6 @@ export const Celebration: FC<Props> = ({ children }) => {
       setShow(false);
     }, 3000);
   }, [show]);
-  console.log("batman", show);
   return (
     <>
       {show && (
