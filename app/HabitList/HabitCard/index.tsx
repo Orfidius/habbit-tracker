@@ -26,7 +26,7 @@ import { Pressable } from "react-native";
 import { Button } from "react-native";
 import * as Haptics from "expo-haptics";
 import { Vibration } from "react-native";
-import { Ionicons } from "@react-native-vector-icons/ionicons";
+import { Ionicons } from "@expo/vector-icons";
 
 type Props = {
   habit: Habit;
