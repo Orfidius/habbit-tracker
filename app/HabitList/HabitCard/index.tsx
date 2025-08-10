@@ -22,11 +22,12 @@ import React, { FC, useContext, useEffect, useRef, useState } from "react";
 // import { styles } from "../styles.module";
 import { styles } from "./Card.module";
 import { LinearGradient } from "expo-linear-gradient";
-import Icon from "react-native-vector-icons/FontAwesome";
 import { Pressable } from "react-native";
 import { Button } from "react-native";
 import * as Haptics from "expo-haptics";
 import { Vibration } from "react-native";
+import { Ionicons } from "@react-native-vector-icons/ionicons";
+
 type Props = {
   habit: Habit;
   updateCards: () => Promise<void>;
@@ -143,6 +144,8 @@ export const Card: FC<Props> = ({
             <View style={styles.title}>
               <Text style={styles.heading}>{name}</Text>
               <View style={styles.approveBlock}>
+                {/* <PiSkull /> */}
+                <Ionicons name="skull-outline" size={24} color="#fff" />
                 {lastUpdated && <IncrementDate lastUpdated={lastUpdated} />}
               </View>
             </View>

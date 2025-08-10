@@ -102,7 +102,8 @@ export const styles = StyleSheet.create({
     color: "#222",
   },
   card: {
-    backgroundColor: "#c1cae1",
+    backgroundColor: "#fff",
+    boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
     borderRadius: 10,
     display: "flex",
     flexDirection: "column",
@@ -111,7 +112,6 @@ export const styles = StyleSheet.create({
     borderWidth: 3,
     overflow: "hidden",
     marginBottom: 16,
-    // borderColor: '#333',
   },
   heading: {
     fontSize: 26,

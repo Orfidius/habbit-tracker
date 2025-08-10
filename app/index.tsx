@@ -24,7 +24,6 @@ export default function Index() {
   }, []);
 
   useEffect(() => {
-    console.log("batman", error, loaded);
     if (loaded || error) {
       SplashScreen.hideAsync();
     }
