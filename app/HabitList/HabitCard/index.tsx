@@ -144,8 +144,11 @@ export const Card: FC<Props> = ({
             <View style={styles.title}>
               <Text style={styles.heading}>{name}</Text>
               <View style={styles.approveBlock}>
-                {/* <PiSkull /> */}
-                <Ionicons name="skull-outline" size={24} color="#000" />
+                <View style={{ flexDirection: "row" }}>
+                  <Ionicons name="skull-outline" size={32} color="#000" />
+                  <Ionicons name="skull-outline" size={32} color="#000" />
+                  <Ionicons name="skull-outline" size={32} color="#000" />
+                </View>
                 {lastUpdated && <IncrementDate lastUpdated={lastUpdated} />}
               </View>
             </View>
