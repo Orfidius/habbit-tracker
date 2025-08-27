@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 import { setCurrentHabit } from "../../store/EditMode";
 import { setModalOpen } from "../../store/HabitState";
 import {
-  // vibrate,
+  vibrate,
   impactFeedback,
   // notificationFeedback,
   // selectionFeedback,
@@ -55,11 +55,11 @@ export const Card: FC<Props> = ({
         setShowCelebrate(true);
         // setDisabled(true);
         // // await impactFeedback('medium')
-        // // await vibrate(1)
-        // await impactFeedback('medium')
-        // await notificationFeedback('warning')
+        await vibrate(2000);
+        // await impactFeedback("medium");
+        // await notificationFeedback("warning");
         // await selectionFeedback()
-        await impactFeedback("heavy");
+        // await impactFeedback("heavy");
         await incrementHbbit(id, iteration);
         await updateCards();
       }, 1200);
