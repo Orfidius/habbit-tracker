@@ -2,9 +2,7 @@
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
   "description": "Capability for the main window",
-  "windows": [
-    "main"
-  ],
+  "windows": ["main"],
   "permissions": [
     "core:default",
     "shell:allow-open",
@@ -12,8 +10,11 @@
     "sql:allow-execute",
     "sql:allow-load",
     "sql:allow-select",
-    "core:window:default", 
-    "core:window:allow-start-dragging"
-    
+    "core:window:default",
+    "core:window:allow-start-dragging",
+    "haptics:allow-impact-feedback",
+    "haptics:allow-notification-feedback",
+    "haptics:allow-selection-feedback",
+    "haptics:allow-vibrate"
   ]
 }

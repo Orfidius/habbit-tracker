@@ -1,4 +1,3 @@
-use tauri_plugin_haptics_native;
 use tauri_plugin_sql::{Migration, MigrationKind};
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
@@ -29,8 +28,8 @@ pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_sql::Builder::new().build())
         .plugin(tauri_plugin_shell::init())
-        .plugin(tauri_plugin_haptics_native::init())
-        // .plugin(tauri_plugin_haptics::init())
+        .plugin(tauri_plugin_opener::init())
+        .plugin(tauri_plugin_haptics::init())
         .plugin(
             tauri_plugin_sql::Builder::default()
                 .add_migrations("sqlite:habit.db", migrations)
