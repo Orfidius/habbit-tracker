@@ -128,7 +128,7 @@ export const Card: FC<Props> = ({
           }}
         >
           <LinearGradient
-            colors={["#252c3d", "#51596d", "#51596d", "#727d96"]}
+            colors={["#011", "#001", "#000", "#000"]}
             style={{
               width: "100%",
               height: "100%",
