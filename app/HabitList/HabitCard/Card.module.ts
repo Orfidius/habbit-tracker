@@ -81,17 +81,16 @@ export const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     width: "100%",
-    justifyContent: "space-between",
-    alignItems: "flex-end",
+    justifyContent: "flex-end",
   },
   numbersCopy: {
     /* Empty style */
   },
   numbers: {
     fontSize: 24,
-    color: "#600404",
-    fontFamily: "BigBlueTermPlus Nerd Font",
-    fontWeight: "900",
+    color: "#1B1B1B",
+    fontFamily: "RubikDirt_400Regular",
+    // fontWeight: "900",
   },
   doneForDay: {
     // touchAction: 1,
