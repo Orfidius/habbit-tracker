@@ -13,9 +13,9 @@ import {
   Animated,
   Text,
   TouchableOpacity,
-  useAnimatedValue,
   View,
   StyleSheet,
+  useAnimatedValue,
 } from "react-native";
 import { Habit } from "@/app/repositories/habit-repository";
 import React, { FC, useContext, useEffect, useRef, useState } from "react";
@@ -48,6 +48,7 @@ export const Card: FC<Props> = ({
   const timerRef = useRef<TimerReturn | null>(null);
   const dispatch = useDispatch();
   const widthAnim = useAnimatedValue(0); // Initial value for opacity: 0
+  const fadeInAnim = useAnimatedValue(0); // Initial value for opacity: 0
   const [tickHaptic, setShouldTick] = useTickHaptic();
   useEffect(() => {
     if (lastUpdated) {
@@ -72,6 +73,11 @@ export const Card: FC<Props> = ({
         duration: 1000,
         useNativeDriver: false,
       }).start();
+      Animated.timing(fadeInAnim, {
+        toValue: 255,
+        duration: 300,
+        useNativeDriver: false,
+      }).start();
       tickHaptic(10);
       timerRef.current = setTimeout(async () => {
         setShowCelebrate(true);
@@ -87,6 +93,7 @@ export const Card: FC<Props> = ({
     setIsFilling(false);
     setShouldTick(false);
     widthAnim.setValue(0);
+    fadeInAnim.setValue(0);
     timerRef.current && clearTimeout(timerRef.current);
   };
 
@@ -142,7 +149,17 @@ export const Card: FC<Props> = ({
         <View style={styles.outer}>
           <View style={styles.inner}>
             <View style={styles.title}>
-              <Text style={styles.heading}>{name}</Text>
+              <Animated.Text
+                style={{
+                  ...styles.heading,
+                  color: fadeInAnim.interpolate({
+                    inputRange: [0, 255],
+                    outputRange: ["rgb(0,0,0)", "rgb(255,255,255)"],
+                  }),
+                }}
+              >
+                {name}
+              </Animated.Text>
               <View style={styles.approveBlock}>
                 <View style={{ flexDirection: "row" }}>
                   <Ionicons name="skull-outline" size={32} color="#000" />
