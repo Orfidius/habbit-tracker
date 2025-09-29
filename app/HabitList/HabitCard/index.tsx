@@ -47,8 +47,10 @@ export const Card: FC<Props> = ({
   const isInEditMode = useAppSelector((state) => state.editModeState.enabled);
   const timerRef = useRef<TimerReturn | null>(null);
   const dispatch = useDispatch();
-  const widthAnim = useAnimatedValue(0); // Initial value for opacity: 0
-  const fadeInAnim = useAnimatedValue(0); // Initial value for opacity: 0
+  const widthAnim = useAnimatedValue(0);
+  const textFadeAnim = useAnimatedValue(0);
+  const numFadeAnim = useAnimatedValue(0);
+  const skullFadeAnim = useAnimatedValue(1);
   const [tickHaptic, setShouldTick] = useTickHaptic();
   useEffect(() => {
     if (lastUpdated) {
@@ -73,10 +75,20 @@ export const Card: FC<Props> = ({
         duration: 1000,
         useNativeDriver: false,
       }).start();
-      Animated.timing(fadeInAnim, {
+      Animated.timing(textFadeAnim, {
         toValue: 255,
         duration: 300,
         useNativeDriver: false,
+      }).start();
+      Animated.timing(numFadeAnim, {
+        toValue: 255,
+        duration: 1120,
+        useNativeDriver: false,
+      }).start();
+      Animated.timing(skullFadeAnim, {
+        toValue: 0,
+        duration: 400,
+        useNativeDriver: true,
       }).start();
       tickHaptic(10);
       timerRef.current = setTimeout(async () => {
@@ -93,7 +105,9 @@ export const Card: FC<Props> = ({
     setIsFilling(false);
     setShouldTick(false);
     widthAnim.setValue(0);
-    fadeInAnim.setValue(0);
+    textFadeAnim.setValue(0);
+    numFadeAnim.setValue(0);
+    skullFadeAnim.setValue(1);
     timerRef.current && clearTimeout(timerRef.current);
   };
 
@@ -152,7 +166,7 @@ export const Card: FC<Props> = ({
               <Animated.Text
                 style={{
                   ...styles.heading,
-                  color: fadeInAnim.interpolate({
+                  color: textFadeAnim.interpolate({
                     inputRange: [0, 255],
                     outputRange: ["rgb(0,0,0)", "rgb(255,255,255)"],
                   }),
@@ -161,11 +175,16 @@ export const Card: FC<Props> = ({
                 {name}
               </Animated.Text>
               <View style={styles.approveBlock}>
-                <View style={{ flexDirection: "row" }}>
+                <Animated.View
+                  style={{
+                    flexDirection: "row",
+                    opacity: skullFadeAnim,
+                  }}
+                >
                   <Ionicons name="skull-outline" size={32} color="#000" />
                   <Ionicons name="skull-outline" size={32} color="#000" />
                   <Ionicons name="skull-outline" size={32} color="#000" />
-                </View>
+                </Animated.View>
                 {lastUpdated && <IncrementDate lastUpdated={lastUpdated} />}
               </View>
             </View>
@@ -177,9 +196,17 @@ export const Card: FC<Props> = ({
             )}
             {!isInEditMode && (
               <View style={styles.copy}>
-                <Text style={styles.numbers}>
+                <Animated.Text
+                  style={{
+                    ...styles.numbers,
+                    color: numFadeAnim.interpolate({
+                      inputRange: [0, 255],
+                      outputRange: ["rgb(0,0,0)", "rgb(255,255,255)"],
+                    }),
+                  }}
+                >
                   {iteration}/{goal}
-                </Text>
+                </Animated.Text>
               </View>
             )}
           </View>
