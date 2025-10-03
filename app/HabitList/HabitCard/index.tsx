@@ -19,12 +19,12 @@ import {
 } from "react-native";
 import { Habit } from "@/app/repositories/habit-repository";
 import React, { FC, useContext, useEffect, useRef, useState } from "react";
-// import { styles } from "../styles.module";
 import { styles } from "./Card.module";
 import { LinearGradient } from "expo-linear-gradient";
 import { Pressable } from "react-native";
 import { Button } from "react-native";
 import * as Haptics from "expo-haptics";
+import LottieView from "lottie-react-native";
 import { Vibration } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -130,6 +130,16 @@ export const Card: FC<Props> = ({
   };
   return (
     <View>
+      <LottieView
+        style={{
+          flex: 1,
+          height: "100%",
+          width: "100%",
+        }}
+        source={require("../../../assets/images/gradient.json")}
+        autoPlay
+        loop
+      />
       <Pressable
         onPressIn={mouseDownHandler}
         onPressOut={mouseUpHandler}
