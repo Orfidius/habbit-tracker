@@ -1,0 +1,1 @@
+const GLOW_CONFIG = {}
