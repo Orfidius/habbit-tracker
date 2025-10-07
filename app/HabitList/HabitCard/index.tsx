@@ -27,6 +27,8 @@ import * as Haptics from "expo-haptics";
 import LottieView from "lottie-react-native";
 import { Vibration } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { GLOW_CONFIG } from "./consts";
+import AnimatedGlow from "react-native-animated-glow";
 
 type Props = {
   habit: Habit;
@@ -130,98 +132,94 @@ export const Card: FC<Props> = ({
   };
   return (
     <View>
-      <LottieView
-        style={{
-          flex: 1,
-          height: "100%",
-          width: "100%",
-        }}
-        source={require("../../../assets/images/gradient.json")}
-        autoPlay
-        loop
-      />
-      <Pressable
-        onPressIn={mouseDownHandler}
-        onPressOut={mouseUpHandler}
-        style={[styles.card, ...(disabled ? [styles.doneForDay] : [])]}
-      >
-        <Animated.View
-          style={{
-            position: "absolute",
-            top: 0,
-            opacity: 0.75,
-            height: "100%",
-            borderRadius: 5,
-            width: widthAnim.interpolate({
-              inputRange: [0, 50, 100],
-              outputRange: ["0%", "50%", "100%"],
-            }),
-          }}
+      <AnimatedGlow preset={GLOW_CONFIG}>
+        <Pressable
+          onPressIn={mouseDownHandler}
+          onPressOut={mouseUpHandler}
+          style={[styles.card, ...(disabled ? [styles.doneForDay] : [])]}
         >
-          <LinearGradient
-            colors={["#011", "#001", "#000", "#000"]}
+          <Animated.View
             style={{
-              width: "100%",
+              position: "absolute",
+              top: 0,
+              opacity: 0.75,
               height: "100%",
               borderRadius: 5,
-              borderRightColor: "#333",
+              width: widthAnim.interpolate({
+                inputRange: [0, 50, 100],
+                outputRange: ["0%", "50%", "100%"],
+              }),
             }}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-          />
-        </Animated.View>
-        <View style={styles.outer}>
-          <View style={styles.inner}>
-            <View style={styles.title}>
-              <Animated.Text
-                style={{
-                  ...styles.heading,
-                  color: textFadeAnim.interpolate({
-                    inputRange: [0, 255],
-                    outputRange: ["rgb(0,0,0)", "rgb(255,255,255)"],
-                  }),
-                }}
-              >
-                {name}
-              </Animated.Text>
-              <View style={styles.approveBlock}>
-                <Animated.View
-                  style={{
-                    flexDirection: "row",
-                    opacity: skullFadeAnim,
-                  }}
-                >
-                  <Ionicons name="skull-outline" size={32} color="#000" />
-                  <Ionicons name="skull-outline" size={32} color="#000" />
-                  <Ionicons name="skull-outline" size={32} color="#000" />
-                </Animated.View>
-                {lastUpdated && <IncrementDate lastUpdated={lastUpdated} />}
-              </View>
-            </View>
-            {isInEditMode && (
-              <View style={styles.editButtons}>
-                <Button title={"Edit"} onPress={onEditHandler} />
-                <Button title={"Delete"} onPress={onDelete} color={"#ff002b"} />
-              </View>
-            )}
-            {!isInEditMode && (
-              <View style={styles.copy}>
+          >
+            <LinearGradient
+              colors={["#011", "#001", "#000", "#000"]}
+              style={{
+                width: "100%",
+                height: "100%",
+                borderRadius: 5,
+                borderRightColor: "#333",
+              }}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+            />
+          </Animated.View>
+          <View style={styles.outer}>
+            <View style={styles.inner}>
+              <View style={styles.title}>
                 <Animated.Text
                   style={{
-                    ...styles.numbers,
-                    color: numFadeAnim.interpolate({
+                    ...styles.heading,
+                    color: textFadeAnim.interpolate({
                       inputRange: [0, 255],
                       outputRange: ["rgb(0,0,0)", "rgb(255,255,255)"],
                     }),
                   }}
                 >
-                  {iteration}/{goal}
+                  {name}
                 </Animated.Text>
+                <View style={styles.approveBlock}>
+                  <Animated.View
+                    style={{
+                      flexDirection: "row",
+                      opacity: skullFadeAnim,
+                    }}
+                  >
+                    <Ionicons name="skull-outline" size={32} color="#000" />
+                    <Ionicons name="skull-outline" size={32} color="#000" />
+                    <Ionicons name="skull-outline" size={32} color="#000" />
+                  </Animated.View>
+                  {lastUpdated && <IncrementDate lastUpdated={lastUpdated} />}
+                </View>
               </View>
-            )}
+              {isInEditMode && (
+                <View style={styles.editButtons}>
+                  <Button title={"Edit"} onPress={onEditHandler} />
+                  <Button
+                    title={"Delete"}
+                    onPress={onDelete}
+                    color={"#ff002b"}
+                  />
+                </View>
+              )}
+              {!isInEditMode && (
+                <View style={styles.copy}>
+                  <Animated.Text
+                    style={{
+                      ...styles.numbers,
+                      color: numFadeAnim.interpolate({
+                        inputRange: [0, 255],
+                        outputRange: ["rgb(0,0,0)", "rgb(255,255,255)"],
+                      }),
+                    }}
+                  >
+                    {iteration}/{goal}
+                  </Animated.Text>
+                </View>
+              )}
+            </View>
           </View>
-        </View>
-      </Pressable>
+        </Pressable>
+      </AnimatedGlow>
     </View>
   );
 };
