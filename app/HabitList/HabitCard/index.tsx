@@ -4,27 +4,25 @@ import {
 } from "../../repositories/habit-repository";
 import { celebrationContext } from "../../Celebration";
 import dayjs from "dayjs";
-import { MdModeEditOutline } from "react-icons/md";
 import { useAppSelector } from "../../store/hooks";
 import { useDispatch } from "react-redux";
 import { setCurrentHabit } from "../../store/EditMode";
 import { setModalOpen } from "../../store/HabitState";
-import {
-  Animated,
-  Text,
-  TouchableOpacity,
-  View,
-  StyleSheet,
-  useAnimatedValue,
-} from "react-native";
+import { Animated, Text, View, useAnimatedValue } from "react-native";
 import { Habit } from "@/app/repositories/habit-repository";
-import React, { FC, useContext, useEffect, useRef, useState } from "react";
+import React, {
+  FC,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { styles } from "./Card.module";
 import { LinearGradient } from "expo-linear-gradient";
 import { Pressable } from "react-native";
 import { Button } from "react-native";
 import * as Haptics from "expo-haptics";
-import LottieView from "lottie-react-native";
 import { Vibration } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { GLOW_CONFIG } from "./consts";
@@ -132,7 +130,7 @@ export const Card: FC<Props> = ({
   };
   return (
     <View>
-      <AnimatedGlow preset={GLOW_CONFIG}>
+      <ShouldGlow shouldGlow={disabled}>
         <Pressable
           onPressIn={mouseDownHandler}
           onPressOut={mouseUpHandler}
@@ -219,7 +217,7 @@ export const Card: FC<Props> = ({
             </View>
           </View>
         </Pressable>
-      </AnimatedGlow>
+      </ShouldGlow>
     </View>
   );
 };
@@ -245,3 +243,13 @@ const useTickHaptic = (): [(max: number) => void, (arg: boolean) => void] => {
   };
   return [tickHaptic, setShouldTick];
 };
+
+const ShouldGlow: FC<PropsWithChildren & { shouldGlow: boolean }> = ({
+  children,
+  shouldGlow,
+}) =>
+  shouldGlow ? (
+    <AnimatedGlow preset={GLOW_CONFIG}>{children}</AnimatedGlow>
+  ) : (
+    <View>{children}</View>
+  );
