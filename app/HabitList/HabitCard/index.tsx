@@ -130,7 +130,8 @@ export const Card: FC<Props> = ({
   };
   return (
     <View>
-      <ShouldGlow shouldGlow={disabled}>
+      {/*<ShouldGlow shouldGlow={disabled}>*/}
+      <ShouldGlow shouldGlow={true}>
         <Pressable
           onPressIn={mouseDownHandler}
           onPressOut={mouseUpHandler}
@@ -249,7 +250,9 @@ const ShouldGlow: FC<PropsWithChildren & { shouldGlow: boolean }> = ({
   shouldGlow,
 }) =>
   shouldGlow ? (
-    <AnimatedGlow preset={GLOW_CONFIG}>{children}</AnimatedGlow>
+    <AnimatedGlow style={{ width: "100%" }} preset={GLOW_CONFIG}>
+      {children}
+    </AnimatedGlow>
   ) : (
     <View>{children}</View>
   );
