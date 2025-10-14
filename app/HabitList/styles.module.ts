@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
     padding: 0,
     paddingHorizontal: 20,
     rowGap: 2,
-    marginTop: 16,
+    paddingTop: 25,
     height: "100%",
     width: "100%",
     paddingBottom: 20,

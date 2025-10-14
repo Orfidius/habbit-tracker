@@ -40,7 +40,7 @@ export const GLOW_CONFIG: PresetConfig = {
     {
       name: "default",
       preset: {
-        cornerRadius: 30,
+        cornerRadius: 14,
         outlineWidth: 4,
         borderColor: [
           "rgba(238, 255, 0, 1)",

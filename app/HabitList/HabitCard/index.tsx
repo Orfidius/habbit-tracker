@@ -129,9 +129,8 @@ export const Card: FC<Props> = ({
     await updateCards();
   };
   return (
-    <View>
-      {/*<ShouldGlow shouldGlow={disabled}>*/}
-      <ShouldGlow shouldGlow={true}>
+    <View style={{ marginBottom: 16 }}>
+      <ShouldGlow shouldGlow={disabled}>
         <Pressable
           onPressIn={mouseDownHandler}
           onPressOut={mouseUpHandler}
