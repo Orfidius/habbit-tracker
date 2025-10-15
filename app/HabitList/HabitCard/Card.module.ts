@@ -127,6 +127,10 @@ export const styles = StyleSheet.create({
     textTransform: "capitalize",
     color: "#362929",
   },
+  doneHeading: {
+    color: "#eee",
+    borderBottomColor: "#eee",
+  },
   editButtons: {
     display: "flex",
     flexDirection: "row",

@@ -62,9 +62,10 @@ export const Card: FC<Props> = ({
     }
   }, [iteration]);
   useEffect(() => {
-    if (isFilling) {
+    if (disabled) {
+      textFadeAnim.setValue(255);
     }
-  }, [isFilling]);
+  }, [disabled]);
   const mouseDownHandler = () => {
     if (isInEditMode) return;
     !disabled && setIsFilling(true);
@@ -167,6 +168,7 @@ export const Card: FC<Props> = ({
                 <Animated.Text
                   style={{
                     ...styles.heading,
+                    ...(disabled ? styles.doneHeading : {}),
                     color: textFadeAnim.interpolate({
                       inputRange: [0, 255],
                       outputRange: ["rgb(0,0,0)", "rgb(255,255,255)"],
