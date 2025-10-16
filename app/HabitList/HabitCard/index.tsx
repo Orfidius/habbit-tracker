@@ -38,7 +38,7 @@ const widthInputRange = Array.from<number>({ length: 100 }).map((i) => i);
 const widthOutputRange = widthInputRange.map((i) => `${i}%`);
 
 export const Card: FC<Props> = ({
-  habit: { id, name, iteration, goal, lastUpdated, ...habit },
+  habit: { id, name, iteration, goal, lastUpdated, missed, ...habit },
   updateCards,
 }) => {
   const { setShowCelebrate } = useContext(celebrationContext);
@@ -52,6 +52,7 @@ export const Card: FC<Props> = ({
   const numFadeAnim = useAnimatedValue(0);
   const skullFadeAnim = useAnimatedValue(1);
   const [tickHaptic, setShouldTick] = useTickHaptic();
+
   useEffect(() => {
     if (lastUpdated) {
       const date = dayjs(lastUpdated);
@@ -66,6 +67,7 @@ export const Card: FC<Props> = ({
       textFadeAnim.setValue(255);
     }
   }, [disabled]);
+  useEffect(() => {}, []);
   const mouseDownHandler = () => {
     if (isInEditMode) return;
     !disabled && setIsFilling(true);
@@ -111,7 +113,6 @@ export const Card: FC<Props> = ({
     skullFadeAnim.setValue(1);
     timerRef.current && clearTimeout(timerRef.current);
   };
-
   const onEditHandler = () => {
     dispatch(
       setCurrentHabit({

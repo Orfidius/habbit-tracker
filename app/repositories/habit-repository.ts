@@ -8,6 +8,7 @@ export type Habit = {
   remind: boolean;
   frequency: Set<string>;
   lastUpdated?: number;
+  misses?: number;
 };
 
 const TABLE_NAME = "habits";
@@ -24,7 +25,9 @@ export const initDB = async () => {
                         goal INTEGER,
                         remind BOOLEAN,
                         frequency TEXT,
-                        lastUpdated DATETIME
+                        lastUpdated DATETIME,
+                        createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+                        misses INTEGER
                       );
 `);
   } catch (e) {
@@ -40,6 +43,7 @@ export const insertHabit = async (habit: Habit) => {
     const freqArray = Array.from(frequency);
     valuesToAdd.push(`"${freqArray.join(",")}"`);
   }
+
   const db = await SQLite.openDatabaseAsync("habitsDB");
   const result = await db.execAsync(`
         INSERT INTO habits (name, iteration, goal, remind, frequency )
