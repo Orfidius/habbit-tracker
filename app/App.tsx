@@ -5,7 +5,12 @@ import { MdModeEditOutline } from "react-icons/md";
 
 import { AddModal } from "./AddModal";
 import { Cardlist } from "./HabitList";
-import { gethabits, Habit, initDB } from "./repositories/habit-repository";
+import {
+  gethabits,
+  Habit,
+  initDB,
+  updateHabits,
+} from "./repositories/habit-repository";
 import cx from "classnames";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "./store/hooks";
@@ -16,6 +21,7 @@ import { Button, StatusBar, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import LottieView from "lottie-react-native";
 import { Celebration } from "./Celebration";
+import { updateMisses } from "./services/misses-service";
 
 export const App = () => {
   const [habits, setHabits] = useState<Array<Habit>>([]);
@@ -40,7 +46,9 @@ export const App = () => {
   };
   const updateCards = async () => {
     const newHabits = await gethabits();
-    setHabits(newHabits);
+    const habbitsWithMisses = updateMisses(newHabits);
+    await updateHabits(habbitsWithMisses);
+    setHabits(habbitsWithMisses);
   };
   return (
     <View style={styles.container}>

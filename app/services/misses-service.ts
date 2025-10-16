@@ -2,7 +2,8 @@ import { Habit } from "../repositories/habit-repository";
 
 export const updateMisses = (habits: Habit[]) => {
   return habits.map((habit) => {
-    const { frequency, misses = 0, lastUpdated } = habit;
+    const { frequency, misses = 0, createdAt, lastUpdated = createdAt } = habit;
+
     // Basically, if last updated is more than the frequencty indicated, we have a miss
     // 1. resolve what the last updated should be from the frequncy.
     // If it's supposed to be every monday, and wednesday then If a single monday or wednesday passes since the last updated, miss.

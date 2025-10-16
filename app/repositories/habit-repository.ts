@@ -9,6 +9,7 @@ export type Habit = {
   frequency: Set<string>;
   lastUpdated?: number;
   misses?: number;
+  createdAt: number;
 };
 
 const TABLE_NAME = "habits";
@@ -66,6 +67,27 @@ export const updateHabit = async (habit: Habit) => {
         UPDATE habits
         SET ${habitPayload.join(",")}
         WHERE id=${id}`);
+};
+
+export const updateHabits = async (habits: Habit[]) => {
+  const db = await SQLite.openDatabaseAsync("habitsDB");
+  await db.withTransactionAsync(async () => {
+    for (const habit of habits) {
+      const { id, remind = false, frequency, ...habbit } = habit;
+      const habitPayload = Object.entries(habbit).map(([key, val]) => {
+        if (typeof val === "string") return `${key} = "${val}"`;
+        return `${key} = ${val}`;
+      });
+      if (frequency) {
+        const freqString = Array.from(frequency).join(",");
+        habitPayload.push(`frequency = "${freqString}"`);
+      }
+      habitPayload.push(`remind = ${remind}`);
+      await db.runAsync(
+        `UPDATE habits SET ${habitPayload.join(",")} WHERE id=${id}`,
+      );
+    }
+  });
 };
 
 interface RawHabit extends Omit<Habit, "frequency"> {
