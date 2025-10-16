@@ -47,6 +47,7 @@ export const App = () => {
   const updateCards = async () => {
     const newHabits = await gethabits();
     const habbitsWithMisses = updateMisses(newHabits);
+    // Make sure habits with new misses are stored in DB.
     await updateHabits(habbitsWithMisses);
     setHabits(habbitsWithMisses);
   };

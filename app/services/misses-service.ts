@@ -9,14 +9,14 @@ export const updateMisses = (habits: Habit[]) => {
     // If it's supposed to be every monday, and wednesday then If a single monday or wednesday passes since the last updated, miss.
     // So we take the lastUpdated, get a list of "days" that have passed since then, Check that list for the days we're supposed to do our habits on
     // Then check if any of our frequency days are in that list.
-      const daysSinceLastUpdated = Math.floor(
-        (Date.now() - lastUpdated) / (1000 * 60 * 60 * 24),
-      );
-      const frequencyDays = Array.from(frequency);
-      const missedDays = frequencyDays.filter(
-        (day) => daysSinceLastUpdated % 7 === parseInt(day),
-      );
-      const newMisses = misses + Number(Boolean(missedDays.length)); // 0 is false is 0. >= 1 is true is 1
-      return { ...habit, misses: newMisses };
-    }
+    const daysSinceLastUpdated = Math.floor(
+      (Date.now() - lastUpdated) / (1000 * 60 * 60 * 24),
+    );
+    const frequencyDays = Array.from(frequency);
+    const missedDays = frequencyDays.filter(
+      (day) => daysSinceLastUpdated % 7 === parseInt(day),
+    );
+    const newMisses = misses + Number(Boolean(missedDays.length)); // 0 is false is 0. >= 1 is true is 1
+    return { ...habit, misses: newMisses };
+  });
 };
