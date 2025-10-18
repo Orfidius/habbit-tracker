@@ -11,15 +11,13 @@ import {
   initDB,
   updateHabits,
 } from "./repositories/habit-repository";
-import cx from "classnames";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "./store/hooks";
 import { setModalOpen } from "./store/HabitState";
 import { setEditMode } from "./store/EditMode";
 import { FilterTabs } from "./FilterTabs/FilterTabs";
-import { Button, StatusBar, TouchableOpacity, View } from "react-native";
+import { StatusBar, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
-import LottieView from "lottie-react-native";
 import { Celebration } from "./Celebration";
 import { updateMisses } from "./services/misses-service";
 

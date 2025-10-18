@@ -16,6 +16,7 @@ export const styles = StyleSheet.create({
     color: "#fff",
     width: "100%",
     textAlign: "center",
+    fontFamily: "PlayfairDisplay_800ExtraBold",
     zIndex: 999,
     fontSize: 45,
     textTransform: "uppercase",

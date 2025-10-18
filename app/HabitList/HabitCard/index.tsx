@@ -38,7 +38,7 @@ const widthInputRange = Array.from<number>({ length: 100 }).map((i) => i);
 const widthOutputRange = widthInputRange.map((i) => `${i}%`);
 
 export const Card: FC<Props> = ({
-  habit: { id, name, iteration, goal, lastUpdated, missed, ...habit },
+  habit: { id, name, iteration, goal, lastUpdated, misses = 0, ...habit },
   updateCards,
 }) => {
   const { setShowCelebrate } = useContext(celebrationContext);
@@ -185,9 +185,9 @@ export const Card: FC<Props> = ({
                       opacity: skullFadeAnim,
                     }}
                   >
-                    <Ionicons name="skull-outline" size={32} color="#000" />
-                    <Ionicons name="skull-outline" size={32} color="#000" />
-                    <Ionicons name="skull-outline" size={32} color="#000" />
+                    {Array.from({ length: misses }).map(() => (
+                      <Ionicons name="skull-outline" size={32} color="#000" />
+                    ))}
                   </Animated.View>
                   {lastUpdated && <IncrementDate lastUpdated={lastUpdated} />}
                 </View>
@@ -208,6 +208,10 @@ export const Card: FC<Props> = ({
                     style={{
                       ...styles.numbers,
                       color: numFadeAnim.interpolate({
+                        inputRange: [0, 255],
+                        outputRange: ["rgb(0,0,0)", "rgb(255,255,255)"],
+                      }),
+                      backgroundColor: numFadeAnim.interpolate({
                         inputRange: [0, 255],
                         outputRange: ["rgb(0,0,0)", "rgb(255,255,255)"],
                       }),
