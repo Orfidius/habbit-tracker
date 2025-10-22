@@ -8,7 +8,13 @@ import { useAppSelector } from "../../store/hooks";
 import { useDispatch } from "react-redux";
 import { setCurrentHabit } from "../../store/EditMode";
 import { setModalOpen } from "../../store/HabitState";
-import { Animated, Text, View, useAnimatedValue } from "react-native";
+import {
+  Animated,
+  Text,
+  TextStyle,
+  View,
+  useAnimatedValue,
+} from "react-native";
 import { Habit } from "@/app/repositories/habit-repository";
 import React, {
   FC,
@@ -65,6 +71,7 @@ export const Card: FC<Props> = ({
   useEffect(() => {
     if (disabled) {
       textFadeAnim.setValue(255);
+      numFadeAnim.setValue(255);
     }
   }, [disabled]);
   useEffect(() => {}, []);
@@ -130,6 +137,7 @@ export const Card: FC<Props> = ({
     await deleteHabit(id);
     await updateCards();
   };
+  console.log({ lastUpdated });
   return (
     <View style={{ marginBottom: 16 }}>
       <ShouldGlow shouldGlow={disabled}>
@@ -185,7 +193,7 @@ export const Card: FC<Props> = ({
                       opacity: skullFadeAnim,
                     }}
                   >
-                    {Array.from({ length: misses }).map(() => (
+                    {Array.from({ length: misses + 2 }).map(() => (
                       <Ionicons name="skull-outline" size={32} color="#000" />
                     ))}
                   </Animated.View>
@@ -211,10 +219,6 @@ export const Card: FC<Props> = ({
                         inputRange: [0, 255],
                         outputRange: ["rgb(0,0,0)", "rgb(255,255,255)"],
                       }),
-                      backgroundColor: numFadeAnim.interpolate({
-                        inputRange: [0, 255],
-                        outputRange: ["rgb(0,0,0)", "rgb(255,255,255)"],
-                      }),
                     }}
                   >
                     {iteration}/{goal}
@@ -229,7 +233,9 @@ export const Card: FC<Props> = ({
   );
 };
 
-const IncrementDate: FC<{ lastUpdated: number }> = ({ lastUpdated }) => {
+const IncrementDate: FC<{
+  lastUpdated: number;
+}> = ({ lastUpdated }) => {
   const date = dayjs(lastUpdated).format("MMM DD [at] h:mm A");
   return <Text style={styles.lastUpdated}>{date}</Text>;
 };

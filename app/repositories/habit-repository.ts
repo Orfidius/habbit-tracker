@@ -111,7 +111,8 @@ export const incrementHabit = async (id: number, iteration: number) => {
             UPDATE habits
             SET
                 iteration = ${iteration + 1},
-                lastUpdated = ${Date.now()}
+                lastUpdated = ${Date.now()},
+                misses = 0
             WHERE id == ${id}
         `);
 };

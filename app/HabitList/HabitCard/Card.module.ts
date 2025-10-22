@@ -56,12 +56,14 @@ export const styles = StyleSheet.create({
   },
   lastUpdated: {
     fontWeight: "bold",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: "#fff",
     borderRadius: 20,
     padding: 5,
     paddingLeft: 12,
     fontSize: 12,
-    color: "#eee",
+    color: "333",
+    marginTop: 5,
+    marginBottom: 5,
   },
   approveIcon: {
     opacity: 0.8,
@@ -72,7 +74,6 @@ export const styles = StyleSheet.create({
     display: "none",
     justifyContent: "center",
     alignItems: "center",
-    // boxShadow: "inset 3px 3px 0px rgba(3, 3, 3, 3)",
   },
   approveIconVisible: {
     display: "flex",
@@ -81,6 +82,7 @@ export const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     width: "100%",
+    backgroundColor: "transparent",
     justifyContent: "flex-end",
   },
   numbersCopy: {
@@ -94,9 +96,7 @@ export const styles = StyleSheet.create({
     // fontWeight: "900",
   },
   doneForDay: {
-    // touchAction: 1,
     backgroundColor: "#000",
-    // backgroundImage: "linear-gradient(to right, #f0c863, 30%, #c6a44e)",
     borderWidth: 2,
     borderColor: "eee",
     color: "#eee",
