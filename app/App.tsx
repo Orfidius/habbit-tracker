@@ -6,6 +6,7 @@ import { MdModeEditOutline } from "react-icons/md";
 import { AddModal } from "./AddModal";
 import { Cardlist } from "./HabitList";
 import {
+  deleteHabit,
   gethabits,
   Habit,
   initDB,
@@ -45,8 +46,14 @@ export const App = () => {
   const updateCards = async () => {
     const newHabits = await gethabits();
     const habbitsWithMisses = updateMisses(newHabits);
-    // Make sure habits with new misses are stored in DB.
-    await updateHabits(habbitsWithMisses);
+    const getDoomedHabbits = habbitsWithMisses.filter(
+      ({ misses = 0 }) => misses > 3,
+    );
+    getDoomedHabbits.forEach((habit) => {
+      deleteHabit(habit.id);
+    });
+    const withOutDoomedHabbits = habits.filter(({ misses = 0 }) => misses <= 3);
+    await updateHabits(withOutDoomedHabbits);
     setHabits(habbitsWithMisses);
   };
   return (
