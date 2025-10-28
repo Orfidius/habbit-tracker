@@ -118,7 +118,7 @@ export const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 38,
-    marginBottom: 5,
+    marginBottom: 25,
     width: "100%",
     textAlign: "left",
     borderBottomWidth: 1.5,

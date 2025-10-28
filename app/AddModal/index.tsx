@@ -1,14 +1,5 @@
-import {
-  ChangeEventHandler,
-  FC,
-  MouseEventHandler,
-  Reducer,
-  useEffect,
-  useReducer,
-  useState,
-} from "react";
+import { FC, Reducer, useEffect, useReducer, useState } from "react";
 import { styles } from "./AddModal.module-ai";
-// import cx from "classnames";
 import {
   Habit,
   insertHabit,
@@ -21,7 +12,6 @@ import { Freq } from "../store/HabitState";
 import React from "react";
 import {
   NativeSyntheticEvent,
-  TextInput,
   TextInputChangeEventData,
   View,
   Text,
@@ -29,6 +19,7 @@ import {
 import { Modal } from "react-native";
 import { Button } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import { TextInput } from "react-native-paper";
 
 enum Actions {
   NAME,
@@ -110,6 +101,7 @@ const initialState: Habit = {
   goal: 90,
   remind: false,
   frequency: new Set(),
+  createdAt: Date.now(),
 };
 type AddModalProps = {
   onClose: (f: () => void) => void;
@@ -203,7 +195,7 @@ type InputProps = {
 
 export const InputText: FC<InputProps> = ({ label, name, onChange, value }) => (
   <View style={styles.textInput}>
-    <Text style={styles.textWrapper}>{label}</Text>
+    {/*<Text style={styles.textWrapper}>{label}</Text>*/}
     <TextInput
       value={value}
       onChange={onChange}

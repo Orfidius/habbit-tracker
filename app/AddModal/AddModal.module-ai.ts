@@ -2,14 +2,18 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   addModal: {
-    backgroundColor: "#413952",
+    backgroundColor: "#fff",
     height: "100%",
     marginTop: 70,
     marginHorizontal: 5,
     borderRadius: 20,
-    color: "#fff",
+    color: "#000",
     paddingVertical: 16,
     paddingHorizontal: 16,
+    borderColor: "#000",
+    borderWidth: 4,
+    borderStyle: "solid",
+    boxShadow: "10px -5px 0px #000000",
   },
   button: {
     borderRadius: 0,
@@ -28,9 +32,12 @@ export const styles = StyleSheet.create({
   textInput: {
     display: "flex",
     flexDirection: "column",
-    color: "#eee",
-    marginBottom: 1,
+    color: "#000",
+    marginBottom: 10,
     textTransform: "capitalize",
+    borderColor: "#000",
+    borderWidth: 2,
+    borderRadius: 8,
   },
   frequency: {
     display: "flex",
@@ -50,12 +57,13 @@ export const styles = StyleSheet.create({
   heading: {
     textAlign: "center",
     width: "100%",
-    color: "#fff",
+    color: "#000",
     paddingVertical: 5,
     fontSize: 20,
+    fontFamily: "PlayfairDisplay_800ExtraBold",
   },
   textWrapper: {
-    color: "#fff",
+    color: "#000",
     fontSize: 18,
   },
   checkbox: {

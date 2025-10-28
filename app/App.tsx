@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { styles } from "./App.module";
-import { CgAddR } from "react-icons/cg";
-import { MdModeEditOutline } from "react-icons/md";
 
 import { AddModal } from "./AddModal";
 import { Cardlist } from "./HabitList";
@@ -9,7 +7,6 @@ import {
   deleteHabit,
   gethabits,
   Habit,
-  initDB,
   updateHabits,
 } from "./repositories/habit-repository";
 import { useDispatch } from "react-redux";
