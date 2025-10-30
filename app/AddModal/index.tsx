@@ -194,12 +194,12 @@ type InputProps = {
 };
 
 export const InputText: FC<InputProps> = ({ label, name, onChange, value }) => (
-  <View style={styles.textInput}>
-    {/*<Text style={styles.textWrapper}>{label}</Text>*/}
+  <View style={{}}>
     <TextInput
       value={value}
       onChange={onChange}
       placeholder={name}
+      label={label}
       style={{ backgroundColor: "#fff" }}
     />
   </View>

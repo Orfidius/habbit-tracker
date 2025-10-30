@@ -59,12 +59,14 @@ export const styles = StyleSheet.create({
     width: "100%",
     color: "#000",
     paddingVertical: 5,
-    fontSize: 20,
+    fontSize: 34,
     fontFamily: "PlayfairDisplay_800ExtraBold",
+    marginBottom: 20,
   },
   textWrapper: {
     color: "#000",
     fontSize: 18,
+    marginBottom: 20,
   },
   checkbox: {
     // font: "inherit",
