@@ -200,6 +200,7 @@ export const InputText: FC<InputProps> = ({ label, name, onChange, value }) => (
       onChange={onChange}
       placeholder={name}
       label={label}
+      mode="outlined"
       style={{ backgroundColor: "#fff" }}
     />
   </View>
@@ -217,8 +218,16 @@ const FrequencyInput: FC<{
         marginBottom: 20,
       }}
     >
-      <Text style={{ ...styles.textWrapper, textAlign: "center" }}>
-        Habit Frequency
+      <Text
+        style={{
+          ...styles.textWrapper,
+          textAlign: "center",
+          fontFamily: "PlayfairDisplay_800ExtraBold",
+          fontSize: 26,
+          marginTop: 14,
+        }}
+      >
+        Set Day
       </Text>
       <View style={styles.frequency}>
         <FreqBox name="Monday" freqKey={Freq.M} />
@@ -229,7 +238,7 @@ const FrequencyInput: FC<{
         <FreqBox name="Saturday" freqKey={Freq.Sa} />
         <FreqBox name="Sunday" freqKey={Freq.Su} />
       </View>
-      <Button onPress={setValues} title={"Everyday"} />
+      {/*<Button onPress={setValues} title={"Everyday"} />*/}
     </View>
   );
 };
@@ -241,21 +250,14 @@ const MakeFreqCheck =
   ): FC<{ name: string; freqKey: Freq }> =>
   ({ name, freqKey }) => {
     return (
-      <View style={{ display: "flex", flexDirection: "row" }}>
-        <Text
-          style={{
-            ...styles.textWrapper,
-            fontSize: 18,
-            textTransform: "uppercase",
-            paddingRight: 5,
-          }}
-        >
-          {freqKey}
-        </Text>
-        <BouncyCheckbox
+      <View style={styles.FreqBox}>
+        <View style={styles.freqBoxTitle}>
+          <Text style={styles.freqBoxTitle}>{freqKey}</Text>
+        </View>
+        {/*<BouncyCheckbox
           isChecked={value.has(freqKey)}
           onPress={() => setValue(freqKey)}
-        />
+        />*/}
       </View>
     );
   };
