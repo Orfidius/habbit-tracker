@@ -238,7 +238,7 @@ const FrequencyInput: FC<{
         <FreqBox name="Saturday" freqKey={Freq.Sa} />
         <FreqBox name="Sunday" freqKey={Freq.Su} />
       </View>
-      {/*<Button onPress={setValues} title={"Everyday"} />*/}
+      <Button onPress={setValues} title={"Everyday"} />
     </View>
   );
 };

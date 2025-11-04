@@ -14,6 +14,8 @@ export const styles = StyleSheet.create({
     borderWidth: 4,
     borderStyle: "solid",
     boxShadow: "10px -5px 0px #000000",
+    display: "flex",
+    flexDirection: "column",
   },
   button: {
     borderRadius: 0,
