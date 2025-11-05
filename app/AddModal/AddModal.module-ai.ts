@@ -49,7 +49,7 @@ export const styles = StyleSheet.create({
     marginVertical: 0,
     padding: 0,
     width: "100%",
-    height: 60,
+    height: 180,
     justifyContent: "center",
     columnGap: 15,
     rowGap: 15,
