@@ -256,7 +256,12 @@ const MakeFreqCheck =
           <Text style={styles.freqBoxTitle}>{freqKey}</Text>
         </View>
         {value.has(freqKey) && (
-          <Ionicons name="checkmark-circle-sharp" size={24} color="black" />
+          <Ionicons
+            style={{ marginTop: 5 }}
+            name="checkmark-circle-sharp"
+            size={24}
+            color="black"
+          />
         )}
       </Pressable>
     );
