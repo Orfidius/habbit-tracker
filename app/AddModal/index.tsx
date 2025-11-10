@@ -18,8 +18,9 @@ import {
 } from "react-native";
 import { Modal } from "react-native";
 import { Button } from "react-native";
-import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { TextInput } from "react-native-paper";
+import { Pressable } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 enum Actions {
   NAME,
@@ -158,7 +159,7 @@ export const AddModal: FC<AddModalProps> = ({ onClose }) => {
   return (
     <Modal animationType="slide" transparent={true} visible={showModal}>
       <View style={styles.addModal}>
-        <Text style={styles.heading}>Start New habit</Text>
+        <Text style={styles.heading}>Start a New habit</Text>
         <View>
           <InputText
             value={habit.name}
@@ -250,14 +251,13 @@ const MakeFreqCheck =
   ): FC<{ name: string; freqKey: Freq }> =>
   ({ name, freqKey }) => {
     return (
-      <View style={styles.FreqBox}>
+      <Pressable onPress={() => setValue(freqKey)} style={styles.FreqBox}>
         <View style={styles.freqBoxTitle}>
           <Text style={styles.freqBoxTitle}>{freqKey}</Text>
         </View>
-        {/*<BouncyCheckbox
-          isChecked={value.has(freqKey)}
-          onPress={() => setValue(freqKey)}
-        />*/}
-      </View>
+        {value.has(freqKey) && (
+          <Ionicons name="checkmark-circle-sharp" size={24} color="black" />
+        )}
+      </Pressable>
     );
   };
