@@ -17,7 +17,8 @@ import {
   Text,
 } from "react-native";
 import { Modal } from "react-native";
-import { Button } from "react-native";
+// import { Button } from "react-native";
+import { Button } from "react-native-paper";
 import { TextInput } from "react-native-paper";
 import { Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -179,8 +180,23 @@ export const AddModal: FC<AddModalProps> = ({ onClose }) => {
             setValues={selectAllFrequencies}
           />
           <View style={styles.buttonWrapper}>
-            <Button onPress={onSave} disabled={!canSave} title={"Save"} />
-            <Button onPress={onCancel} title={"Cancel"} />
+            <Button
+              mode={"contained"}
+              style={{ borderRadius: 12 }}
+              buttonColor="#222"
+              onPress={onSave}
+              disabled={!canSave}
+            >
+              Save
+            </Button>
+            <Button
+              mode={"outlined"}
+              style={{ borderRadius: 12, borderWidth: 2, borderColor: "#222" }}
+              textColor={"#222"}
+              onPress={onCancel}
+            >
+              Cancel
+            </Button>
           </View>
         </View>
       </View>
@@ -203,6 +219,7 @@ export const InputText: FC<InputProps> = ({ label, name, onChange, value }) => (
       label={label}
       mode="outlined"
       style={{ backgroundColor: "#fff" }}
+      activeOutlineColor="#222"
     />
   </View>
 );
@@ -239,7 +256,14 @@ const FrequencyInput: FC<{
         <FreqBox name="Saturday" freqKey={Freq.Sa} />
         <FreqBox name="Sunday" freqKey={Freq.Su} />
       </View>
-      <Button onPress={setValues} title={"Everyday"} />
+      <Button
+        style={{ borderRadius: 12 }}
+        mode="contained"
+        buttonColor="#222"
+        onPress={setValues}
+      >
+        Everyday
+      </Button>
     </View>
   );
 };
