@@ -41,6 +41,7 @@ export const App = () => {
     updateCards();
   };
   const updateCards = async () => {
+    console.log("Updating cards");
     const newHabits = await gethabits();
     const habbitsWithMisses = updateMisses(newHabits);
     const getDoomedHabbits = habbitsWithMisses.filter(

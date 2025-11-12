@@ -3,7 +3,7 @@ import { App } from "./App";
 import { Provider } from "react-redux";
 import { store } from "./store";
 import { useEffect } from "react";
-import { initDB } from "./repositories/habit-repository";
+import { initDB, seedDB } from "./repositories/habit-repository";
 import { SplashScreen } from "expo-router";
 import {
   useFonts,
@@ -22,6 +22,7 @@ export default function Index() {
   useEffect(() => {
     (async () => {
       await initDB();
+      await seedDB();
     })();
   }, []);
 

@@ -36,6 +36,55 @@ export const initDB = async () => {
   }
 };
 
+export const seedDB = async () => {
+  const db = await SQLite.openDatabaseAsync("habitsDB");
+
+  // Example seed data
+  const seedHabits: Omit<Habit, "id">[] = [
+    {
+      name: "Drink Water",
+      iteration: 0,
+      goal: 8,
+      remind: true,
+      frequency: new Set(["Mon", "Tue", "Wed", "Thu", "Fri"]),
+      createdAt: Date.now(),
+    },
+    {
+      name: "Read Book",
+      iteration: 0,
+      goal: 1,
+      remind: false,
+      frequency: new Set(["Sat", "Sun"]),
+      createdAt: Date.now(),
+      misses: 3,
+    },
+    {
+      name: "Exercise",
+      iteration: 0,
+      goal: 3,
+      remind: true,
+      frequency: new Set(["Mon", "Wed", "Fri"]),
+      createdAt: Date.now(),
+      misses: 2,
+    },
+  ];
+  console.log("Seeding habbits");
+  for (const habit of seedHabits) {
+    const freqString = Array.from(habit.frequency).join(",");
+    await db.runAsync(
+      `INSERT INTO habits (name, iteration, goal, remind, frequency, createdAt) VALUES (?, ?, ?, ?, ?, ?)`,
+      [
+        habit.name,
+        habit.iteration,
+        habit.goal,
+        habit.remind ? 1 : 0,
+        freqString,
+        habit.createdAt,
+      ],
+    );
+  }
+};
+
 // // // TODO: move Database into some kind of shared context, either class
 export const insertHabit = async (habit: Habit) => {
   const { name, iteration, goal, remind = false, frequency } = habit;
