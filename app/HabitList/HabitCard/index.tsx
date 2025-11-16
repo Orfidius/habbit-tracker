@@ -193,7 +193,7 @@ export const Card: FC<Props> = ({
                       opacity: skullFadeAnim,
                     }}
                   >
-                    {Array.from({ length: misses + 2 }).map(() => (
+                    {Array.from({ length: misses }).map(() => (
                       <Ionicons name="skull-outline" size={32} color="#000" />
                     ))}
                   </Animated.View>

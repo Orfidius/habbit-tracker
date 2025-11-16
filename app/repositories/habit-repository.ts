@@ -46,7 +46,7 @@ export const seedDB = async () => {
       iteration: 0,
       goal: 8,
       remind: true,
-      frequency: new Set(["Mon", "Tue", "Wed", "Thu", "Fri"]),
+      frequency: new Set(["M", "Tu", "W", "Th", "F"]),
       createdAt: Date.now(),
     },
     {
@@ -54,7 +54,7 @@ export const seedDB = async () => {
       iteration: 0,
       goal: 1,
       remind: false,
-      frequency: new Set(["Sat", "Sun"]),
+      frequency: new Set(["Sa", "Su"]),
       createdAt: Date.now(),
       misses: 3,
     },
@@ -63,7 +63,7 @@ export const seedDB = async () => {
       iteration: 0,
       goal: 3,
       remind: true,
-      frequency: new Set(["Mon", "Wed", "Fri"]),
+      frequency: new Set(["M", "W", "F"]),
       createdAt: Date.now(),
       misses: 2,
     },
@@ -93,7 +93,7 @@ export const insertHabit = async (habit: Habit) => {
     const freqArray = Array.from(frequency);
     valuesToAdd.push(`"${freqArray.join(",")}"`);
   }
-
+  console.log(valuesToAdd);
   const db = await SQLite.openDatabaseAsync("habitsDB");
   const result = await db.execAsync(`
         INSERT INTO habits (name, iteration, goal, remind, frequency )

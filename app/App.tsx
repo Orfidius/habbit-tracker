@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { styles } from "./App.module";
 
 import { AddModal } from "./AddModal";
@@ -7,6 +7,7 @@ import {
   deleteHabit,
   gethabits,
   Habit,
+  seedDB,
   updateHabits,
 } from "./repositories/habit-repository";
 import { useDispatch } from "react-redux";
@@ -26,7 +27,9 @@ export const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    updateCards();
+    (async () => {
+      await updateCards();
+    })();
   }, []);
 
   const addButtonHandler = () => {
@@ -42,6 +45,9 @@ export const App = () => {
   };
   const updateCards = async () => {
     console.log("Updating cards");
+    if (habits.length === 0) {
+      await seedDB();
+    }
     const newHabits = await gethabits();
     const habbitsWithMisses = updateMisses(newHabits);
     const getDoomedHabbits = habbitsWithMisses.filter(
