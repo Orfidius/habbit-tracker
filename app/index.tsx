@@ -2,7 +2,7 @@ import { View, Text } from "react-native";
 import { App } from "./App";
 import { Provider } from "react-redux";
 import { store } from "./store";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { initDB, seedDB } from "./repositories/habit-repository";
 import { SplashScreen } from "expo-router";
 import {
@@ -19,10 +19,14 @@ export default function Index() {
     RubikDirt_400Regular,
   });
 
+  useLayoutEffect(() => {
+    initDB();
+    seedDB();
+  }, []);
   useEffect(() => {
     (async () => {
-      await initDB();
-      await seedDB();
+      console.log("Initializing DB");
+      console.log("Seeding DB");
     })();
   }, []);
 

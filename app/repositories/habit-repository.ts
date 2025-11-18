@@ -37,9 +37,11 @@ export const initDB = async () => {
 };
 
 export const seedDB = async () => {
+  console.log("Getting DB context");
   const db = await SQLite.openDatabaseAsync("habitsDB");
 
   // Example seed data
+  console.log("Setting up Seed data");
   const seedHabits: Omit<Habit, "id">[] = [
     {
       name: "Drink Water",
@@ -69,20 +71,23 @@ export const seedDB = async () => {
     },
   ];
   console.log("Seeding habbits");
-  for (const habit of seedHabits) {
-    const freqString = Array.from(habit.frequency).join(",");
-    await db.runAsync(
-      `INSERT INTO habits (name, iteration, goal, remind, frequency, createdAt) VALUES (?, ?, ?, ?, ?, ?)`,
-      [
-        habit.name,
-        habit.iteration,
-        habit.goal,
-        habit.remind ? 1 : 0,
-        freqString,
-        habit.createdAt,
-      ],
-    );
-  }
+  // for (const habit of seedHabits) {
+  await Promise.all(
+    seedHabits.map((habit) => {
+      const freqString = Array.from(habit.frequency).join(",");
+      return db.runAsync(
+        `INSERT INTO habits (name, iteration, goal, remind, frequency, createdAt) VALUES (?, ?, ?, ?, ?, ?)`,
+        [
+          habit.name,
+          habit.iteration,
+          habit.goal,
+          habit.remind ? 1 : 0,
+          freqString,
+          habit.createdAt,
+        ],
+      );
+    }),
+  );
 };
 
 // // // TODO: move Database into some kind of shared context, either class
