@@ -16,13 +16,17 @@ export interface HabitState {
   habits: Array<Habit>;
   modalOpen: boolean;
   freqFilter: Freq;
+  misses: number;
+  wins: number;
 }
 
 // Define the initial state using that type
 const initialState: HabitState = {
   habits: [],
+  misses: 0,
   modalOpen: false,
   freqFilter: Freq.M,
+  wins: 0,
 };
 
 export const habitSlice = createSlice({
@@ -38,6 +42,12 @@ export const habitSlice = createSlice({
     },
     setFreqFilter(state, action: PayloadAction<Freq>) {
       state.freqFilter = action.payload;
+    },
+    updateMisses(state, action: PayloadAction<number>) {
+      state.misses = action.payload;
+    },
+    updateWins(state, action: PayloadAction<number>) {
+      state.wins = action.payload;
     },
   },
 });

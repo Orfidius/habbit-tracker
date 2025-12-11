@@ -8,18 +8,18 @@ export type Habit = {
   remind: boolean;
   frequency: Set<string>;
   lastUpdated?: number;
-  misses?: number;
+  misses: number;
   createdAt: number;
 };
 
-const TABLE_NAME = "habits";
+const HABIT_TABLE_NAME = "habits";
 
-export const initDB = async () => {
+export const initHabitTable = async () => {
   const db = await SQLite.openDatabaseAsync("habitsDB");
   try {
     const result = await db.execAsync(`
     PRAGMA journal_mode = WAL;
-    CREATE TABLE IF NOT EXISTS ${TABLE_NAME} (
+    CREATE TABLE IF NOT EXISTS ${HABIT_TABLE_NAME} (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         name TEXT,
                         iteration INTEGER,
@@ -46,15 +46,16 @@ export const seedDB = async () => {
     {
       name: "Drink Water",
       iteration: 0,
-      goal: 8,
+      goal: 18,
       remind: true,
       frequency: new Set(["M", "Tu", "W", "Th", "F"]),
       createdAt: Date.now(),
+      misses: 1,
     },
     {
       name: "Read Book",
       iteration: 0,
-      goal: 1,
+      goal: 6,
       remind: false,
       frequency: new Set(["Sa", "Su"]),
       createdAt: Date.now(),
@@ -63,7 +64,7 @@ export const seedDB = async () => {
     {
       name: "Exercise",
       iteration: 0,
-      goal: 3,
+      goal: 10,
       remind: true,
       frequency: new Set(["M", "W", "F"]),
       createdAt: Date.now(),
@@ -76,7 +77,7 @@ export const seedDB = async () => {
     seedHabits.map((habit) => {
       const freqString = Array.from(habit.frequency).join(",");
       return db.runAsync(
-        `INSERT INTO habits (name, iteration, goal, remind, frequency, createdAt) VALUES (?, ?, ?, ?, ?, ?)`,
+        `INSERT INTO habits (name, iteration, goal, remind, frequency, createdAt, misses) VALUES (?, ?, ?, ?, ?, ?, ?)`,
         [
           habit.name,
           habit.iteration,
@@ -84,6 +85,7 @@ export const seedDB = async () => {
           habit.remind ? 1 : 0,
           freqString,
           habit.createdAt,
+          habit.misses ?? 0,
         ],
       );
     }),
@@ -150,7 +152,7 @@ interface RawHabit extends Omit<Habit, "frequency"> {
 export const gethabits = async (): Promise<Habit[]> => {
   const db = await SQLite.openDatabaseAsync("habitsDB");
   const results = await db.getAllAsync<RawHabit>(
-    `SELECT id, name, iteration, goal, frequency, lastUpdated FROM ${TABLE_NAME}`,
+    `SELECT id, name, iteration, goal, frequency, lastUpdated, misses FROM ${HABIT_TABLE_NAME}`,
   );
   const parsedHabits = results.map((habit) => ({
     ...habit,

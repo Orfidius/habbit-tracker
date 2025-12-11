@@ -38,6 +38,7 @@ type Props = {
   habit: Habit;
   updateCards: () => Promise<void>;
 };
+
 type TimerReturn = ReturnType<typeof setTimeout>;
 
 const widthInputRange = Array.from<number>({ length: 100 }).map((i) => i);
@@ -137,7 +138,7 @@ export const Card: FC<Props> = ({
     await deleteHabit(id);
     await updateCards();
   };
-  console.log({ lastUpdated });
+  console.log({ misses });
   return (
     <View style={{ marginBottom: 16 }}>
       <ShouldGlow shouldGlow={disabled}>

@@ -3,13 +3,14 @@ import { App } from "./App";
 import { Provider } from "react-redux";
 import { store } from "./store";
 import { useEffect, useLayoutEffect } from "react";
-import { initDB, seedDB } from "./repositories/habit-repository";
+import { initHabitTable, seedDB } from "./repositories/habit-repository";
 import { SplashScreen } from "expo-router";
 import {
   useFonts,
   PlayfairDisplay_800ExtraBold,
 } from "@expo-google-fonts/playfair-display";
 import { RubikDirt_400Regular } from "@expo-google-fonts/rubik-dirt";
+import { initStatsTable } from "./repositories/stats-repository";
 
 // import { useFonts, Inter_900Black } from "@expo-google-fonts/inter";
 SplashScreen.preventAutoHideAsync();
@@ -20,7 +21,8 @@ export default function Index() {
   });
 
   useLayoutEffect(() => {
-    initDB();
+    initHabitTable();
+    initStatsTable();
     seedDB();
   }, []);
   useEffect(() => {
