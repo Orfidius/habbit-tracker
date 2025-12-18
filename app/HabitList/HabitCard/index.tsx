@@ -59,6 +59,17 @@ export const Card: FC<Props> = ({
   const numFadeAnim = useAnimatedValue(0);
   const skullFadeAnim = useAnimatedValue(1);
   const [tickHaptic, setShouldTick] = useTickHaptic();
+  useEffect(() => {
+    /*
+     1. Calculate if we have a misses bassed on the itartation and the last win date
+     2. If we have a miss
+      a. Check if that miss pushse us over 3
+      b. IF it pushes us over 3, update global misses, and kill card.
+      c. If It does not push us over 3, update misses on card
+     3.
+
+    */
+  }, []);
 
   useEffect(() => {
     if (lastUpdated) {
@@ -109,6 +120,8 @@ export const Card: FC<Props> = ({
         Vibration.vibrate(800);
         await incrementHabit(id, iteration);
         await updateCards();
+        // This also needs to check if the card has met it's goal. If it has, we need to update the stats DB
+        // AND delete the card because it's been completed.
       }, 1200);
     }
   };

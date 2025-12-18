@@ -19,12 +19,14 @@ import { StatusBar, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import { Celebration } from "./Celebration";
 import { updateMisses } from "./services/misses-service";
+import { Stats } from "./Stats";
 
 export const App = () => {
   const [habits, setHabits] = useState<Array<Habit>>([]);
   const showModal = useAppSelector((state) => state.habitState.modalOpen);
   const editMode = useAppSelector((state) => state.editModeState.enabled);
   const dispatch = useDispatch();
+  const { misses, wins } = useAppSelector((state) => state.habitState);
 
   useEffect(() => {
     (async () => {
@@ -44,8 +46,6 @@ export const App = () => {
     updateCards();
   };
   const updateCards = async () => {
-    console.log("Updating cards", habits);
-    console.log("getting habits");
     const newHabits = await gethabits();
     const habbitsWithMisses = updateMisses(newHabits);
     const getDoomedHabbits = habbitsWithMisses.filter(
@@ -79,6 +79,7 @@ export const App = () => {
         >
           <Icon name="edit-2" size={30} />
         </TouchableOpacity>
+        <Stats wins={} misses={} />
       </Celebration>
     </View>
   );

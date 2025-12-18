@@ -43,11 +43,14 @@ export const habitSlice = createSlice({
     setFreqFilter(state, action: PayloadAction<Freq>) {
       state.freqFilter = action.payload;
     },
-    updateMisses(state, action: PayloadAction<number>) {
-      state.misses = action.payload;
+    pushMisses(state) {
+      state.misses++;
     },
-    updateWins(state, action: PayloadAction<number>) {
-      state.wins = action.payload;
+    pushWins(state) {
+      state.wins++;
+    },
+    clearMisses(state) {
+      state.misses = 0;
     },
   },
 });
