@@ -36,5 +36,7 @@ const hasMisses = ({ lastUpdated, frequency }: Habit) => {
     ? Math.floor((Date.now() - lastUpdated) / (1000 * 60 * 60 * 24))
     : 0;
   //Check if any of the days between the last update day and now match the days in "Frequency"
+  // IF it's Monday, Tuesday is in my frequency, and the last update was 6 days ago. I know that a Tuesday has passed.
+
   console.log(daysSinceLastUpdated);
 };
