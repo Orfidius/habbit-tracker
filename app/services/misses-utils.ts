@@ -20,3 +20,21 @@ export const updateMisses = (habits: Habit[]) => {
     return { ...habit, misses: newMisses };
   });
 };
+
+const dayMap = new Map<string, number>([
+  ["S", 0],
+  ["M", 1],
+  ["T", 2],
+  ["W", 3],
+  ["Th", 4],
+  ["F", 5],
+  ["Sa", 6],
+]);
+
+const hasMisses = ({ lastUpdated, frequency }: Habit) => {
+  const daysSinceLastUpdated = lastUpdated
+    ? Math.floor((Date.now() - lastUpdated) / (1000 * 60 * 60 * 24))
+    : 0;
+  //Check if any of the days between the last update day and now match the days in "Frequency"
+  console.log(daysSinceLastUpdated);
+};
