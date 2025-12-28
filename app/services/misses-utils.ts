@@ -1,24 +1,32 @@
+import dayjs from "dayjs";
 import { Habit } from "../repositories/habit-repository";
 
-export const updateMisses = (habits: Habit[]) => {
-  return habits.map((habit) => {
-    const { frequency, misses = 0, createdAt, lastUpdated = createdAt } = habit;
+export const hasMiss = (habit: Habit) => {
+  const { frequency, misses = 0, createdAt, lastUpdated = createdAt } = habit;
 
-    // Basically, if last updated is more than the frequencty indicated, we have a miss
-    // 1. resolve what the last updated should be from the frequncy.
-    // If it's supposed to be every monday, and wednesday then If a single monday or wednesday passes since the last updated, miss.
-    // So we take the lastUpdated, get a list of "days" that have passed since then, Check that list for the days we're supposed to do our habits on
-    // Then check if any of our frequency days are in that list.
-    const daysSinceLastUpdated = Math.floor(
-      (Date.now() - lastUpdated) / (1000 * 60 * 60 * 24),
-    );
-    const frequencyDays = Array.from(frequency);
-    const missedDays = frequencyDays.filter(
-      (day) => daysSinceLastUpdated % 7 === parseInt(day),
-    );
-    const newMisses = misses + Number(Boolean(missedDays.length)); // 0 is false is 0. >= 1 is true is 1
-    return { ...habit, misses: newMisses };
-  });
+  // Basically, if last updated is more than the frequencty indicated, we have a miss
+  // SOLUTION 1:
+  // 1. resolve what the last updated should be from the frequncy.
+  // If it's supposed to be every monday, and wednesday then If a single monday or wednesday passes since the last updated, miss.
+  // So we take the lastUpdated, get a list of "days" that have passed since then, Check that list for the days we're supposed to do our habits on
+  // Then check if any of our frequency days are in that list.
+  // SOLUTION 2:
+  // We're just checking last week, so:
+  // 1. Resolve the last 7 days
+  // 2. Find out if any of those days are in our frequency
+  // 3. If so, Miss.
+
+  const daysSinceLastUpdated = Math.floor(
+    (Date.now() - lastUpdated) / (1000 * 60 * 60 * 24),
+  );
+  const frequencyAsNum = Array.from(frequency).map((el) => dayMap.get(el));
+  const missResult = Array.from(
+    { length: daysSinceLastUpdated },
+    (_, i) => i + 1,
+  )
+    .map((el) => dayjs(lastUpdated).add(el, "day").day())
+    .some((day) => frequencyAsNum.includes(day));
+  return missResult;
 };
 
 const dayMap = new Map<string, number>([
@@ -30,13 +38,3 @@ const dayMap = new Map<string, number>([
   ["F", 5],
   ["Sa", 6],
 ]);
-
-const hasMisses = ({ lastUpdated, frequency }: Habit) => {
-  const daysSinceLastUpdated = lastUpdated
-    ? Math.floor((Date.now() - lastUpdated) / (1000 * 60 * 60 * 24))
-    : 0;
-  //Check if any of the days between the last update day and now match the days in "Frequency"
-  // IF it's Monday, Tuesday is in my frequency, and the last update was 6 days ago. I know that a Tuesday has passed.
-
-  console.log(daysSinceLastUpdated);
-};
