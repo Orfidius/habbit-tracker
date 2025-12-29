@@ -16,17 +16,18 @@ export const hasMiss = (habit: Habit) => {
   // 2. Find out if any of those days are in our frequency
   // 3. If so, Miss.
 
-  const daysSinceLastUpdated = Math.floor(
-    (Date.now() - lastUpdated) / (1000 * 60 * 60 * 24),
-  );
+  const daysSinceLastUpdated = dayjs().diff(dayjs(lastUpdated), "day");
+
   const frequencyAsNum = Array.from(frequency).map((el) => dayMap.get(el));
-  const missResult = Array.from(
-    { length: daysSinceLastUpdated },
-    (_, i) => i + 1,
-  )
-    .map((el) => dayjs(lastUpdated).add(el, "day").day())
-    .some((day) => frequencyAsNum.includes(day));
-  return missResult;
+  return (
+    Array.from({ length: daysSinceLastUpdated }, (_, i) => i + 1)
+      .map((el) => dayjs(lastUpdated).add(el, "day").day())
+      //TODO: Change to reduce because we need the number of misses
+      .reduce<number>(
+        (acc, day) => (frequencyAsNum.includes(day) ? acc + 1 : acc),
+        0,
+      )
+  );
 };
 
 const dayMap = new Map<string, number>([
