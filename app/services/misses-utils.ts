@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
-import { Habit } from "../repositories/habit-repository";
+import { Habit, updateHabit } from "../repositories/habit-repository";
 
-export const hasMiss = (habit: Habit) => {
+export const getMisses = (habit: Habit) => {
   const { frequency, misses = 0, createdAt, lastUpdated = createdAt } = habit;
 
   // Basically, if last updated is more than the frequencty indicated, we have a miss
@@ -28,6 +28,35 @@ export const hasMiss = (habit: Habit) => {
         0,
       )
   );
+};
+
+export const updateMisses = (habits: Habit[]) =>
+  habits.map((habit) => ({
+    ...habit,
+    misses: getMisses(habit),
+  }));
+
+type MissResults = {
+  filteredHabbits: Habit[];
+  wins: number;
+  misses: number;
+};
+
+export const getAndFilterMisses = (habits: Habit[]): MissResults => {
+  const updatedHabits = updateMisses(habits);
+  const grouped = Object.groupBy(
+    updatedHabits,
+    ({ misses, iteration, goal }) => {
+      if (misses > 3) return "misses";
+      if (iteration === goal) return "wins";
+      return "filteredHabbits";
+    },
+  );
+  return {
+    filteredHabbits: grouped.filteredHabbits ?? [],
+    wins: grouped.wins?.length ?? 0,
+    misses: grouped.misses?.length ?? 0,
+  };
 };
 
 const dayMap = new Map<string, number>([

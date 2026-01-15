@@ -18,7 +18,6 @@ import { FilterTabs } from "./FilterTabs/FilterTabs";
 import { StatusBar, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import { Celebration } from "./Celebration";
-import { updateMisses } from "./services/misses-service";
 import { Stats } from "./Stats";
 
 export const App = () => {
@@ -47,16 +46,10 @@ export const App = () => {
   };
   const updateCards = async () => {
     const newHabits = await gethabits();
-    const habbitsWithMisses = updateMisses(newHabits);
-    const getDoomedHabbits = habbitsWithMisses.filter(
-      ({ misses = 0 }) => misses > 3,
-    );
-    getDoomedHabbits.forEach((habit) => {
-      deleteHabit(habit.id);
-    });
+    // Habit logic needs to go in a thunk
     const withOutDoomedHabbits = habits.filter(({ misses = 0 }) => misses <= 3);
     await updateHabits(withOutDoomedHabbits);
-    setHabits(habbitsWithMisses);
+    setHabits(newHabits);
   };
   return (
     <View style={styles.container}>

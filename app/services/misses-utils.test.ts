@@ -1,7 +1,7 @@
 import { it, expect } from "vitest";
 import { Habit } from "../repositories/habit-repository";
 import dayJs from "dayjs";
-import { hasMiss } from "./misses-utils";
+import { getMisses } from "./misses-utils";
 const TODAY = dayJs(Date.now()).subtract(4, "day").valueOf();
 const testHabit: Habit = {
   id: 0,
@@ -16,6 +16,6 @@ const testHabit: Habit = {
 };
 it("should test the wins util", () => {
   console.log({ TODAY });
-  const hasMisses = hasMiss(testHabit);
+  const hasMisses = getMisses(testHabit);
   expect(hasMisses).toBe(0);
 });
