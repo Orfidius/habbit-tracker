@@ -12,12 +12,12 @@ export const useProcessTransactions = () => {
   return useMutation({
     mutationFn: async () => {
       const habbits = await gethabits();
-      const { filteredHabbits } = getAndFilterMisses(habbits);
+      const filteredPayload = getAndFilterMisses(habbits);
       await updateHabits(filteredHabbits);
-      return filteredHabbits;
+      return filteredPayload;
     },
-    onSuccess: (processedData) => {
-      dispatch(setHabits(processedData));
+    onSuccess: ({ filteredHabbits, misses, wins }) => {
+      dispatch(setHabits(filteredHabbits));
       queryClient.invalidateQueries({ queryKey: ["habits"] });
     },
     onError: (error) => {
