@@ -19,6 +19,7 @@ import { StatusBar, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import { Celebration } from "./Celebration";
 import { Stats } from "./Stats";
+import { useProcessTransactions } from "./hooks/habit-hook";
 
 export const App = () => {
   const [habits, setHabits] = useState<Array<Habit>>([]);
@@ -26,11 +27,11 @@ export const App = () => {
   const editMode = useAppSelector((state) => state.editModeState.enabled);
   const dispatch = useDispatch();
   const { misses, wins } = useAppSelector((state) => state.habitState);
+  const { mutate: initHabits } = useProcessTransactions();
 
   useEffect(() => {
-    (async () => {
-      await updateCards();
-    })();
+    seedDB();
+    initHabits();
   }, []);
 
   const addButtonHandler = () => {

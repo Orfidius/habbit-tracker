@@ -1,6 +1,9 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useDispatch } from 'react-redux';
-import { gethabits } from '../repositories/habit-repository';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useDispatch } from "react-redux";
+import { gethabits, updateHabits } from "../repositories/habit-repository";
+import { getAndFilterMisses } from "../services/misses-utils";
+import { parse } from "@babel/core";
+import { setHabits } from "../store/HabitState";
 
 export const useProcessTransactions = () => {
   const queryClient = useQueryClient();
@@ -8,28 +11,17 @@ export const useProcessTransactions = () => {
 
   return useMutation({
     mutationFn: async () => {
-      // 1. retrieve from db
-      const rawdata = await gethabits();
-
-      // 2. perform logic
-      const processeddata = rawdata.map(item => ({
-        ...item,
-        status: complexlogic(item)
-      }));
-
-      // 3. store updates back in db
-      await db.runasync('update items set status = ...'); // simplified
-
-      return processeddata;
+      const habbits = await gethabits();
+      const { filteredHabbits } = getAndFilterMisses(habbits);
+      await updateHabits(filteredHabbits);
+      return filteredHabbits;
     },
     onSuccess: (processedData) => {
-      // 4. Propagate to Redux
-      dispatch(setReduxItems(processedData));
-
-      // 5. Invalidate TanStack Cache (So UI reflects DB changes)
-      queryClient.invalidateQueries({ queryKey: ['items'] });
+      dispatch(setHabits(processedData));
+      queryClient.invalidateQueries({ queryKey: ["habits"] });
     },
     onError: (error) => {
-      console.error("Workflow failed", error);
-    }
+      console.error("Habbit update failed", error);
+    },
   });
+};
