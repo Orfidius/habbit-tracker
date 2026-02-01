@@ -43,8 +43,8 @@ export const habitSlice = createSlice({
     setFreqFilter(state, action: PayloadAction<Freq>) {
       state.freqFilter = action.payload;
     },
-    pushMisses(state) {
-      state.misses++;
+    setMisses(state, action: PayloadAction<number>) {
+      state.misses = action.payload;
     },
     pushWins(state) {
       state.wins++;
@@ -55,7 +55,14 @@ export const habitSlice = createSlice({
   },
 });
 
-export const { setHabits, setModalOpen, setFreqFilter } = habitSlice.actions;
+export const {
+  setHabits,
+  setModalOpen,
+  setFreqFilter,
+  setMisses,
+  pushWins,
+  clearMisses,
+} = habitSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectCount = (state: RootState) => state.habitState.habits;

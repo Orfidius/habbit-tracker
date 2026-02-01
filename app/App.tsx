@@ -73,7 +73,7 @@ export const App = () => {
         >
           <Icon name="edit-2" size={30} />
         </TouchableOpacity>
-        <Stats wins={} misses={} />
+        <Stats />
       </Celebration>
     </View>
   );
