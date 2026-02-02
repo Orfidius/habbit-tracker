@@ -16,6 +16,7 @@ export const useProcessTransactions = () => {
       return filteredPayload;
     },
     onSuccess: ({ filteredHabbits, misses, wins }) => {
+      console.log({ filteredHabbits });
       dispatch(setHabits(filteredHabbits));
       dispatch(setMisses(misses));
       queryClient.invalidateQueries({ queryKey: ["habits"] });

@@ -15,7 +15,7 @@ export const Cardlist: FC<Props> = ({ habits, updateCards }) => {
   return (
     <FlatList
       style={styles.cardList}
-      data={habits.filter(({ frequency }) => frequency.has(filterValue))}
+      data={habits.filter(({ frequency }) => frequency.includes(filterValue))}
       renderItem={({ item }) => <Card updateCards={updateCards} habit={item} />}
       keyExtractor={(habit) => habit.id.toString()}
       contentContainerStyle={{ paddingBottom: 175 }}

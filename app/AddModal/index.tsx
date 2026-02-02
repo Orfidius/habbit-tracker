@@ -22,7 +22,7 @@ import { Button } from "react-native-paper";
 import { TextInput } from "react-native-paper";
 import { Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-
+import "core-js/actual/object/group-by";
 enum Actions {
   NAME,
   FREQUENCY,
@@ -175,7 +175,7 @@ export const AddModal: FC<AddModalProps> = ({ onClose }) => {
             name={"goal"}
           />
           <FrequencyInput
-            value={habit.frequency as Set<Freq>}
+            value={habit.frequency as Freq[]}
             setValue={updateFrequency}
             setValues={selectAllFrequencies}
           />
@@ -225,7 +225,7 @@ export const InputText: FC<InputProps> = ({ label, name, onChange, value }) => (
 );
 
 const FrequencyInput: FC<{
-  value: Set<Freq>;
+  value: Array<Freq>;
   setValue: (val: Freq) => void;
   setValues: () => void;
 }> = ({ value, setValue, setValues }) => {
@@ -270,7 +270,7 @@ const FrequencyInput: FC<{
 
 const MakeFreqCheck =
   (
-    value: Set<Freq>,
+    value: Array<Freq>,
     setValue: (key: Freq) => void,
   ): FC<{ name: string; freqKey: Freq }> =>
   ({ name, freqKey }) => {
@@ -279,7 +279,7 @@ const MakeFreqCheck =
         <View style={styles.freqBoxTitle}>
           <Text style={styles.freqBoxTitle}>{freqKey}</Text>
         </View>
-        {value.has(freqKey) && (
+        {value.includes(freqKey) && (
           <Ionicons
             style={{ marginTop: 5 }}
             name="checkmark-circle-sharp"

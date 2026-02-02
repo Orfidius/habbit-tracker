@@ -6,7 +6,7 @@ export type Habit = {
   iteration: number;
   goal: number;
   remind: boolean;
-  frequency: Set<string>;
+  frequency: Array<string>;
   lastUpdated?: number;
   misses: number;
   createdAt: number;
@@ -48,7 +48,7 @@ export const seedDB = async () => {
       iteration: 0,
       goal: 18,
       remind: true,
-      frequency: new Set(["M", "Tu", "W", "Th", "F"]),
+      frequency: ["M", "Tu", "W", "Th", "F"],
       createdAt: Date.now(),
       misses: 1,
     },
@@ -57,7 +57,7 @@ export const seedDB = async () => {
       iteration: 0,
       goal: 6,
       remind: false,
-      frequency: new Set(["Sa", "Su"]),
+      frequency: ["Sa", "Su"],
       createdAt: Date.now(),
       misses: 3,
     },
@@ -66,13 +66,12 @@ export const seedDB = async () => {
       iteration: 0,
       goal: 10,
       remind: true,
-      frequency: new Set(["M", "W", "F"]),
+      frequency: ["M", "W", "F"],
       createdAt: Date.now(),
       misses: 2,
     },
   ];
   console.log("Seeding habbits");
-  // for (const habit of seedHabits) {
   await Promise.all(
     seedHabits.map((habit) => {
       const freqString = Array.from(habit.frequency).join(",");
@@ -156,7 +155,7 @@ export const gethabits = async (): Promise<Habit[]> => {
   );
   const parsedHabits = results.map((habit) => ({
     ...habit,
-    frequency: new Set(habit.frequency.split(",")),
+    frequency: habit.frequency.split(","),
   }));
   return parsedHabits;
 };

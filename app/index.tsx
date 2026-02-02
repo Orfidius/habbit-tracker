@@ -11,6 +11,9 @@ import {
 } from "@expo-google-fonts/playfair-display";
 import { RubikDirt_400Regular } from "@expo-google-fonts/rubik-dirt";
 import { initStatsTable } from "./repositories/stats-repository";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 // import { useFonts, Inter_900Black } from "@expo-google-fonts/inter";
 SplashScreen.preventAutoHideAsync();
@@ -44,7 +47,11 @@ export default function Index() {
   return (
     <>
       <Provider store={store}>
-        <App />
+        {/*Add Tanstack queryt here
+         */}
+        <QueryClientProvider client={queryClient}>
+          <App />
+        </QueryClientProvider>
       </Provider>
     </>
   );
