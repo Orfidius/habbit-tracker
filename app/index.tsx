@@ -15,8 +15,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();
 
-// import { useFonts, Inter_900Black } from "@expo-google-fonts/inter";
 SplashScreen.preventAutoHideAsync();
+
 export default function Index() {
   const [loaded, error] = useFonts({
     PlayfairDisplay_800ExtraBold,
@@ -24,15 +24,18 @@ export default function Index() {
   });
 
   useLayoutEffect(() => {
-    initHabitTable();
-    initStatsTable();
-    seedDB();
-  }, []);
-  useEffect(() => {
-    (async () => {
-      console.log("Initializing DB");
-      console.log("Seeding DB");
-    })();
+    const initializeDatabase = async () => {
+      try {
+        console.log("Initializing DB");
+        await initHabitTable();
+        // await initStatsTable();
+        await seedDB();
+        console.log("DB initialized successfully");
+      } catch (e) {
+        console.error("Failed to initialize database", e);
+      }
+    };
+    initializeDatabase();
   }, []);
 
   useEffect(() => {
@@ -44,11 +47,10 @@ export default function Index() {
   if (!loaded && error) {
     return null;
   }
+
   return (
     <>
       <Provider store={store}>
-        {/*Add Tanstack queryt here
-         */}
         <QueryClientProvider client={queryClient}>
           <App />
         </QueryClientProvider>

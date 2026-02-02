@@ -7,7 +7,6 @@ import {
   deleteHabit,
   gethabits,
   Habit,
-  seedDB,
   updateHabits,
 } from "./repositories/habit-repository";
 import { useDispatch } from "react-redux";
@@ -30,9 +29,8 @@ export const App = () => {
   const { mutate: initHabits } = useProcessTransactions();
 
   useEffect(() => {
-    seedDB();
     initHabits();
-  }, []);
+  }, [initHabits]);
 
   const addButtonHandler = () => {
     dispatch(setModalOpen(true));
