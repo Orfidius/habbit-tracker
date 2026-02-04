@@ -21,16 +21,15 @@ import { Stats } from "./Stats";
 import { useProcessTransactions } from "./hooks/habit-hook";
 
 export const App = () => {
-  const [habits, setHabits] = useState<Array<Habit>>([]);
   const showModal = useAppSelector((state) => state.habitState.modalOpen);
+  const habits = useAppSelector((state) => state.habitState.habits);
   const editMode = useAppSelector((state) => state.editModeState.enabled);
   const dispatch = useDispatch();
-  const { misses, wins } = useAppSelector((state) => state.habitState);
-  const { mutate: initHabits } = useProcessTransactions();
+  const { mutate: getHabits } = useProcessTransactions();
 
   useEffect(() => {
-    initHabits();
-  }, [initHabits]);
+    getHabits();
+  }, [getHabits]);
 
   const addButtonHandler = () => {
     dispatch(setModalOpen(true));
@@ -44,11 +43,7 @@ export const App = () => {
     updateCards();
   };
   const updateCards = async () => {
-    const newHabits = await gethabits();
-    // Habit logic needs to go in a thunk
-    const withOutDoomedHabbits = habits.filter(({ misses = 0 }) => misses <= 3);
-    await updateHabits(withOutDoomedHabbits);
-    setHabits(newHabits);
+    getHabits();
   };
   return (
     <View style={styles.container}>
