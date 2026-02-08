@@ -23,7 +23,11 @@ export default function Index() {
     RubikDirt_400Regular,
   });
 
+  useEffect(() => {
+	  console.log('useEffect from index.tsx')
+  })
   useLayoutEffect(() => {
+    console.log('Running useLayoutEffect')
     const initializeDatabase = async () => {
       try {
         console.log("Initializing DB");

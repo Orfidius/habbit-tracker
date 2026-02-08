@@ -11,6 +11,7 @@ export const useProcessTransactions = () => {
   return useMutation({
     mutationFn: async () => {
       const habbits = await gethabits();
+      console.log({habbits});
       const filteredPayload = getAndFilterMisses(habbits);
       await updateHabits(filteredPayload.filteredHabbits);
       return filteredPayload;

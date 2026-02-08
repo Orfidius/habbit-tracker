@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { styles } from "./App.module";
-
+import { initHabitTable, seedDB } from "./repositories/habit-repository";
 import { AddModal } from "./AddModal";
 import { Cardlist } from "./HabitList";
 import {
@@ -28,8 +28,20 @@ export const App = () => {
   const { mutate: getHabits } = useProcessTransactions();
 
   useEffect(() => {
-    getHabits();
-  }, [getHabits]);
+	  console.log('useEffect from App.tsx');
+     (async () => {
+      try {
+        console.log("Initializing DB");
+        await initHabitTable();
+        // await initStatsTable();
+        await seedDB();
+        console.log("DB initialized successfully");
+    	getHabits();
+      } catch (e) {
+        console.error("Failed to initialize database", e);
+      }
+    })();
+  }, []);
 
   const addButtonHandler = () => {
     dispatch(setModalOpen(true));
