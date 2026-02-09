@@ -225,7 +225,7 @@ export const gethabits = async (): Promise<Habit[]> => {
 
   try {
     const results = await db.getAllAsync<RawHabit>(
-      `SELECT id, name, iteration, goal, frequency, lastUpdated, misses, createdAt, remind FROM ${HABIT_TABLE_NAME}`,
+      `SELECT id, name, iteration, goal, frequency, lastUpdated, lastApproved, misses, createdAt, remind FROM ${HABIT_TABLE_NAME}`,
     );
 
     const parsedHabits = results.map((habit) => ({
@@ -247,7 +247,7 @@ export const incrementHabit = async (id: number, iteration: number) => {
   try {
     await db.runAsync(
       `UPDATE ${HABIT_TABLE_NAME}
-       SET iteration = ?, lastUpdated = ?, lastApproved = ? misses = 0
+       SET iteration = ?, lastUpdated = ?, lastApproved = ?, misses = 0
        WHERE id = ?`,
       [iteration + 1, Date.now(), Date.now(), id],
     );
