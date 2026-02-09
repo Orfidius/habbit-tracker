@@ -10,6 +10,7 @@ export type Habit = {
   lastUpdated?: number;
   misses: number;
   createdAt: number;
+  lastApproved: number;
 };
 
 const HABIT_TABLE_NAME = "habits";
@@ -26,6 +27,7 @@ export const initHabitTable = async () => {
       remind BOOLEAN DEFAULT 0,
       frequency TEXT,
       lastUpdated DATETIME,
+      lastApproved DATETIME,
       createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
       misses INTEGER DEFAULT 0
     )`;
@@ -245,9 +247,9 @@ export const incrementHabit = async (id: number, iteration: number) => {
   try {
     await db.runAsync(
       `UPDATE ${HABIT_TABLE_NAME}
-       SET iteration = ?, lastUpdated = ?, misses = 0
+       SET iteration = ?, lastUpdated = ?, lastApproved = ? misses = 0
        WHERE id = ?`,
-      [iteration + 1, Date.now(), id],
+      [iteration + 1, Date.now(), Date.now(), id],
     );
   } catch (e) {
     console.log("Error incrementing habit", e);

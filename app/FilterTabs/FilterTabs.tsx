@@ -4,8 +4,8 @@ import { Freq, setFreqFilter } from "../store/HabitState";
 import { styles } from "./FilterTabs.module";
 import { TODAY, DAYS_ENTRIES } from "../constants";
 import { useAppSelector } from "../store/hooks";
-import cx from "classnames";
-import { FlatList, TouchableOpacity, View, Text } from "react-native";
+import { TouchableOpacity, View, Text } from "react-native";
+
 export const FilterTabs: FC = () => {
   const dispatch = useDispatch();
 

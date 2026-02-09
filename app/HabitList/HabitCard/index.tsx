@@ -45,7 +45,7 @@ const widthInputRange = Array.from<number>({ length: 100 }).map((i) => i);
 const widthOutputRange = widthInputRange.map((i) => `${i}%`);
 
 export const Card: FC<Props> = ({
-  habit: { id, name, iteration, goal, lastUpdated, misses = 0, ...habit },
+  habit: { id, name, iteration, goal, lastApproved, misses = 0, ...habit },
   updateCards,
 }) => {
   const { setShowCelebrate } = useContext(celebrationContext);
@@ -60,8 +60,8 @@ export const Card: FC<Props> = ({
   const skullFadeAnim = useAnimatedValue(1);
   const [tickHaptic, setShouldTick] = useTickHaptic();
   useEffect(() => {
-    if (lastUpdated) {
-      const date = dayjs(lastUpdated);
+    if (lastApproved) {
+      const date = dayjs(lastApproved);
       const now = dayjs().subtract(8, "hour");
       if (date.isAfter(now)) {
         setDisabled(true);
@@ -129,7 +129,7 @@ export const Card: FC<Props> = ({
         name,
         iteration,
         goal,
-        lastUpdated,
+        lastUpdated: lastApproved,
         ...habit,
       } as Habit),
     );
@@ -188,7 +188,9 @@ export const Card: FC<Props> = ({
                 >
                   {name}
                 </Animated.Text>
-                <View style={styles.approveBlock}>
+              </View>
+              <View style={styles.approveBlock}>
+                {!lastApproved && (
                   <Animated.View
                     style={{
                       flexDirection: "row",
@@ -199,34 +201,34 @@ export const Card: FC<Props> = ({
                       <Ionicons name="skull-outline" size={32} color="#000" />
                     ))}
                   </Animated.View>
-                  {lastUpdated && <IncrementDate lastUpdated={lastUpdated} />}
-                </View>
+                )}
+                {lastApproved && <IncrementDate lastApproved={lastApproved} />}
+                {isInEditMode && (
+                  <View style={styles.editButtons}>
+                    <Button title={"Edit"} onPress={onEditHandler} />
+                    <Button
+                      title={"Delete"}
+                      onPress={onDelete}
+                      color={"#ff002b"}
+                    />
+                  </View>
+                )}
+                {!isInEditMode && (
+                  <View style={styles.copy}>
+                    <Animated.Text
+                      style={{
+                        ...styles.numbers,
+                        color: numFadeAnim.interpolate({
+                          inputRange: [0, 255],
+                          outputRange: ["rgb(0,0,0)", "rgb(255,255,255)"],
+                        }),
+                      }}
+                    >
+                      {iteration}/{goal}
+                    </Animated.Text>
+                  </View>
+                )}
               </View>
-              {isInEditMode && (
-                <View style={styles.editButtons}>
-                  <Button title={"Edit"} onPress={onEditHandler} />
-                  <Button
-                    title={"Delete"}
-                    onPress={onDelete}
-                    color={"#ff002b"}
-                  />
-                </View>
-              )}
-              {!isInEditMode && (
-                <View style={styles.copy}>
-                  <Animated.Text
-                    style={{
-                      ...styles.numbers,
-                      color: numFadeAnim.interpolate({
-                        inputRange: [0, 255],
-                        outputRange: ["rgb(0,0,0)", "rgb(255,255,255)"],
-                      }),
-                    }}
-                  >
-                    {iteration}/{goal}
-                  </Animated.Text>
-                </View>
-              )}
             </View>
           </View>
         </Pressable>
@@ -236,8 +238,8 @@ export const Card: FC<Props> = ({
 };
 
 const IncrementDate: FC<{
-  lastUpdated: number;
-}> = ({ lastUpdated }) => {
+  lastApproved: number;
+}> = ({ lastApproved: lastUpdated }) => {
   const date = dayjs(lastUpdated).format("MMM DD [at] h:mm A");
   return <Text style={styles.lastUpdated}>{date}</Text>;
 };

@@ -7,5 +7,5 @@
 
 3. Update react-native
 
-4. I think its pretty much done at ths point
+4. Edit mode
  

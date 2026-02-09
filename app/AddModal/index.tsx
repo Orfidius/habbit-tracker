@@ -82,13 +82,13 @@ const reducer: Reducer<Habit, ActionPayload> = (
       } else {
         newFreq.add(action.payload);
       }
-      return { ...state, frequency: newFreq };
+      return { ...state, frequency: Array.from(newFreq) };
     case Actions.MULTIPLE_FREQUENCY: {
       const newFreq =
-        state.frequency.size < 7
+        state.frequency.length < 7
           ? [Freq.Su, Freq.M, Freq.Tu, Freq.W, Freq.Th, Freq.F, Freq.Sa]
           : [];
-      return { ...state, frequency: new Set(newFreq) };
+      return { ...state, frequency: Array.from(newFreq) };
     }
     case Actions.SET: {
       return { ...state, ...action.payload };
@@ -102,8 +102,9 @@ const initialState: Habit = {
   iteration: 0,
   goal: 90,
   remind: false,
-  frequency: new Set(),
+  frequency: [],
   createdAt: Date.now(),
+  misses: 0,
 };
 type AddModalProps = {
   onClose: (f: () => void) => void;
@@ -117,9 +118,18 @@ export const AddModal: FC<AddModalProps> = ({ onClose }) => {
   const [habit, dispatch] = useReducer(reducer, selectedHabit ?? initialState);
   const [isClosing, setIsClosing] = useState(false);
   const canSave = Object.entries(habit)
-    .filter(([key]) => key !== "id" && key !== "iteration")
+    .filter(
+      ([key]) =>
+        key !== "id" &&
+        key !== "iteration" &&
+        key !== "remind" &&
+        key !== "misses" &&
+        key !== "wins" &&
+        key !== "createdAt",
+    )
     .every(([key, value]) => {
       if (typeof value === "number") return value > 0;
+      console.log(key, value);
       return typeof value === "boolean" || Array.from(value).length;
     });
   useEffect(() => {
@@ -175,7 +185,7 @@ export const AddModal: FC<AddModalProps> = ({ onClose }) => {
             name={"goal"}
           />
           <FrequencyInput
-            value={habit.frequency as Freq[]}
+            value={habit?.frequency as Freq[]}
             setValue={updateFrequency}
             setValues={selectAllFrequencies}
           />
@@ -225,7 +235,7 @@ export const InputText: FC<InputProps> = ({ label, name, onChange, value }) => (
 );
 
 const FrequencyInput: FC<{
-  value: Array<Freq>;
+  value?: Array<Freq>;
   setValue: (val: Freq) => void;
   setValues: () => void;
 }> = ({ value, setValue, setValues }) => {
@@ -268,18 +278,18 @@ const FrequencyInput: FC<{
   );
 };
 
-const MakeFreqCheck =
-  (
-    value: Array<Freq>,
-    setValue: (key: Freq) => void,
-  ): FC<{ name: string; freqKey: Freq }> =>
-  ({ name, freqKey }) => {
+const MakeFreqCheck = (
+  value: Array<Freq> | undefined,
+  setValue: (key: Freq) => void,
+): FC<{ name: string; freqKey: Freq }> => {
+  console.log(value);
+  return ({ name, freqKey }) => {
     return (
       <Pressable onPress={() => setValue(freqKey)} style={styles.FreqBox}>
         <View style={styles.freqBoxTitle}>
           <Text style={styles.freqBoxTitle}>{freqKey}</Text>
         </View>
-        {value.includes(freqKey) && (
+        {value && value?.includes(freqKey) && (
           <Ionicons
             style={{ marginTop: 5 }}
             name="checkmark-circle-sharp"
@@ -290,3 +300,4 @@ const MakeFreqCheck =
       </Pressable>
     );
   };
+};

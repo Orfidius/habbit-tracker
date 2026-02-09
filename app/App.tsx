@@ -3,12 +3,6 @@ import { styles } from "./App.module";
 import { initHabitTable, seedDB } from "./repositories/habit-repository";
 import { AddModal } from "./AddModal";
 import { Cardlist } from "./HabitList";
-import {
-  deleteHabit,
-  gethabits,
-  Habit,
-  updateHabits,
-} from "./repositories/habit-repository";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "./store/hooks";
 import { setModalOpen } from "./store/HabitState";
@@ -34,7 +28,7 @@ export const App = () => {
         console.log("Initializing DB");
         await initHabitTable();
         // await initStatsTable();
-        await seedDB();
+        // await seedDB();
         console.log("DB initialized successfully");
     	getHabits();
       } catch (e) {
