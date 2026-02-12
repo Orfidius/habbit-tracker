@@ -67,7 +67,7 @@ export const Card: FC<Props> = ({
         setDisabled(true);
       }
     }
-  }, [iteration]);
+  }, [iteration, lastApproved]);
   useEffect(() => {
     if (disabled) {
       textFadeAnim.setValue(255);
@@ -117,8 +117,8 @@ export const Card: FC<Props> = ({
     setIsFilling(false);
     setShouldTick(false);
     widthAnim.setValue(0);
-    textFadeAnim.setValue(0);
-    numFadeAnim.setValue(0);
+    // textFadeAnim.setValue(0);
+    // numFadeAnim.setValue(0);
     skullFadeAnim.setValue(1);
     timerRef.current && clearTimeout(timerRef.current);
   };

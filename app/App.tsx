@@ -60,19 +60,21 @@ export const App = () => {
           <Cardlist habits={habits} updateCards={updateCards} />
         </View>
         <AddModal onClose={onCloseModal} />
-        <TouchableOpacity
+	<View style={styles.bottomBar}>
+          <TouchableOpacity
           onPress={addButtonHandler}
           style={[styles.FAB, styles.add]}
         >
           <Icon name="plus-circle" size={40} />
         </TouchableOpacity>
+        <Stats />
         <TouchableOpacity
           onPress={editButtonHandler}
           style={[styles.FAB, styles.edit]}
         >
           <Icon name="edit-2" size={30} />
         </TouchableOpacity>
-        <Stats />
+	</View>
       </Celebration>
     </View>
   );

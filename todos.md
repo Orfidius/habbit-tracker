@@ -7,5 +7,7 @@
 
 - [ ] - 3. Update react-native
 
+- [x] - 4. Fix bug where cards chagne color when "taped"
+
 - [ ] - 4. Edit mode
  
