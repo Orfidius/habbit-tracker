@@ -27,7 +27,7 @@ export const App = () => {
       try {
         console.log("Initializing DB");
         await initHabitTable();
-        // await initStatsTable();
+        await initStatsTable();
         // await seedDB();
         console.log("DB initialized successfully");
     	getHabits();

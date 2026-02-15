@@ -1,29 +1,24 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useProcessTransactionsMutation } from "../store/api";
 import { useDispatch } from "react-redux";
-import { gethabits, updateHabits } from "../repositories/habit-repository";
-import { getAndFilterMisses } from "../services/misses-utils";
 import { setMisses, setHabits } from "../store/HabitState";
 
 export const useProcessTransactions = () => {
-  const queryClient = useQueryClient();
   const dispatch = useDispatch();
+  const [mutation] = useProcessTransactionsMutation();
 
-  return useMutation({
-    mutationFn: async () => {
-      const habbits = await gethabits();
-      console.log({habbits});
-      const filteredPayload = getAndFilterMisses(habbits);
-      await updateHabits(filteredPayload.filteredHabbits);
-      return filteredPayload;
-    },
-    onSuccess: ({ filteredHabbits, misses, wins }) => {
-      console.log({ filteredHabbits });
-      dispatch(setHabits(filteredHabbits));
+  const processTransactions = async () => {
+    const result = await mutation();
+    if (result.data) {
+      const { filteredHabits, misses, wins } = result.data;
+      console.log({ filteredHabits });
+      dispatch(setHabits(filteredHabits));
       dispatch(setMisses(misses));
-      queryClient.invalidateQueries({ queryKey: ["habits"] });
-    },
-    onError: (error) => {
-      console.error("Habbit update failed", error);
-    },
-  });
+    } else if (result.error) {
+      console.error("Habbit update failed", result.error);
+    }
+  };
+
+  return {
+    mutate: processTransactions,
+  };
 };

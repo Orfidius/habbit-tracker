@@ -220,7 +220,7 @@ interface RawHabit extends Omit<Habit, "frequency"> {
   frequency: string;
 }
 
-export const gethabits = async (): Promise<Habit[]> => {
+export const getHabitsFromDb = async (): Promise<Habit[]> => {
   const db = await SQLite.openDatabaseAsync("habitsDB");
 
   try {
