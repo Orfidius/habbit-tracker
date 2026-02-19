@@ -38,8 +38,8 @@ export const updateMisses = (habits: Habit[]) =>
 
 type MissResults = {
   filteredHabbits: Habit[];
-  wins: number;
-  misses: number;
+  wins: Habit[];
+  misses: Habit[];
 };
 
 export const getAndFilterMisses = (habits: Habit[]): MissResults => {
@@ -54,8 +54,8 @@ export const getAndFilterMisses = (habits: Habit[]): MissResults => {
   );
   return {
     filteredHabbits: grouped.filteredHabbits ?? [],
-    wins: grouped.wins?.length ?? 0,
-    misses: grouped.misses?.length ?? 0,
+    wins: grouped.wins ?? [],
+    misses: grouped.misses ?? [],
   };
 };
 

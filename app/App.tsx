@@ -13,6 +13,7 @@ import Icon from "react-native-vector-icons/Feather";
 import { Celebration } from "./Celebration";
 import { Stats } from "./Stats";
 import { useProcessTransactions } from "./hooks/habit-hook";
+import { initStatsTable } from "./repositories/stats-repository";
 
 export const App = () => {
   const showModal = useAppSelector((state) => state.habitState.modalOpen);
@@ -27,10 +28,10 @@ export const App = () => {
       try {
         console.log("Initializing DB");
         await initHabitTable();
-        // await initStatsTable();
+        await initStatsTable();
         // await seedDB();
         console.log("DB initialized successfully");
-    	getHabits();
+        getHabits();
       } catch (e) {
         console.error("Failed to initialize database", e);
       }

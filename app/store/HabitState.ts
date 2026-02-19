@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from ".";
 import { Habit } from "../repositories/habit-repository";
+import { withSafeAreaInsets } from "react-native-safe-area-context";
 
 export enum Freq {
   M = "M",
@@ -46,8 +47,8 @@ export const habitSlice = createSlice({
     setMisses(state, action: PayloadAction<number>) {
       state.misses = action.payload;
     },
-    pushWins(state) {
-      state.wins++;
+    pushWins(state, action: PayloadAction<number>) {
+      state.wins += action.payload;
     },
     clearMisses(state) {
       state.misses = 0;
