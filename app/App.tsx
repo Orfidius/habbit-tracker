@@ -32,6 +32,7 @@ export const App = () => {
         // await seedDB();
         console.log("DB initialized successfully");
         getHabits();
+
       } catch (e) {
         console.error("Failed to initialize database", e);
       }

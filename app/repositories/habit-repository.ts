@@ -10,7 +10,7 @@ export type Habit = {
   lastUpdated?: number;
   misses: number;
   createdAt: number;
-  lastApproved: number;
+  lastApproved?: number;
 };
 
 const HABIT_TABLE_NAME = "habits";

@@ -4,13 +4,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { useAppSelector } from "./store/hooks";
 import { StyleSheet } from "react-native";
 
-type StatsProps = {
-  misses: number;
-  wins: number;
-};
 
 
-// TODO: Pull misses and wins from DB
 export const Stats: React.FC = () => {
   const [wins, misses] = useAppSelector((state) => [
     state.habitState.wins,

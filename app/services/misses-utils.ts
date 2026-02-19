@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import { Habit, updateHabit } from "../repositories/habit-repository";
 
 export const getMisses = (habit: Habit) => {
-  const { frequency, misses = 0, createdAt, lastUpdated = createdAt } = habit;
+  const { frequency, misses = 0, createdAt, lastApproved = createdAt } = habit;
 
   // Basically, if last updated is more than the frequencty indicated, we have a miss
   // SOLUTION 1:
@@ -16,12 +16,12 @@ export const getMisses = (habit: Habit) => {
   // 2. Find out if any of those days are in our frequency
   // 3. If so, Miss.
 
-  const daysSinceLastUpdated = dayjs().diff(dayjs(lastUpdated), "day");
+  const daysSinceLastUpdated = dayjs().diff(dayjs(lastApproved), "day");
 
   const frequencyAsNum = Array.from(frequency).map((el) => dayMap.get(el));
   return (
     Array.from({ length: daysSinceLastUpdated }, (_, i) => i + 1)
-      .map((el) => dayjs(lastUpdated).add(el, "day").day())
+      .map((el) => dayjs(lastApproved).add(el, "day").day())
       //TODO: Change to reduce because we need the number of misses
       .reduce<number>(
         (acc, day) => (frequencyAsNum.includes(day) ? acc + 1 : acc),
@@ -48,7 +48,7 @@ export const getAndFilterMisses = (habits: Habit[]): MissResults => {
     updatedHabits,
     ({ misses, iteration, goal }) => {
       if (misses > 3) return "misses";
-      if (iteration === goal) return "wins";
+      if (iteration >= goal) return "wins";
       return "filteredHabbits";
     },
   );

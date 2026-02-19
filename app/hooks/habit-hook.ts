@@ -11,11 +11,13 @@ export const useProcessTransactions = () => {
 
   return useMutation({
     mutationFn: async () => {
-      const habbits = await gethabits();
-      const filteredPayload = getAndFilterMisses(habbits);
+      const habits = await gethabits();
+      const filteredPayload = getAndFilterMisses(habits);
       await updateHabits(filteredPayload.filteredHabbits);
       filteredPayload.wins.forEach(habit => updateStats(habit.name, "win", habit.goal));
       filteredPayload.misses.forEach(habit => updateStats(habit.name, "loss", habit.goal));
+      console.log(filteredPayload.misses.length);
+      console.log('batman', habits.map(h => [h.name, h.misses]));
       return filteredPayload;
     },
     onSuccess: ({ filteredHabbits, misses, wins }) => {
