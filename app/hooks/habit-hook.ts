@@ -18,6 +18,7 @@ export const useProcessTransactions = () => {
       filteredPayload.misses.forEach(habit => updateStats(habit.name, "loss", habit.goal));
       console.log(filteredPayload.misses.length);
       console.log('batman', habits.map(h => [h.name, h.misses]));
+      console.log('joker', filteredPayload.filteredHabbits.map(h => [h.name, h.misses]));
       return filteredPayload;
     },
     onSuccess: ({ filteredHabbits, misses, wins }) => {
