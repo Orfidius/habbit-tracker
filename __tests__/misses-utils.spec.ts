@@ -1,6 +1,6 @@
-import { describe, it, expect, vi } from "vitest";
-import { Habit } from "../repositories/habit-repository";
-import { getMisses, updateMisses, getAndFilterMisses } from "./misses-utils";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { Habit } from "../app/repositories/habit-repository.ts";
+import { getMisses, updateMisses, getAndFilterMisses } from "../app/services/misses-utils.ts";
 
 const mockDiff = vi.fn();
 const mockAdd = vi.fn();

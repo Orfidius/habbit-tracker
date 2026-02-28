@@ -4,6 +4,9 @@ import react from "@vitejs/plugin-react";
 const testConfig = {
   globals: true,
   environment: "node",
+  fakeTimers: {
+    enableGlobally: false,
+  },
 };
 
 // @ts-expect-error process is a nodejs global
