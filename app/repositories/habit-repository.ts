@@ -63,6 +63,7 @@ export const seedDB = async () => {
         frequency: ["M", "Tu", "W", "Th", "F"],
         createdAt: Date.now(),
         misses: 1,
+        lastApproved: Date.now(),
       },
       {
         name: "Read Book",
@@ -71,7 +72,8 @@ export const seedDB = async () => {
         remind: false,
         frequency: ["Sa", "Su"],
         createdAt: Date.now(),
-        misses: 3,
+        misses: 4,
+        lastApproved: Date.now(),
       },
       {
         name: "Exercise",
@@ -81,6 +83,7 @@ export const seedDB = async () => {
         frequency: ["M", "W", "F"],
         createdAt: Date.now(),
         misses: 2,
+        lastApproved: Date.now() - 10 * 24 * 60 * 60 * 1000,
       },
     ];
     console.log("Seeding habits");
@@ -88,7 +91,7 @@ export const seedDB = async () => {
       seedHabits.map((habit) => {
         const freqString = habit.frequency.join(",");
         return db.runAsync(
-          `INSERT INTO ${HABIT_TABLE_NAME} (name, iteration, goal, remind, frequency, createdAt, misses) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+          `INSERT INTO ${HABIT_TABLE_NAME} (name, iteration, goal, remind, frequency, createdAt, misses, lastApproved) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
           [
             habit.name,
             habit.iteration,
@@ -97,6 +100,7 @@ export const seedDB = async () => {
             freqString,
             habit.createdAt,
             habit.misses ?? 0,
+            habit.lastApproved ?? null,
           ],
         );
       }),
@@ -264,6 +268,23 @@ export const deleteHabit = async (id: number) => {
     await db.runAsync(`DELETE FROM ${HABIT_TABLE_NAME} WHERE id = ?`, [id]);
   } catch (e) {
     console.log("Error deleting habit", e);
+    throw e;
+  }
+};
+
+export const deleteHabits = async (habits: Habit[]) => {
+  const db = await SQLite.openDatabaseAsync("habitsDB");
+
+  try {
+    await db.withTransactionAsync(async () => {
+      for (const habit of habits) {
+        await db.runAsync(
+          `DELETE FROM ${HABIT_TABLE_NAME} WHERE id = ?`, [habit.id]
+        );
+      }
+    });
+  } catch (e) {
+    console.log("Error deleting habits in transaction", e);
     throw e;
   }
 };

@@ -22,7 +22,6 @@ export const getMisses = (habit: Habit) => {
   return (
     Array.from({ length: daysSinceLastUpdated }, (_, i) => i + 1)
       .map((el) => dayjs(lastApproved).add(el, "day").day())
-      //TODO: Change to reduce because we need the number of misses
       .reduce<number>(
         (acc, day) => (frequencyAsNum.includes(day) ? acc + 1 : acc),
         0,
@@ -37,7 +36,7 @@ export const updateMisses = (habits: Habit[]) =>
   }));
 
 type MissResults = {
-  filteredHabbits: Habit[];
+  filteredHabits: Habit[];
   wins: Habit[];
   misses: Habit[];
 };
@@ -53,7 +52,7 @@ export const getAndFilterMisses = (habits: Habit[]): MissResults => {
     },
   );
   return {
-    filteredHabbits: grouped.filteredHabbits ?? [],
+    filteredHabits: grouped.filteredHabbits ?? [],
     wins: grouped.wins ?? [],
     misses: grouped.misses ?? [],
   };

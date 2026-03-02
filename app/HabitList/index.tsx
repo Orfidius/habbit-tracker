@@ -4,7 +4,8 @@ import { styles } from "./styles.module";
 import { Habit } from "../repositories/habit-repository";
 import { useAppSelector } from "../store/hooks";
 import { FlatList } from "react-native";
-
+// TODO: The text is disapearing after click (touhch?). Needs to be fixed
+// 
 type Props = {
   habits: Array<Habit>;
   updateCards: () => Promise<void>;

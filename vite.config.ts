@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react";
 
 const testConfig = {
   globals: true,
-  environment: "node",
+  environment: "jsdom",
   fakeTimers: {
     enableGlobally: false,
   },
