@@ -63,7 +63,6 @@ export const seedDB = async () => {
         frequency: ["M", "Tu", "W", "Th", "F"],
         createdAt: Date.now(),
         misses: 1,
-        lastApproved: Date.now(),
       },
       {
         name: "Read Book",
@@ -73,7 +72,6 @@ export const seedDB = async () => {
         frequency: ["Sa", "Su"],
         createdAt: Date.now(),
         misses: 4,
-        lastApproved: Date.now(),
       },
       {
         name: "Exercise",

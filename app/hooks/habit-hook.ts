@@ -11,20 +11,12 @@ export const useProcessTransactions = () => {
 
   return useMutation({
     mutationFn: async () => {
-      console.log("Getting Habits");
       const habits = await gethabits();
-      console.log("filtering Habits");
       const filteredPayload = getAndFilterMisses(habits);
-      console.log("updating filtered Habits");
       await updateHabits(filteredPayload.filteredHabits);
-      console.log("deleting updated habbits Habits");
       await deleteHabits(filteredPayload.misses);
-      console.log("Propigating stats to redux ");
       filteredPayload.wins.forEach(habit => updateStats(habit.name, "win", habit.goal));
       filteredPayload.misses.forEach(habit => updateStats(habit.name, "loss", habit.goal));
-      console.log(filteredPayload.misses.length);
-      console.log('batman', habits.map(h => [h.name, h.misses]));
-      console.log('joker', filteredPayload.filteredHabits.map(h => [h.name, h.misses]));
       return filteredPayload;
     },
     onSuccess: ({ filteredHabits, misses, wins }) => {

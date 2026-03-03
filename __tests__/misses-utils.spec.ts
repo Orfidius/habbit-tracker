@@ -258,7 +258,7 @@ describe("getAndFilterMisses", () => {
     expect(result.wins[0].name).toBe("Completed Habit");
   });
 
-  it("should filter habits with NEW misses <= 3 and below goal into filteredHabbits", () => {
+  it("should filter habits with NEW misses <= 3 and below goal into filteredHabits", () => {
     mockDiff.mockReturnValue(2);
     mockAdd.mockImplementation(() => ({ day: () => 1 }));
 
@@ -277,8 +277,8 @@ describe("getAndFilterMisses", () => {
     ];
 
     const result = getAndFilterMisses(habits);
-    expect(result.filteredHabbits).toHaveLength(1);
-    expect(result.filteredHabbits[0].name).toBe("In Progress Habit");
+    expect(result.filteredHabits).toHaveLength(1);
+    expect(result.filteredHabits[0].name).toBe("In Progress Habit");
   });
 
   it("should correctly categorize mixed habits based on NEW misses", () => {
@@ -321,7 +321,7 @@ describe("getAndFilterMisses", () => {
     const result = getAndFilterMisses(habits);
     expect(result.wins).toHaveLength(1);
     expect(result.wins[0].name).toBe("Winner");
-    expect(result.filteredHabbits).toHaveLength(2);
+    expect(result.filteredHabits).toHaveLength(2);
   });
 
   it("should handle empty habits array", () => {
@@ -330,7 +330,7 @@ describe("getAndFilterMisses", () => {
     const result = getAndFilterMisses(habits);
     expect(result.wins).toHaveLength(0);
     expect(result.misses).toHaveLength(0);
-    expect(result.filteredHabbits).toHaveLength(0);
+    expect(result.filteredHabits).toHaveLength(0);
   });
 
   it("BUG: ignores stored misses - uses only calculated new misses for grouping", () => {

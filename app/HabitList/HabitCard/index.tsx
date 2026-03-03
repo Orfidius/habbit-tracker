@@ -36,7 +36,7 @@ import AnimatedGlow from "react-native-animated-glow";
 
 type Props = {
   habit: Habit;
-  updateCards: () => Promise<void>;
+  updateCards: () => Promise<void>
 };
 
 type TimerReturn = ReturnType<typeof setTimeout>;
@@ -108,8 +108,6 @@ export const Card: FC<Props> = ({
         Vibration.vibrate(800);
         await incrementHabit(id, iteration);
         await updateCards();
-        // This also needs to check if the card has met it's goal. If it has, we need to update the stats DB
-        // AND delete the card because it's been completed.
       }, 1200);
     }
   };
@@ -117,9 +115,11 @@ export const Card: FC<Props> = ({
     setIsFilling(false);
     setShouldTick(false);
     widthAnim.setValue(0);
-    // textFadeAnim.setValue(0);
-    // numFadeAnim.setValue(0);
-    skullFadeAnim.setValue(1);
+    if (!disabled) {
+      textFadeAnim.setValue(0);
+      numFadeAnim.setValue(0);
+      skullFadeAnim.setValue(1);
+    }
     timerRef.current && clearTimeout(timerRef.current);
   };
   const onEditHandler = () => {
@@ -129,7 +129,7 @@ export const Card: FC<Props> = ({
         name,
         iteration,
         goal,
-        lastUpdated: lastApproved,
+        lastApproved,
         ...habit,
       } as Habit),
     );
@@ -239,8 +239,8 @@ export const Card: FC<Props> = ({
 
 const IncrementDate: FC<{
   lastApproved: number;
-}> = ({ lastApproved: lastUpdated }) => {
-  const date = dayjs(lastUpdated).format("MMM DD [at] h:mm A");
+}> = ({ lastApproved  }) => {
+  const date = dayjs(lastApproved).format("MMM DD [at] h:mm A");
   return <Text style={styles.lastUpdated}>{date}</Text>;
 };
 
